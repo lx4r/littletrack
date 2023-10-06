@@ -10,20 +10,31 @@ function formatTime(date: Date) {
 }
 
 function App({ getCurrentTime }: Props) {
-  const [startTime, setStartTime] = useState<string | null>(null);
-  const isTimerRunning = startTime !== null;
+  const [formattedStartTime, setFormattedStartTime] = useState<string | null>(
+    null
+  );
+  const [formattedStopTime, setFormattedStopTime] = useState<string | null>(
+    null
+  );
+  const isTimerRunning = formattedStartTime !== null;
 
-  function handleStartClick() {
-    setStartTime(formatTime(getCurrentTime()));
+  function handleButtonClick() {
+    if (isTimerRunning) {
+      setFormattedStopTime(formatTime(getCurrentTime()));
+    } else {
+      setFormattedStartTime(formatTime(getCurrentTime()));
+    }
   }
 
   return (
     <>
-      <button onClick={handleStartClick}>
+      <button onClick={handleButtonClick}>
         {isTimerRunning ? "Stop" : "Start"}
       </button>
       <ul>
-        <li>{startTime}</li>
+        <li>
+          {formattedStartTime} - {formattedStopTime}
+        </li>
       </ul>
     </>
   );
