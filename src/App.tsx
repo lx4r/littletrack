@@ -1,31 +1,37 @@
 import { useState } from "react";
 
+interface TimeEntry {
+  startTime: Date;
+  stopTime: Date;
+}
+
 interface Props {
   getCurrentTime: () => Date;
 }
 
 function formatTime(date: Date) {
-  // "sv" stands for Sweden which uses the date format YYYY-MM-DD we want.
+  // "sv" stands for Sweden which uses the time format YYYY-MM-DD HH:MM we want.
   return date.toLocaleString("sv", { dateStyle: "short", timeStyle: "short" });
 }
 
 function App({ getCurrentTime }: Props) {
-  const [formattedStartTime, setFormattedStartTime] = useState<string | null>(
-    null
+  const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
+    []
   );
-  const [formattedStopTime, setFormattedStopTime] = useState<string | null>(
-    null
-  );
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const isTimerRunning = startTime !== null;
 
   function handleButtonClick() {
     if (isTimerRunning) {
-      setFormattedStopTime(formatTime(getCurrentTime()));
-    } else {
-      setFormattedStartTime(formatTime(getCurrentTime()));
-    }
+      setCompleteTimeEntries([
+        { startTime, stopTime: getCurrentTime() },
+        ...completeTimeEntries,
+      ]);
 
-    setIsTimerRunning(!isTimerRunning);
+      setStartTime(null);
+    } else {
+      setStartTime(getCurrentTime());
+    }
   }
 
   return (
@@ -33,10 +39,14 @@ function App({ getCurrentTime }: Props) {
       <button onClick={handleButtonClick}>
         {isTimerRunning ? "Stop" : "Start"}
       </button>
+      {startTime && formatTime(startTime)}
       <ul>
-        <li>
-          {formattedStartTime} - {formattedStopTime}
-        </li>
+        {completeTimeEntries.map((timeEntry) => (
+          <li key={crypto.randomUUID()}>
+            {formatTime(timeEntry.startTime)} -{" "}
+            {timeEntry.stopTime ? formatTime(timeEntry.stopTime) : ""}
+          </li>
+        ))}
       </ul>
     </>
   );
