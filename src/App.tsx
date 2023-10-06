@@ -11,6 +11,7 @@ function formatTime(date: Date) {
 
 function App({ getCurrentTime }: Props) {
   const [startTime, setStartTime] = useState<string | null>(null);
+  const isTimerRunning = startTime !== null;
 
   function handleStartClick() {
     setStartTime(formatTime(getCurrentTime()));
@@ -18,7 +19,9 @@ function App({ getCurrentTime }: Props) {
 
   return (
     <>
-      <button onClick={handleStartClick}>Start</button>
+      <button onClick={handleStartClick}>
+        {isTimerRunning ? "Stop" : "Start"}
+      </button>
       <ul>
         <li>{startTime}</li>
       </ul>
