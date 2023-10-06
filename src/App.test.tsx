@@ -7,12 +7,15 @@ describe("App", () => {
   it("shows start time after clicking start button", async () => {
     const user = userEvent.setup();
     const getCurrentTime = () => new Date("2023-10-06T07:26:16.932Z");
+    const formattedCurrentTime = "2023-10-06 09:26";
 
     render(<App getCurrentTime={getCurrentTime} />);
 
     const startButton = screen.getByText("Start");
 
     expect(startButton).toBeInTheDocument();
+
+    expect(screen.queryByText(formattedCurrentTime)).not.toBeInTheDocument();
 
     await user.click(startButton);
 

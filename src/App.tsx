@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Props {
   getCurrentTime: () => Date;
 }
@@ -8,11 +10,17 @@ function formatTime(date: Date) {
 }
 
 function App({ getCurrentTime }: Props) {
+  const [startTime, setStartTime] = useState<string | null>(null);
+
+  function handleStartClick() {
+    setStartTime(formatTime(getCurrentTime()));
+  }
+
   return (
     <>
-      <button>Start</button>
+      <button onClick={handleStartClick}>Start</button>
       <ul>
-        <li>{formatTime(getCurrentTime())}</li>
+        <li>{startTime}</li>
       </ul>
     </>
   );
