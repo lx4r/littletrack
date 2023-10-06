@@ -16,7 +16,7 @@ function App({ getCurrentTime }: Props) {
   const [formattedStopTime, setFormattedStopTime] = useState<string | null>(
     null
   );
-  const isTimerRunning = formattedStartTime !== null;
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   function handleButtonClick() {
     if (isTimerRunning) {
@@ -24,6 +24,8 @@ function App({ getCurrentTime }: Props) {
     } else {
       setFormattedStartTime(formatTime(getCurrentTime()));
     }
+
+    setIsTimerRunning(!isTimerRunning);
   }
 
   return (
