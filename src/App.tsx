@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 interface TimeEntry {
+  id: string;
   startTime: Date;
   stopTime: Date;
 }
@@ -21,10 +22,10 @@ function App({ getCurrentTime }: Props) {
   const [startTime, setStartTime] = useState<Date | null>(null);
   const isTimerRunning = startTime !== null;
 
-  function handleButtonClick() {
+  function handleStartStopButtonClick() {
     if (isTimerRunning) {
       setCompleteTimeEntries([
-        { startTime, stopTime: getCurrentTime() },
+        { id: crypto.randomUUID(), startTime, stopTime: getCurrentTime() },
         ...completeTimeEntries,
       ]);
 
@@ -34,17 +35,28 @@ function App({ getCurrentTime }: Props) {
     }
   }
 
+  function handleDeleteButtonClick({ id }: TimeEntry) {
+    setCompleteTimeEntries(
+      completeTimeEntries.filter(({ id: currentId }) => id !== currentId)
+    );
+  }
+
   return (
     <>
-      <button onClick={handleButtonClick}>
+      <button onClick={handleStartStopButtonClick}>
         {isTimerRunning ? "Stop" : "Start"}
       </button>
       {startTime && formatTime(startTime)}
       <ul>
         {completeTimeEntries.map((timeEntry) => (
-          <li key={crypto.randomUUID()}>
+          <li key={timeEntry.id}>
             {formatTime(timeEntry.startTime)} -{" "}
-            {timeEntry.stopTime ? formatTime(timeEntry.stopTime) : ""}
+            {timeEntry.stopTime ? formatTime(timeEntry.stopTime) : ""}{" "}
+            {timeEntry.stopTime && (
+              <button onClick={() => handleDeleteButtonClick(timeEntry)}>
+                Delete
+              </button>
+            )}
           </li>
         ))}
       </ul>
