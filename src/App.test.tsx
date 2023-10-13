@@ -28,7 +28,7 @@ describe("App", () => {
     const getCurrentTime = vi.fn();
     getCurrentTime.mockReturnValueOnce(startTime1);
 
-    render(<App getCurrentTime={getCurrentTime} />);
+    render(<App getCurrentTime={getCurrentTime} persistStartTime={vi.fn()} />);
 
     expect(getStartButtonIfExists()).toBeInTheDocument();
     expect(getStopButtonIfExists()).not.toBeInTheDocument();
@@ -88,7 +88,7 @@ describe("App", () => {
     const user = userEvent.setup();
     const getCurrentTime = vi.fn();
 
-    render(<App getCurrentTime={getCurrentTime} />);
+    render(<App getCurrentTime={getCurrentTime} persistStartTime={vi.fn()} />);
 
     getCurrentTime.mockReturnValueOnce(startTime1);
 
@@ -133,5 +133,26 @@ describe("App", () => {
 
     expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
     expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
+  });
+
+  it("persists start time when start button is clicked", async () => {
+    const user = userEvent.setup();
+
+    const getCurrentTime = vi.fn().mockReturnValueOnce(startTime1);
+    const persistStartTime = vi.fn().mockReturnValueOnce(Promise.resolve());
+
+    render(
+      <App
+        getCurrentTime={getCurrentTime}
+        persistStartTime={persistStartTime}
+      />
+    );
+
+    // TODO: Avoid repeating the label of the start button?
+    const startButton = screen.getByRole("button", { name: "Start" });
+
+    await user.click(startButton);
+
+    expect(persistStartTime).toHaveBeenCalledWith(startTime1);
   });
 });

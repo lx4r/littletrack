@@ -8,6 +8,7 @@ interface TimeEntry {
 
 interface Props {
   getCurrentTime: () => Date;
+  persistStartTime: (startTime: Date) => Promise<void>;
 }
 
 function formatTime(date: Date) {
@@ -15,23 +16,27 @@ function formatTime(date: Date) {
   return date.toLocaleString("sv", { dateStyle: "short", timeStyle: "short" });
 }
 
-function App({ getCurrentTime }: Props) {
+function App({ getCurrentTime, persistStartTime }: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     []
   );
   const [startTime, setStartTime] = useState<Date | null>(null);
   const isTimerRunning = startTime !== null;
 
-  function handleStartStopButtonClick() {
+  async function handleStartStopButtonClick() {
+    const currentTime = getCurrentTime();
+
     if (isTimerRunning) {
       setCompleteTimeEntries([
-        { id: crypto.randomUUID(), startTime, stopTime: getCurrentTime() },
+        { id: crypto.randomUUID(), startTime, stopTime: currentTime },
         ...completeTimeEntries,
       ]);
 
       setStartTime(null);
     } else {
-      setStartTime(getCurrentTime());
+      setStartTime(currentTime);
+
+      await persistStartTime(currentTime);
     }
   }
 
