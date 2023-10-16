@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import App from "./App";
@@ -33,6 +33,7 @@ describe("App", () => {
         getCurrentTime={getCurrentTime}
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        removePersistedStartTime={vi.fn()}
       />
     );
 
@@ -99,6 +100,7 @@ describe("App", () => {
         getCurrentTime={getCurrentTime}
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        removePersistedStartTime={vi.fn()}
       />
     );
 
@@ -159,6 +161,7 @@ describe("App", () => {
         getCurrentTime={getCurrentTime}
         persistStartTime={persistStartTime}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        removePersistedStartTime={vi.fn()}
       />
     );
 
@@ -179,12 +182,40 @@ describe("App", () => {
         getCurrentTime={vi.fn()}
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={retrievePersistedStartTime}
+        removePersistedStartTime={vi.fn()}
       />
     );
 
     expect(
       await screen.findByText(formattedStartTime1Matcher)
     ).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Stop" })).toBeInTheDocument();
+    expect(getStopButtonIfExists()).toBeInTheDocument();
+  });
+
+  it("removes persisted start time when stop button is clicked", async () => {
+    const user = userEvent.setup();
+
+    const retrievePersistedStartTime = vi.fn().mockResolvedValue(startTime1);
+    const removePersistedStartTime = vi
+      .fn()
+      .mockReturnValueOnce(Promise.resolve());
+
+    render(
+      <App
+        getCurrentTime={vi.fn()}
+        persistStartTime={vi.fn()}
+        retrievePersistedStartTime={retrievePersistedStartTime}
+        removePersistedStartTime={removePersistedStartTime}
+      />
+    );
+
+    const stopButton = await screen.findByRole("button", { name: "Stop" });
+
+    await user.click(stopButton);
+
+    // TODO: Would it be better to provide a simple implementation of removePersistedStartTime instead of using a spy here?
+    await waitFor(() => {
+      expect(removePersistedStartTime).toHaveBeenCalled();
+    });
   });
 });

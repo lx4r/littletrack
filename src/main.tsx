@@ -31,12 +31,17 @@ async function retrievePersistedStartTime() {
   return new Date(startTime);
 }
 
+async function removePersistedStartTime() {
+  await localForage.removeItem(LOCAL_FORAGE_KEY_START_TIME);
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App
       getCurrentTime={getCurrentTime}
       persistStartTime={persistStartTime}
       retrievePersistedStartTime={retrievePersistedStartTime}
+      removePersistedStartTime={removePersistedStartTime}
     />
   </React.StrictMode>
 );

@@ -10,6 +10,7 @@ interface Props {
   getCurrentTime: () => Date;
   persistStartTime: (startTime: Date) => Promise<void>;
   retrievePersistedStartTime: () => Promise<Date | null>;
+  removePersistedStartTime: () => Promise<void>;
 }
 
 function formatTime(date: Date) {
@@ -21,6 +22,7 @@ function App({
   getCurrentTime,
   persistStartTime,
   retrievePersistedStartTime,
+  removePersistedStartTime,
 }: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     []
@@ -50,6 +52,8 @@ function App({
       ]);
 
       setStartTime(null);
+
+      await removePersistedStartTime();
     } else {
       setStartTime(currentTime);
 
