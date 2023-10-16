@@ -170,7 +170,7 @@ describe("App", () => {
     expect(persistStartTime).toHaveBeenCalledWith(startTime1);
   });
 
-  it("uses persisted start time if there is one", async () => {
+  it("uses persisted start time if there is one and shows stop button", async () => {
     // TODO: Should we type check test files?
     const retrievePersistedStartTime = vi.fn().mockResolvedValue(startTime1);
 
@@ -182,6 +182,9 @@ describe("App", () => {
       />
     );
 
-    await screen.findByText(formattedStartTime1Matcher);
+    expect(
+      await screen.findByText(formattedStartTime1Matcher)
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Stop" })).toBeInTheDocument();
   });
 });
