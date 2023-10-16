@@ -91,9 +91,10 @@ describe("App", () => {
     expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
   });
 
-  it("can delete a time entry if there are multiple", async () => {
+  it("can delete a time entry if there is just one", async () => {
     const user = userEvent.setup();
-    const getCurrentTime = vi.fn();
+
+    const getCurrentTime = vi.fn().mockReturnValueOnce(startTime1);
 
     render(
       <App
@@ -104,7 +105,40 @@ describe("App", () => {
       />
     );
 
-    getCurrentTime.mockReturnValueOnce(startTime1);
+    const startButton = screen.getByRole("button", { name: "Start" });
+
+    await user.click(startButton);
+
+    getCurrentTime.mockReturnValueOnce(stopTime1);
+
+    const stopButton = screen.getByRole("button", { name: "Stop" });
+
+    await user.click(stopButton);
+
+    const deleteButton = screen.getByRole("button", { name: "Delete" });
+
+    expect(deleteButton).toBeInTheDocument();
+
+    await user.click(deleteButton);
+
+    expect(
+      screen.queryByText(formattedStartTime1Matcher)
+    ).not.toBeInTheDocument();
+  });
+
+  it("can delete a time entry if there are multiple", async () => {
+    const user = userEvent.setup();
+
+    const getCurrentTime = vi.fn().mockReturnValueOnce(startTime1);
+
+    render(
+      <App
+        getCurrentTime={getCurrentTime}
+        persistStartTime={vi.fn()}
+        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        removePersistedStartTime={vi.fn()}
+      />
+    );
 
     const startButton = screen.getByRole("button", { name: "Start" });
 
@@ -125,28 +159,28 @@ describe("App", () => {
     await user.click(stopButton);
 
     // TODO: Figure out how to use getByRole here?
-    const firstTimeEntry = screen.getByText(formattedStartTime1Matcher);
+    const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
 
-    expect(firstTimeEntry).toBeInTheDocument();
+    expect(secondTimeEntry).toBeInTheDocument();
 
-    const deleteButtonForFirstTimeEntry = within(firstTimeEntry).getByRole(
+    const deleteButtonForSecondTimeEntry = within(secondTimeEntry).getByRole(
       "button",
       { name: "Delete" }
     );
 
-    expect(deleteButtonForFirstTimeEntry).toBeInTheDocument();
+    expect(deleteButtonForSecondTimeEntry).toBeInTheDocument();
 
-    await user.click(deleteButtonForFirstTimeEntry);
+    await user.click(deleteButtonForSecondTimeEntry);
+
+    expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
 
     expect(
-      screen.queryByText(formattedStartTime1Matcher)
+      screen.queryByText(formattedStartTime2Matcher)
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(formattedStopTime1Matcher)
+      screen.queryByText(formattedStopTime2Matcher)
     ).not.toBeInTheDocument();
-
-    expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
-    expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
   });
 
   // TODO: Should this be merged into the first test?
