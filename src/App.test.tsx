@@ -28,7 +28,13 @@ describe("App", () => {
     const getCurrentTime = vi.fn();
     getCurrentTime.mockReturnValueOnce(startTime1);
 
-    render(<App getCurrentTime={getCurrentTime} persistStartTime={vi.fn()} />);
+    render(
+      <App
+        getCurrentTime={getCurrentTime}
+        persistStartTime={vi.fn()}
+        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+      />
+    );
 
     expect(getStartButtonIfExists()).toBeInTheDocument();
     expect(getStopButtonIfExists()).not.toBeInTheDocument();
@@ -88,7 +94,13 @@ describe("App", () => {
     const user = userEvent.setup();
     const getCurrentTime = vi.fn();
 
-    render(<App getCurrentTime={getCurrentTime} persistStartTime={vi.fn()} />);
+    render(
+      <App
+        getCurrentTime={getCurrentTime}
+        persistStartTime={vi.fn()}
+        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+      />
+    );
 
     getCurrentTime.mockReturnValueOnce(startTime1);
 
@@ -135,6 +147,7 @@ describe("App", () => {
     expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
   });
 
+  // TODO: Should this be merged into the first test?
   it("persists start time when start button is clicked", async () => {
     const user = userEvent.setup();
 
@@ -145,6 +158,7 @@ describe("App", () => {
       <App
         getCurrentTime={getCurrentTime}
         persistStartTime={persistStartTime}
+        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
       />
     );
 
@@ -154,5 +168,20 @@ describe("App", () => {
     await user.click(startButton);
 
     expect(persistStartTime).toHaveBeenCalledWith(startTime1);
+  });
+
+  it("uses persisted start time if there is one", async () => {
+    // TODO: Should we type check test files?
+    const retrievePersistedStartTime = vi.fn().mockResolvedValue(startTime1);
+
+    render(
+      <App
+        getCurrentTime={vi.fn()}
+        persistStartTime={vi.fn()}
+        retrievePersistedStartTime={retrievePersistedStartTime}
+      />
+    );
+
+    await screen.findByText(formattedStartTime1Matcher);
   });
 });

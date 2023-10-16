@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TimeEntry {
   id: string;
@@ -9,6 +9,7 @@ interface TimeEntry {
 interface Props {
   getCurrentTime: () => Date;
   persistStartTime: (startTime: Date) => Promise<void>;
+  retrievePersistedStartTime: () => Promise<Date | null>;
 }
 
 function formatTime(date: Date) {
@@ -16,12 +17,28 @@ function formatTime(date: Date) {
   return date.toLocaleString("sv", { dateStyle: "short", timeStyle: "short" });
 }
 
-function App({ getCurrentTime, persistStartTime }: Props) {
+function App({
+  getCurrentTime,
+  persistStartTime,
+  retrievePersistedStartTime,
+}: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     []
   );
   const [startTime, setStartTime] = useState<Date | null>(null);
   const isTimerRunning = startTime !== null;
+
+  useEffect(() => {
+    async function loadPersistedStartTime() {
+      const persistedStartTime = await retrievePersistedStartTime();
+
+      if (persistedStartTime !== null) {
+        setStartTime(persistedStartTime);
+      }
+    }
+
+    loadPersistedStartTime();
+  }, [retrievePersistedStartTime]);
 
   async function handleStartStopButtonClick() {
     const currentTime = getCurrentTime();
