@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import App from "./App";
+import { formatTime } from "./time_formatting";
 
 describe("App", () => {
   function getStartButtonIfExists() {
@@ -13,14 +14,14 @@ describe("App", () => {
   }
 
   const startTime1 = new Date("2023-10-06T07:26:16.932Z");
-  const formattedStartTime1Matcher = /2023-10-06 09:26/;
+  const formattedStartTime1Matcher = new RegExp(formatTime(startTime1));
   const stopTime1 = new Date("2023-10-06T12:34:56.456Z");
-  const formattedStopTime1Matcher = /2023-10-06 14:34/;
+  const formattedStopTime1Matcher = new RegExp(formatTime(stopTime1));
 
   const startTime2 = new Date("2023-01-02T08:45:12.432Z");
-  const formattedStartTime2Matcher = /2023-01-02 09:45/;
+  const formattedStartTime2Matcher = new RegExp(formatTime(startTime2));
   const stopTime2 = new Date("2023-01-03T05:02:34.7892Z");
-  const formattedStopTime2Matcher = /2023-01-03 06:02/;
+  const formattedStopTime2Matcher = new RegExp(formatTime(stopTime2));
 
   it("can log multiple time entries", async () => {
     const user = userEvent.setup();
@@ -52,7 +53,6 @@ describe("App", () => {
     expect(getStartButtonIfExists()).not.toBeInTheDocument();
     expect(getStopButtonIfExists()).toBeInTheDocument();
 
-    // TODO: This test will probably not work in other timezones.
     expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
     expect(
       screen.queryByText(formattedStopTime1Matcher)
@@ -158,7 +158,6 @@ describe("App", () => {
 
     await user.click(stopButton);
 
-    // TODO: Figure out how to use getByRole here?
     const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
 
     expect(secondTimeEntry).toBeInTheDocument();

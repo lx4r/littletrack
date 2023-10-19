@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { formatTime } from "./time_formatting";
 
 interface TimeEntry {
   id: string;
@@ -11,11 +12,6 @@ interface Props {
   persistStartTime: (startTime: Date) => Promise<void>;
   retrievePersistedStartTime: () => Promise<Date | null>;
   removePersistedStartTime: () => Promise<void>;
-}
-
-function formatTime(date: Date) {
-  // "sv" stands for Sweden which uses the time format YYYY-MM-DD HH:MM we want.
-  return date.toLocaleString("sv", { dateStyle: "short", timeStyle: "short" });
 }
 
 function App({
