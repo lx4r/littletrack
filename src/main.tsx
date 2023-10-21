@@ -1,7 +1,8 @@
+import localForage from "localforage";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import localForage from "localforage";
+import "./index.css";
 
 const LOCAL_FORAGE_KEY_START_TIME = "startTime";
 
