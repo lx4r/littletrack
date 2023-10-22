@@ -1,3 +1,4 @@
+import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { formatTime } from "./time_formatting";
 
@@ -68,9 +69,13 @@ function App({
       <div className="mb-4 flex items-center justify-evenly">
         <button
           onClick={handleStartStopButtonClick}
-          className="rounded-md bg-neutral-600 p-2 text-neutral-200 shadow-md"
+          className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md"
         >
-          {isTimerRunning ? "Stop" : "Start"}
+          {isTimerRunning ? (
+            <StopIcon className="h-6 w-6" />
+          ) : (
+            <PlayIcon className="h-6 w-6" />
+          )}
         </button>
         {startTime && formatTime(startTime)}
       </div>
