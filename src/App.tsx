@@ -65,8 +65,12 @@ function App({
   }
 
   return (
-    <main className="h-screen bg-neutral-800 p-4 text-neutral-400">
-      <div className="mb-4 flex items-center justify-evenly">
+    <main className="h-screen bg-neutral-800 p-4 font-sans text-neutral-400">
+      <div
+        className={`mb-4 flex items-center ${
+          isTimerRunning ? "justify-between" : ""
+        }`}
+      >
         <button
           onClick={handleStartStopButtonClick}
           className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md"
