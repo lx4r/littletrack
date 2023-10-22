@@ -1,4 +1,4 @@
-import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
+import { PlayIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { formatTime } from "./time_formatting";
 
@@ -79,14 +79,21 @@ function App({
         </button>
         {startTime && formatTime(startTime)}
       </div>
+      {/* TODO: Use different element here? */}
       <ul>
         {completeTimeEntries.map((timeEntry) => (
-          <li key={timeEntry.id}>
+          <li
+            key={timeEntry.id}
+            className="mb-2 flex items-center justify-between rounded-md border border-neutral-700 p-2 text-sm"
+          >
             {formatTime(timeEntry.startTime)} -{" "}
             {timeEntry.stopTime ? formatTime(timeEntry.stopTime) : ""}{" "}
             {timeEntry.stopTime && (
-              <button onClick={() => handleDeleteButtonClick(timeEntry)}>
-                Delete
+              <button
+                onClick={() => handleDeleteButtonClick(timeEntry)}
+                className="rounded-full border-2 border-neutral-600 p-1"
+              >
+                <XMarkIcon className="h-4 w-4" />
               </button>
             )}
           </li>
