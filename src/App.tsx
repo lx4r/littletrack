@@ -65,7 +65,7 @@ function App({
   }
 
   return (
-    <main className="h-screen bg-neutral-800 p-4 font-sans text-neutral-400">
+    <main className="container">
       <div
         className={`mb-4 flex items-center ${
           isTimerRunning ? "justify-between" : ""
