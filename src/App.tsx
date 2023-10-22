@@ -73,7 +73,7 @@ function App({
       >
         <button
           onClick={handleStartStopButtonClick}
-          className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md"
+          className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
         >
           {isTimerRunning ? (
             <StopIcon className="h-6 w-6" />
@@ -95,7 +95,7 @@ function App({
             {timeEntry.stopTime && (
               <button
                 onClick={() => handleDeleteButtonClick(timeEntry)}
-                className="rounded-full border-2 border-neutral-600 p-1"
+                className="rounded-full border-2 border-neutral-600 p-1 hover:bg-neutral-600 hover:text-neutral-200"
               >
                 <XMarkIcon className="h-4 w-4" />
               </button>
