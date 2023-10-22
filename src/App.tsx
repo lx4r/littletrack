@@ -21,7 +21,7 @@ function App({
   removePersistedStartTime,
 }: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
-    []
+    [],
   );
   const [startTime, setStartTime] = useState<Date | null>(null);
   const isTimerRunning = startTime !== null;
@@ -59,16 +59,21 @@ function App({
 
   function handleDeleteButtonClick({ id }: TimeEntry) {
     setCompleteTimeEntries(
-      completeTimeEntries.filter(({ id: currentId }) => id !== currentId)
+      completeTimeEntries.filter(({ id: currentId }) => id !== currentId),
     );
   }
 
   return (
-    <>
-      <button onClick={handleStartStopButtonClick}>
-        {isTimerRunning ? "Stop" : "Start"}
-      </button>
-      {startTime && formatTime(startTime)}
+    <main className="h-screen bg-neutral-800 p-4 text-neutral-400">
+      <div className="mb-4 flex items-center justify-evenly">
+        <button
+          onClick={handleStartStopButtonClick}
+          className="rounded-md bg-neutral-600 p-2 text-neutral-200 shadow-md"
+        >
+          {isTimerRunning ? "Stop" : "Start"}
+        </button>
+        {startTime && formatTime(startTime)}
+      </div>
       <ul>
         {completeTimeEntries.map((timeEntry) => (
           <li key={timeEntry.id}>
@@ -82,7 +87,7 @@ function App({
           </li>
         ))}
       </ul>
-    </>
+    </main>
   );
 }
 
