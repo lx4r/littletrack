@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "test:run": "vitest --run"
+    "test:run": "vitest --run",
+    "prepush": "pnpm run '/^(test:run|lint)$/'"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
