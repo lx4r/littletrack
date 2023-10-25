@@ -6,11 +6,19 @@ import { formatTime } from "./time_formatting";
 
 describe("App", () => {
   function getStartButtonIfExists() {
-    return screen.queryByRole("button", { name: "Start" });
+    return screen.queryByTestId("start-icon");
   }
 
   function getStopButtonIfExists() {
-    return screen.queryByRole("button", { name: "Stop" });
+    return screen.queryByTestId("stop-icon");
+  }
+
+  function getStartButtonOrThrow() {
+    return screen.getByTestId("start-icon");
+  }
+
+  function getStopButtonOrThrow() {
+    return screen.getByTestId("stop-icon");
   }
 
   const startTime1 = new Date("2023-10-06T07:26:16.932Z");
@@ -35,32 +43,32 @@ describe("App", () => {
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
         removePersistedStartTime={vi.fn()}
-      />
+      />,
     );
 
     expect(getStartButtonIfExists()).toBeInTheDocument();
     expect(getStopButtonIfExists()).not.toBeInTheDocument();
 
     expect(
-      screen.queryByText(formattedStartTime1Matcher)
+      screen.queryByText(formattedStartTime1Matcher),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(formattedStopTime1Matcher)
+      screen.queryByText(formattedStopTime1Matcher),
     ).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "Start" }));
+    await user.click(getStartButtonOrThrow());
 
     expect(getStartButtonIfExists()).not.toBeInTheDocument();
     expect(getStopButtonIfExists()).toBeInTheDocument();
 
     expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
     expect(
-      screen.queryByText(formattedStopTime1Matcher)
+      screen.queryByText(formattedStopTime1Matcher),
     ).not.toBeInTheDocument();
 
     getCurrentTime.mockReturnValueOnce(stopTime1);
 
-    await user.click(screen.getByRole("button", { name: "Stop" }));
+    await user.click(getStopButtonOrThrow());
 
     expect(getStartButtonIfExists()).toBeInTheDocument();
     expect(getStopButtonIfExists()).not.toBeInTheDocument();
@@ -70,19 +78,19 @@ describe("App", () => {
 
     getCurrentTime.mockReturnValueOnce(startTime2);
 
-    await user.click(screen.getByRole("button", { name: "Start" }));
+    await user.click(getStartButtonOrThrow());
 
     expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
     expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
 
     expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
     expect(
-      screen.queryByText(formattedStopTime2Matcher)
+      screen.queryByText(formattedStopTime2Matcher),
     ).not.toBeInTheDocument();
 
     getCurrentTime.mockReturnValueOnce(stopTime2);
 
-    await user.click(screen.getByRole("button", { name: "Stop" }));
+    await user.click(getStopButtonOrThrow());
 
     expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
     expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
@@ -102,27 +110,23 @@ describe("App", () => {
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
         removePersistedStartTime={vi.fn()}
-      />
+      />,
     );
 
-    const startButton = screen.getByRole("button", { name: "Start" });
-
-    await user.click(startButton);
+    await user.click(getStartButtonOrThrow());
 
     getCurrentTime.mockReturnValueOnce(stopTime1);
 
-    const stopButton = screen.getByRole("button", { name: "Stop" });
+    await user.click(getStopButtonOrThrow());
 
-    await user.click(stopButton);
-
-    const deleteButton = screen.getByRole("button", { name: "Delete" });
+    const deleteButton = screen.getByTestId("delete-icon");
 
     expect(deleteButton).toBeInTheDocument();
 
     await user.click(deleteButton);
 
     expect(
-      screen.queryByText(formattedStartTime1Matcher)
+      screen.queryByText(formattedStartTime1Matcher),
     ).not.toBeInTheDocument();
   });
 
@@ -137,35 +141,29 @@ describe("App", () => {
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
         removePersistedStartTime={vi.fn()}
-      />
+      />,
     );
 
-    const startButton = screen.getByRole("button", { name: "Start" });
-
-    await user.click(startButton);
+    await user.click(getStartButtonOrThrow());
 
     getCurrentTime.mockReturnValueOnce(stopTime1);
 
-    const stopButton = screen.getByRole("button", { name: "Stop" });
-
-    await user.click(stopButton);
+    await user.click(getStopButtonOrThrow());
 
     getCurrentTime.mockReturnValueOnce(startTime2);
 
-    await user.click(startButton);
+    await user.click(getStartButtonOrThrow());
 
     getCurrentTime.mockReturnValueOnce(stopTime2);
 
-    await user.click(stopButton);
+    await user.click(getStopButtonOrThrow());
 
     const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
 
     expect(secondTimeEntry).toBeInTheDocument();
 
-    const deleteButtonForSecondTimeEntry = within(secondTimeEntry).getByRole(
-      "button",
-      { name: "Delete" }
-    );
+    const deleteButtonForSecondTimeEntry =
+      within(secondTimeEntry).getByTestId("delete-icon");
 
     expect(deleteButtonForSecondTimeEntry).toBeInTheDocument();
 
@@ -175,10 +173,10 @@ describe("App", () => {
     expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
 
     expect(
-      screen.queryByText(formattedStartTime2Matcher)
+      screen.queryByText(formattedStartTime2Matcher),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(formattedStopTime2Matcher)
+      screen.queryByText(formattedStopTime2Matcher),
     ).not.toBeInTheDocument();
   });
 
@@ -194,12 +192,10 @@ describe("App", () => {
         persistStartTime={persistStartTime}
         retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
         removePersistedStartTime={vi.fn()}
-      />
+      />,
     );
 
-    const startButton = screen.getByRole("button", { name: "Start" });
-
-    await user.click(startButton);
+    await user.click(getStartButtonOrThrow());
 
     expect(persistStartTime).toHaveBeenCalledWith(startTime1);
   });
@@ -214,11 +210,11 @@ describe("App", () => {
         persistStartTime={vi.fn()}
         retrievePersistedStartTime={retrievePersistedStartTime}
         removePersistedStartTime={vi.fn()}
-      />
+      />,
     );
 
     expect(
-      await screen.findByText(formattedStartTime1Matcher)
+      await screen.findByText(formattedStartTime1Matcher),
     ).toBeInTheDocument();
     expect(getStopButtonIfExists()).toBeInTheDocument();
   });
@@ -246,18 +242,14 @@ describe("App", () => {
         persistStartTime={persistStartTime}
         retrievePersistedStartTime={retrievePersistedStartTime}
         removePersistedStartTime={removePersistedStartTime}
-      />
+      />,
     );
 
-    const startButton = screen.getByRole("button", { name: "Start" });
-
-    await user.click(startButton);
+    await user.click(getStartButtonOrThrow());
 
     getCurrentTime.mockReturnValueOnce(stopTime1);
 
-    const stopButton = screen.getByRole("button", { name: "Stop" });
-
-    await user.click(stopButton);
+    await user.click(getStopButtonOrThrow());
 
     cleanup();
 
@@ -267,15 +259,13 @@ describe("App", () => {
         persistStartTime={persistStartTime}
         retrievePersistedStartTime={retrievePersistedStartTime}
         removePersistedStartTime={removePersistedStartTime}
-      />
+      />,
     );
 
+    expect(getStopButtonIfExists()).not.toBeInTheDocument();
+    expect(getStartButtonIfExists()).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Stop" })
-    ).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Start" })).toBeInTheDocument();
-    expect(
-      screen.queryByText(formattedStartTime1Matcher)
+      screen.queryByText(formattedStartTime1Matcher),
     ).not.toBeInTheDocument();
   });
 });

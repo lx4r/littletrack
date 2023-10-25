@@ -76,9 +76,9 @@ function App({
           className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
         >
           {isTimerRunning ? (
-            <StopIcon className="h-6 w-6" />
+            <StopIcon className="h-6 w-6" data-testid="stop-icon" />
           ) : (
-            <PlayIcon className="h-6 w-6" />
+            <PlayIcon className="h-6 w-6" data-testid="start-icon" />
           )}
         </button>
         {startTime && formatTime(startTime)}
@@ -97,7 +97,7 @@ function App({
                 onClick={() => handleDeleteButtonClick(timeEntry)}
                 className="rounded-full border-2 border-neutral-600 p-1 hover:bg-neutral-600 hover:text-neutral-200"
               >
-                <XMarkIcon className="h-4 w-4" />
+                <XMarkIcon className="h-4 w-4" data-testid="delete-icon" />
               </button>
             )}
           </li>
