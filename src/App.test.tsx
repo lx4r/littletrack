@@ -34,14 +34,13 @@ describe("App", () => {
   it("can log multiple time entries", async () => {
     const user = userEvent.setup();
 
-    const getCurrentTime = vi.fn();
-    getCurrentTime.mockReturnValueOnce(startTime1);
+    const getCurrentTime = vi.fn(() => startTime1);
 
     render(
       <App
         getCurrentTime={getCurrentTime}
         persistStartTime={vi.fn()}
-        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
         removePersistedStartTime={vi.fn()}
       />,
     );
@@ -102,13 +101,13 @@ describe("App", () => {
   it("can delete a time entry if there is just one", async () => {
     const user = userEvent.setup();
 
-    const getCurrentTime = vi.fn().mockReturnValueOnce(startTime1);
+    const getCurrentTime = vi.fn(() => startTime1);
 
     render(
       <App
         getCurrentTime={getCurrentTime}
         persistStartTime={vi.fn()}
-        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
         removePersistedStartTime={vi.fn()}
       />,
     );
@@ -133,13 +132,13 @@ describe("App", () => {
   it("can delete a time entry if there are multiple", async () => {
     const user = userEvent.setup();
 
-    const getCurrentTime = vi.fn().mockReturnValueOnce(startTime1);
+    const getCurrentTime = vi.fn(() => startTime1);
 
     render(
       <App
         getCurrentTime={getCurrentTime}
         persistStartTime={vi.fn()}
-        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
         removePersistedStartTime={vi.fn()}
       />,
     );
@@ -183,14 +182,14 @@ describe("App", () => {
   it("persists start time when start button is clicked", async () => {
     const user = userEvent.setup();
 
-    const getCurrentTime = vi.fn().mockReturnValueOnce(startTime1);
-    const persistStartTime = vi.fn().mockReturnValueOnce(Promise.resolve());
+    const getCurrentTime = vi.fn(() => startTime1);
+    const persistStartTime = vi.fn(() => Promise.resolve());
 
     render(
       <App
         getCurrentTime={getCurrentTime}
         persistStartTime={persistStartTime}
-        retrievePersistedStartTime={vi.fn().mockResolvedValue(null)}
+        retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
         removePersistedStartTime={vi.fn()}
       />,
     );
@@ -201,8 +200,7 @@ describe("App", () => {
   });
 
   it("uses persisted start time if there is one and shows stop button", async () => {
-    // TODO: Should we type check test files?
-    const retrievePersistedStartTime = vi.fn().mockResolvedValue(startTime1);
+    const retrievePersistedStartTime = vi.fn(() => Promise.resolve(startTime1));
 
     render(
       <App
