@@ -113,14 +113,14 @@ function App({
           {completeTimeEntries.map((timeEntry) => (
             <li
               key={timeEntry.id}
-              className="mb-2 flex items-center justify-between rounded-md border border-neutral-700 p-2 text-sm"
+              className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
             >
               {formatTime(timeEntry.startTime)} -{" "}
               {timeEntry.stopTime ? formatTime(timeEntry.stopTime) : ""}{" "}
               {timeEntry.stopTime && (
                 <button
                   onClick={() => handleDeleteButtonClick(timeEntry)}
-                  className="rounded-full border-2 border-neutral-600 p-1 hover:bg-neutral-600 hover:text-neutral-200"
+                  className="rounded-full bg-neutral-500 p-2 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
                 >
                   <XMarkIcon className="h-4 w-4" data-testid="delete-icon" />
                 </button>
