@@ -1,4 +1,10 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import {
+  cleanup,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App, { TimeEntry } from "../App";
@@ -17,7 +23,7 @@ import {
   stopTime2,
 } from "./App_test_helpers";
 
-// TODO: rewrite this and the next test to match "realness" of the third test
+// TODO: rewrite this and the next test to match "realness" of the third test?
 it("persists start time when start button is clicked", async () => {
   const user = userEvent.setup();
 
@@ -183,5 +189,82 @@ it("persists time entries across page reload", async () => {
 
     expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
     expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
+  });
+});
+
+// TODO: Test this with multiple time entries as well?
+it("persists deletion of time entry across page reload", async () => {
+  const user = userEvent.setup();
+
+  const getCurrentTime = vi.fn(() => startTime1);
+
+  let persistedTimeEntries: TimeEntry[] = [];
+  const persistTimeEntries = (timeEntries: TimeEntry[]) => {
+    persistedTimeEntries = timeEntries;
+    return Promise.resolve();
+  };
+  const retrieveTimeEntries = () => Promise.resolve(persistedTimeEntries);
+
+  render(
+    <App
+      getCurrentTime={getCurrentTime}
+      persistStartTime={vi.fn()}
+      // TODO: Had `vi.fn()` here. Why was debugging that so hard?
+      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
+      removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries,
+        retrieveTimeEntries,
+      }}
+    />,
+  );
+
+  await user.click(getStartButtonOrThrow());
+
+  getCurrentTime.mockReturnValueOnce(stopTime1);
+
+  await user.click(getStopButtonOrThrow());
+
+  getCurrentTime.mockReturnValueOnce(startTime2);
+
+  await user.click(getStartButtonOrThrow());
+
+  getCurrentTime.mockReturnValueOnce(stopTime2);
+
+  await user.click(getStopButtonOrThrow());
+
+  // TODO: Test that is in document despite other test covering that?
+  const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
+  const deleteButtonForSecondTimeEntry =
+    within(secondTimeEntry).getByTestId("delete-icon");
+
+  await user.click(deleteButtonForSecondTimeEntry);
+
+  cleanup();
+
+  render(
+    <App
+      getCurrentTime={getCurrentTime}
+      persistStartTime={vi.fn()}
+      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
+      removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries,
+        retrieveTimeEntries,
+      }}
+    />,
+  );
+
+  // TODO: Okay to use `waitFor` here for batching assertions?
+  await waitFor(() => {
+    expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+
+    expect(
+      screen.queryByText(formattedStartTime2Matcher),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(formattedStopTime2Matcher),
+    ).not.toBeInTheDocument();
   });
 });

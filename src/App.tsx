@@ -57,6 +57,7 @@ function App({
     loadPersistedTimeEntries();
   }, [retrieveTimeEntries]);
 
+  // TODO: Split this function up?
   async function handleStartStopButtonClick() {
     const currentTime = getCurrentTime();
 
@@ -78,10 +79,13 @@ function App({
     }
   }
 
-  function handleDeleteButtonClick({ id }: TimeEntry) {
-    setCompleteTimeEntries(
-      completeTimeEntries.filter(({ id: currentId }) => id !== currentId),
+  async function handleDeleteButtonClick({ id }: TimeEntry) {
+    const newTimeEntries = completeTimeEntries.filter(
+      ({ id: currentId }) => id !== currentId,
     );
+
+    setCompleteTimeEntries(newTimeEntries);
+    await persistTimeEntries(newTimeEntries);
   }
 
   return (
