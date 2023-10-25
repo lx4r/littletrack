@@ -101,9 +101,9 @@ function App({
             className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
           >
             {isTimerRunning ? (
-              <StopIcon className="h-6 w-6" data-testid="stop-icon" />
+              <StopIcon className="h-8 w-8" data-testid="stop-icon" />
             ) : (
-              <PlayIcon className="h-6 w-6" data-testid="start-icon" />
+              <PlayIcon className="h-8 w-8" data-testid="start-icon" />
             )}
           </button>
           {startTime && formatTime(startTime)}
