@@ -2,17 +2,24 @@ import { PlayIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { formatTime } from "./time_formatting";
 
-interface TimeEntry {
+// TODO: Move this type somewhere else?
+export interface TimeEntry {
   id: string;
   startTime: Date;
   stopTime: Date;
 }
 
+// TODO: Lower number of props by directly importing dependencies or using context?
 interface Props {
   getCurrentTime: () => Date;
   persistStartTime: (startTime: Date) => Promise<void>;
   retrievePersistedStartTime: () => Promise<Date | null>;
   removePersistedStartTime: () => Promise<void>;
+  manageTimeEntries: {
+    persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
+    // TODO: Return null instead of empty array?
+    retrieveTimeEntries: () => Promise<TimeEntry[]>;
+  };
 }
 
 function App({
@@ -20,6 +27,7 @@ function App({
   persistStartTime,
   retrievePersistedStartTime,
   removePersistedStartTime,
+  manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
 }: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     [],
@@ -39,17 +47,29 @@ function App({
     loadPersistedStartTime();
   }, [retrievePersistedStartTime]);
 
+  useEffect(() => {
+    async function loadPersistedTimeEntries() {
+      const persistedTimeEntries = await retrieveTimeEntries();
+
+      setCompleteTimeEntries(persistedTimeEntries);
+    }
+
+    loadPersistedTimeEntries();
+  }, [retrieveTimeEntries]);
+
   async function handleStartStopButtonClick() {
     const currentTime = getCurrentTime();
 
     if (isTimerRunning) {
-      setCompleteTimeEntries([
+      const newTimeEntries = [
         { id: crypto.randomUUID(), startTime, stopTime: currentTime },
         ...completeTimeEntries,
-      ]);
+      ];
+
+      setCompleteTimeEntries(newTimeEntries);
+      await persistTimeEntries(newTimeEntries);
 
       setStartTime(null);
-
       await removePersistedStartTime();
     } else {
       setStartTime(currentTime);

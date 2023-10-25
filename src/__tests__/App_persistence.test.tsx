@@ -1,17 +1,23 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
-import App from "../App";
+import App, { TimeEntry } from "../App";
 import {
   formattedStartTime1Matcher,
+  formattedStartTime2Matcher,
+  formattedStopTime1Matcher,
+  formattedStopTime2Matcher,
   getStartButtonIfExists,
   getStartButtonOrThrow,
   getStopButtonIfExists,
   getStopButtonOrThrow,
   startTime1,
+  startTime2,
   stopTime1,
+  stopTime2,
 } from "./App_test_helpers";
 
+// TODO: rewrite this and the next test to match "realness" of the third test
 it("persists start time when start button is clicked", async () => {
   const user = userEvent.setup();
 
@@ -24,6 +30,10 @@ it("persists start time when start button is clicked", async () => {
       persistStartTime={persistStartTime}
       retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
       removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
@@ -41,6 +51,10 @@ it("uses persisted start time if there is one and shows stop button", async () =
       persistStartTime={vi.fn()}
       retrievePersistedStartTime={retrievePersistedStartTime}
       removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
@@ -72,6 +86,10 @@ it("doesn't have a running time entry after stopping another and reloading the a
       persistStartTime={persistStartTime}
       retrievePersistedStartTime={retrievePersistedStartTime}
       removePersistedStartTime={removePersistedStartTime}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
@@ -89,6 +107,10 @@ it("doesn't have a running time entry after stopping another and reloading the a
       persistStartTime={persistStartTime}
       retrievePersistedStartTime={retrievePersistedStartTime}
       removePersistedStartTime={removePersistedStartTime}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
@@ -97,4 +119,69 @@ it("doesn't have a running time entry after stopping another and reloading the a
   expect(
     screen.queryByText(formattedStartTime1Matcher),
   ).not.toBeInTheDocument();
+});
+
+it("persists time entries across page reload", async () => {
+  const user = userEvent.setup();
+
+  const getCurrentTime = vi.fn(() => startTime1);
+
+  let persistedTimeEntries: TimeEntry[] = [];
+  const persistTimeEntries = (timeEntries: TimeEntry[]) => {
+    persistedTimeEntries = timeEntries;
+    return Promise.resolve();
+  };
+  const retrieveTimeEntries = () => Promise.resolve(persistedTimeEntries);
+
+  render(
+    <App
+      getCurrentTime={getCurrentTime}
+      persistStartTime={vi.fn()}
+      // TODO: Had `vi.fn()` here. Why was debugging that so hard?
+      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
+      removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries,
+        retrieveTimeEntries,
+      }}
+    />,
+  );
+
+  await user.click(getStartButtonOrThrow());
+
+  getCurrentTime.mockReturnValueOnce(stopTime1);
+
+  await user.click(getStopButtonOrThrow());
+
+  getCurrentTime.mockReturnValueOnce(startTime2);
+
+  await user.click(getStartButtonOrThrow());
+
+  getCurrentTime.mockReturnValueOnce(stopTime2);
+
+  await user.click(getStopButtonOrThrow());
+
+  cleanup();
+
+  render(
+    <App
+      getCurrentTime={getCurrentTime}
+      persistStartTime={vi.fn()}
+      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
+      removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries,
+        retrieveTimeEntries,
+      }}
+    />,
+  );
+
+  // TODO: Do these assertions separately instead of putting them in one `waitFor`?
+  await waitFor(() => {
+    expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+
+    expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
+  });
 });

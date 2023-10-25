@@ -1,10 +1,11 @@
 import localForage from "localforage";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
+import App, { TimeEntry } from "./App.tsx";
 import "./index.css";
 
 const LOCAL_FORAGE_KEY_START_TIME = "startTime";
+const LOCAL_FORAGE_KEY_TIME_ENTRIES = "timeEntries";
 
 // TODO: Move these functions somewhere else?
 
@@ -16,13 +17,13 @@ function getCurrentTime() {
 async function persistStartTime(startTime: Date) {
   await localForage.setItem(
     LOCAL_FORAGE_KEY_START_TIME,
-    startTime.toISOString()
+    startTime.toISOString(),
   );
 }
 
 async function retrievePersistedStartTime() {
   const startTime = await localForage.getItem<string>(
-    LOCAL_FORAGE_KEY_START_TIME
+    LOCAL_FORAGE_KEY_START_TIME,
   );
 
   if (startTime === null) {
@@ -36,6 +37,22 @@ async function removePersistedStartTime() {
   await localForage.removeItem(LOCAL_FORAGE_KEY_START_TIME);
 }
 
+async function persistTimeEntries(timeEntries: TimeEntry[]) {
+  await localForage.setItem(LOCAL_FORAGE_KEY_TIME_ENTRIES, timeEntries);
+}
+
+async function retrieveTimeEntries() {
+  const timeEntries = await localForage.getItem<TimeEntry[]>(
+    LOCAL_FORAGE_KEY_TIME_ENTRIES,
+  );
+
+  if (timeEntries === null) {
+    return [];
+  }
+
+  return timeEntries;
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App
@@ -43,6 +60,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       persistStartTime={persistStartTime}
       retrievePersistedStartTime={retrievePersistedStartTime}
       removePersistedStartTime={removePersistedStartTime}
+      manageTimeEntries={{ persistTimeEntries, retrieveTimeEntries }}
     />
-  </React.StrictMode>
+  </React.StrictMode>,
 );

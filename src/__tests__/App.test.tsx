@@ -28,6 +28,10 @@ it("can log multiple time entries", async () => {
       persistStartTime={vi.fn()}
       retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
       removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
@@ -89,6 +93,10 @@ it("can delete a time entry if there is just one", async () => {
       persistStartTime={vi.fn()}
       retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
       removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
@@ -120,6 +128,10 @@ it("can delete a time entry if there are multiple", async () => {
       persistStartTime={vi.fn()}
       retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
       removePersistedStartTime={vi.fn()}
+      manageTimeEntries={{
+        persistTimeEntries: vi.fn(),
+        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+      }}
     />,
   );
 
