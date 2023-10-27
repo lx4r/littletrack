@@ -120,9 +120,9 @@ function App({
               {timeEntry.stopTime && (
                 <button
                   onClick={() => handleDeleteButtonClick(timeEntry)}
-                  className="rounded-full bg-neutral-500 p-2 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+                  className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
                 >
-                  <XMarkIcon className="h-4 w-4" data-testid="delete-icon" />
+                  <XMarkIcon className="h-5 w-5" data-testid="delete-icon" />
                 </button>
               )}
             </li>
