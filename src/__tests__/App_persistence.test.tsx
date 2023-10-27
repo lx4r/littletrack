@@ -143,7 +143,6 @@ it("persists time entries across page reload", async () => {
     <App
       getCurrentTime={getCurrentTime}
       persistStartTime={vi.fn()}
-      // TODO: Had `vi.fn()` here. Why was debugging that so hard?
       retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
       removePersistedStartTime={vi.fn()}
       manageTimeEntries={{
@@ -182,7 +181,6 @@ it("persists time entries across page reload", async () => {
     />,
   );
 
-  // TODO: Do these assertions separately instead of putting them in one `waitFor`?
   await waitFor(() => {
     expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
     expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
@@ -192,7 +190,6 @@ it("persists time entries across page reload", async () => {
   });
 });
 
-// TODO: Test this with multiple time entries as well?
 it("persists deletion of time entry across page reload", async () => {
   const user = userEvent.setup();
 
@@ -209,7 +206,6 @@ it("persists deletion of time entry across page reload", async () => {
     <App
       getCurrentTime={getCurrentTime}
       persistStartTime={vi.fn()}
-      // TODO: Had `vi.fn()` here. Why was debugging that so hard?
       retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
       removePersistedStartTime={vi.fn()}
       manageTimeEntries={{
@@ -233,7 +229,6 @@ it("persists deletion of time entry across page reload", async () => {
 
   await user.click(getStopButtonOrThrow());
 
-  // TODO: Test that is in document despite other test covering that?
   const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
   const deleteButtonForSecondTimeEntry =
     within(secondTimeEntry).getByTestId("delete-icon");
@@ -255,7 +250,6 @@ it("persists deletion of time entry across page reload", async () => {
     />,
   );
 
-  // TODO: Okay to use `waitFor` here for batching assertions?
   await waitFor(() => {
     expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
     expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();

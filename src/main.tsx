@@ -46,6 +46,7 @@ async function retrieveTimeEntries() {
     LOCAL_FORAGE_KEY_TIME_ENTRIES,
   );
 
+  // TODO: return null here
   if (timeEntries === null) {
     return [];
   }

@@ -9,7 +9,6 @@ export interface TimeEntry {
   stopTime: Date;
 }
 
-// TODO: Lower number of props by directly importing dependencies or using context?
 interface Props {
   getCurrentTime: () => Date;
   persistStartTime: (startTime: Date) => Promise<void>;
@@ -17,7 +16,6 @@ interface Props {
   removePersistedStartTime: () => Promise<void>;
   manageTimeEntries: {
     persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
-    // TODO: Return null instead of empty array?
     retrieveTimeEntries: () => Promise<TimeEntry[]>;
   };
 }
