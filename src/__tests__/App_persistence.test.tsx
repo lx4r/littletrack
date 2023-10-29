@@ -8,19 +8,20 @@ import {
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App, { TimeEntry } from "../App";
+import { formatAsIsoDateTime } from "../time_formatting";
 import {
-  formattedStartTime1Matcher,
-  formattedStartTime2Matcher,
-  formattedStopTime1Matcher,
-  formattedStopTime2Matcher,
   getStartButtonIfExists,
   getStartButtonOrThrow,
   getStopButtonIfExists,
   getStopButtonOrThrow,
   startTime1,
+  startTime1TimeOfDayMatcher,
   startTime2,
+  startTime2TimeOfDayMatcher,
   stopTime1,
+  stopTime1TimeOfDayMatcher,
   stopTime2,
+  stopTime2TimeOfDayMatcher,
 } from "./App_test_helpers";
 
 // TODO: rewrite this and the next test to match "realness" of the third test?
@@ -65,7 +66,7 @@ it("uses persisted start time if there is one and shows stop button", async () =
   );
 
   expect(
-    await screen.findByText(formattedStartTime1Matcher),
+    await screen.findByText(formatAsIsoDateTime(startTime1)),
   ).toBeInTheDocument();
   expect(getStopButtonIfExists()).toBeInTheDocument();
 });
@@ -123,7 +124,7 @@ it("doesn't have a running time entry after stopping another and reloading the a
   expect(getStopButtonIfExists()).not.toBeInTheDocument();
   expect(getStartButtonIfExists()).toBeInTheDocument();
   expect(
-    screen.queryByText(formattedStartTime1Matcher),
+    screen.queryByText(formatAsIsoDateTime(startTime1)),
   ).not.toBeInTheDocument();
 });
 
@@ -182,11 +183,11 @@ it("persists time entries across page reload", async () => {
   );
 
   await waitFor(() => {
-    expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-    expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+    expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
-    expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
-    expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(startTime2TimeOfDayMatcher)).toBeInTheDocument();
+    expect(screen.queryByText(stopTime2TimeOfDayMatcher)).toBeInTheDocument();
   });
 });
 
@@ -229,7 +230,7 @@ it("persists deletion of time entry across page reload", async () => {
 
   await user.click(getStopButtonOrThrow());
 
-  const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
+  const secondTimeEntry = screen.getByText(startTime2TimeOfDayMatcher);
   const deleteButtonForSecondTimeEntry =
     within(secondTimeEntry).getByTestId("delete-icon");
 
@@ -251,14 +252,14 @@ it("persists deletion of time entry across page reload", async () => {
   );
 
   await waitFor(() => {
-    expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-    expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+    expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+    expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
     expect(
-      screen.queryByText(formattedStartTime2Matcher),
+      screen.queryByText(startTime2TimeOfDayMatcher),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(formattedStopTime2Matcher),
+      screen.queryByText(stopTime2TimeOfDayMatcher),
     ).not.toBeInTheDocument();
   });
 });

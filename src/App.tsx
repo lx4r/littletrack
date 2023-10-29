@@ -1,6 +1,10 @@
 import { PlayIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useMemo, useState } from "react";
-import { formatAsIsoDateTime, getIsoDate } from "./time_formatting";
+import {
+  formatAsIsoDate,
+  formatAsIsoDateTime,
+  formatAsIsoTimeOfDayWithoutSeconds,
+} from "./time_formatting";
 
 // TODO: Move this type somewhere else?
 export interface TimeEntry {
@@ -67,7 +71,7 @@ function App({
   ): { isoDate: string; timeEntries: TimeEntry[] }[] {
     return timeEntries.reduce(
       (groupedTimeEntries, timeEntry) => {
-        const isoDate = getIsoDate(timeEntry.startTime);
+        const isoDate = formatAsIsoDate(timeEntry.startTime);
 
         const group = groupedTimeEntries.find(
           ({ isoDate: currentIsoDate }) => isoDate === currentIsoDate,
@@ -139,16 +143,18 @@ function App({
         {/* TODO: Use different element here? */}
         {timeEntriesGroupedByDate.map(({ isoDate, timeEntries }) => (
           <section key={isoDate} className="mb-4">
-            <h2 className="mb-2 text-lg font-bold">{isoDate}</h2>
+            <h2 className="mb-2 text-lg">{isoDate}</h2>
             <ul>
               {timeEntries.map((timeEntry) => (
                 <li
                   key={timeEntry.id}
                   className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
                 >
-                  {`${formatAsIsoDateTime(
+                  {`${formatAsIsoTimeOfDayWithoutSeconds(
                     timeEntry.startTime,
-                  )} - ${formatAsIsoDateTime(timeEntry.stopTime)}`}
+                  )} - ${formatAsIsoTimeOfDayWithoutSeconds(
+                    timeEntry.stopTime,
+                  )}`}
                   <button
                     onClick={() => handleDeleteButtonClick(timeEntry)}
                     className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"

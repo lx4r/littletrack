@@ -3,19 +3,21 @@ import { userEvent } from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
 import {
-  formattedStartTime1Matcher,
-  formattedStartTime2Matcher,
-  formattedStopTime1Matcher,
-  formattedStopTime2Matcher,
   getStartButtonIfExists,
   getStartButtonOrThrow,
   getStopButtonIfExists,
   getStopButtonOrThrow,
   startTime1,
+  startTime1TimeOfDayMatcher,
   startTime2,
+  startTime2TimeOfDayMatcher,
   stopTime1,
+  stopTime1TimeOfDayMatcher,
   stopTime2,
+  stopTime2TimeOfDayMatcher,
 } from "./App_test_helpers";
+
+// TODO: Add test for start time being displayed in proper format
 
 // TODO: Check order of time entries?
 it("can log multiple time entries", async () => {
@@ -40,17 +42,17 @@ it("can log multiple time entries", async () => {
   expect(getStopButtonIfExists()).not.toBeInTheDocument();
 
   expect(
-    screen.queryByText(formattedStartTime1Matcher),
+    screen.queryByText(startTime1TimeOfDayMatcher),
   ).not.toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime1Matcher)).not.toBeInTheDocument();
+  expect(screen.queryByText(stopTime1TimeOfDayMatcher)).not.toBeInTheDocument();
 
   await user.click(getStartButtonOrThrow());
 
   expect(getStartButtonIfExists()).not.toBeInTheDocument();
   expect(getStopButtonIfExists()).toBeInTheDocument();
 
-  expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime1Matcher)).not.toBeInTheDocument();
+  expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime1TimeOfDayMatcher)).not.toBeInTheDocument();
 
   getCurrentTime.mockReturnValueOnce(stopTime1);
 
@@ -59,28 +61,28 @@ it("can log multiple time entries", async () => {
   expect(getStartButtonIfExists()).toBeInTheDocument();
   expect(getStopButtonIfExists()).not.toBeInTheDocument();
 
-  expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+  expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
   getCurrentTime.mockReturnValueOnce(startTime2);
 
   await user.click(getStartButtonOrThrow());
 
-  expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+  expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
-  expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime2Matcher)).not.toBeInTheDocument();
+  expect(screen.queryByText(startTime2TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime2TimeOfDayMatcher)).not.toBeInTheDocument();
 
   getCurrentTime.mockReturnValueOnce(stopTime2);
 
   await user.click(getStopButtonOrThrow());
 
-  expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+  expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
-  expect(screen.queryByText(formattedStartTime2Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime2Matcher)).toBeInTheDocument();
+  expect(screen.queryByText(startTime2TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime2TimeOfDayMatcher)).toBeInTheDocument();
 });
 
 it("can delete a time entry if there is just one", async () => {
@@ -114,7 +116,7 @@ it("can delete a time entry if there is just one", async () => {
   await user.click(deleteButton);
 
   expect(
-    screen.queryByText(formattedStartTime1Matcher),
+    screen.queryByText(startTime1TimeOfDayMatcher),
   ).not.toBeInTheDocument();
 });
 
@@ -150,7 +152,7 @@ it("can delete a time entry if there are multiple", async () => {
 
   await user.click(getStopButtonOrThrow());
 
-  const secondTimeEntry = screen.getByText(formattedStartTime2Matcher);
+  const secondTimeEntry = screen.getByText(startTime2TimeOfDayMatcher);
 
   expect(secondTimeEntry).toBeInTheDocument();
 
@@ -161,11 +163,11 @@ it("can delete a time entry if there are multiple", async () => {
 
   await user.click(deleteButtonForSecondTimeEntry);
 
-  expect(screen.queryByText(formattedStartTime1Matcher)).toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime1Matcher)).toBeInTheDocument();
+  expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+  expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
   expect(
-    screen.queryByText(formattedStartTime2Matcher),
+    screen.queryByText(startTime2TimeOfDayMatcher),
   ).not.toBeInTheDocument();
-  expect(screen.queryByText(formattedStopTime2Matcher)).not.toBeInTheDocument();
+  expect(screen.queryByText(stopTime2TimeOfDayMatcher)).not.toBeInTheDocument();
 });

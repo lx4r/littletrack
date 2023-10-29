@@ -2,14 +2,17 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
-import { formatAsIsoDateTime, getIsoDate } from "../time_formatting";
 import {
-  formattedStartTime1Matcher,
-  formattedStartTime2Matcher,
+  formatAsIsoDate,
+  formatAsIsoTimeOfDayWithoutSeconds,
+} from "../time_formatting";
+import {
   getStartButtonOrThrow,
   getStopButtonOrThrow,
   startTime1,
+  startTime1TimeOfDayMatcher,
   startTime2,
+  startTime2TimeOfDayMatcher,
   stopTime1,
   stopTime2,
 } from "./App_test_helpers";
@@ -20,13 +23,13 @@ it("groups time entries by date", async () => {
   const startTime3 = new Date(startTime2);
   startTime3.setHours(startTime2.getHours() + 1);
   const formattedStartTime3Matcher = new RegExp(
-    formatAsIsoDateTime(startTime3),
+    formatAsIsoTimeOfDayWithoutSeconds(startTime3),
   );
   const stopTime3 = new Date(startTime3);
   stopTime3.setMinutes(startTime3.getMinutes() + 1);
 
-  const isoDateForTimeEntry1 = getIsoDate(startTime1);
-  const isoDateForTimeEntries2And3 = getIsoDate(startTime2);
+  const isoDateForTimeEntry1 = formatAsIsoDate(startTime1);
+  const isoDateForTimeEntries2And3 = formatAsIsoDate(startTime2);
 
   const getCurrentTime = vi.fn(() => startTime1);
 
@@ -64,10 +67,10 @@ it("groups time entries by date", async () => {
   expect(timeEntryGroup1).toBeInTheDocument();
 
   expect(
-    within(timeEntryGroup1!).queryByText(formattedStartTime1Matcher),
+    within(timeEntryGroup1!).queryByText(startTime1TimeOfDayMatcher),
   ).toBeInTheDocument();
   expect(
-    within(timeEntryGroup1!).queryByText(formattedStartTime2Matcher),
+    within(timeEntryGroup1!).queryByText(startTime2TimeOfDayMatcher),
   ).not.toBeInTheDocument();
   expect(
     within(timeEntryGroup1!).queryByText(formattedStartTime3Matcher),
@@ -80,10 +83,10 @@ it("groups time entries by date", async () => {
   expect(timeEntryGroup2).toBeInTheDocument();
 
   expect(
-    within(timeEntryGroup2!).queryByText(formattedStartTime1Matcher),
+    within(timeEntryGroup2!).queryByText(startTime1TimeOfDayMatcher),
   ).not.toBeInTheDocument();
   expect(
-    within(timeEntryGroup2!).queryByText(formattedStartTime2Matcher),
+    within(timeEntryGroup2!).queryByText(startTime2TimeOfDayMatcher),
   ).toBeInTheDocument();
   expect(
     within(timeEntryGroup2!).queryByText(formattedStartTime3Matcher),

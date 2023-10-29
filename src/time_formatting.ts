@@ -1,8 +1,24 @@
-export function formatAsIsoDateTime(date: Date) {
-  // "sv" stands for Sweden which uses the time format YYYY-MM-DD HH:MM we want.
-  return date.toLocaleString("sv", { dateStyle: "short", timeStyle: "short" });
+function formatAsIsoDateParts(date: Date) {
+  const [isoDate, isoTime] = date.toISOString().split("T");
+  const isoTimeOfDayWithoutSeconds = isoTime.slice(0, 5);
+
+  return { isoDate, isoTimeOfDayWithoutSeconds };
 }
 
-export function getIsoDate(date: Date) {
-  return date.toISOString().split("T")[0];
+export function formatAsIsoTimeOfDayWithoutSeconds(date: Date) {
+  const { isoTimeOfDayWithoutSeconds } = formatAsIsoDateParts(date);
+
+  return isoTimeOfDayWithoutSeconds;
+}
+
+export function formatAsIsoDate(date: Date) {
+  const { isoDate } = formatAsIsoDateParts(date);
+
+  return isoDate;
+}
+
+export function formatAsIsoDateTime(date: Date) {
+  const { isoDate, isoTimeOfDayWithoutSeconds } = formatAsIsoDateParts(date);
+
+  return `${isoDate} ${isoTimeOfDayWithoutSeconds}`;
 }

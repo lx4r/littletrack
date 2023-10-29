@@ -1,5 +1,5 @@
 import { screen } from "@testing-library/react";
-import { formatAsIsoDateTime } from "../time_formatting";
+import { formatAsIsoTimeOfDayWithoutSeconds } from "../time_formatting";
 
 export function getStartButtonIfExists() {
   return screen.queryByTestId("start-icon");
@@ -17,20 +17,20 @@ export function getStopButtonOrThrow() {
   return screen.getByTestId("stop-icon");
 }
 
-export const startTime1 = new Date("2023-10-06T07:26:16.932Z");
-export const formattedStartTime1Matcher = new RegExp(
-  formatAsIsoDateTime(startTime1),
+export const startTime1 = new Date("2023-01-01T01:01:01.000Z");
+export const startTime1TimeOfDayMatcher = new RegExp(
+  formatAsIsoTimeOfDayWithoutSeconds(startTime1),
 );
-export const stopTime1 = new Date("2023-10-06T12:34:56.456Z");
-export const formattedStopTime1Matcher = new RegExp(
-  formatAsIsoDateTime(stopTime1),
+export const stopTime1 = new Date("2023-01-01T02:02:02.000Z");
+export const stopTime1TimeOfDayMatcher = new RegExp(
+  formatAsIsoTimeOfDayWithoutSeconds(stopTime1),
 );
 
-export const startTime2 = new Date("2023-01-02T08:45:12.432Z");
-export const formattedStartTime2Matcher = new RegExp(
-  formatAsIsoDateTime(startTime2),
+export const startTime2 = new Date("2023-01-02T03:03:03.000Z");
+export const startTime2TimeOfDayMatcher = new RegExp(
+  formatAsIsoTimeOfDayWithoutSeconds(startTime2),
 );
-export const stopTime2 = new Date("2023-01-03T05:02:34.7892Z");
-export const formattedStopTime2Matcher = new RegExp(
-  formatAsIsoDateTime(stopTime2),
+export const stopTime2 = new Date("2023-01-03T04:04:04.000Z");
+export const stopTime2TimeOfDayMatcher = new RegExp(
+  formatAsIsoTimeOfDayWithoutSeconds(stopTime2),
 );
