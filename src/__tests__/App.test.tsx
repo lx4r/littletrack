@@ -17,6 +17,7 @@ import {
   stopTime2,
 } from "./App_test_helpers";
 
+// TODO: Check order of time entries?
 it("can log multiple time entries", async () => {
   const user = userEvent.setup();
 

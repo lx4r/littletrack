@@ -1,6 +1,6 @@
 import { PlayIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
-import { formatTime } from "./time_formatting";
+import { useEffect, useMemo, useState } from "react";
+import { formatAsIsoDateTime, getIsoDate } from "./time_formatting";
 
 // TODO: Move this type somewhere else?
 export interface TimeEntry {
@@ -30,7 +30,14 @@ function App({
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     [],
   );
+
+  const timeEntriesGroupedByDate = useMemo(
+    () => groupTimeEntriesByDate(completeTimeEntries),
+    [completeTimeEntries],
+  );
+
   const [startTime, setStartTime] = useState<Date | null>(null);
+
   const isTimerRunning = startTime !== null;
 
   useEffect(() => {
@@ -54,6 +61,29 @@ function App({
 
     loadPersistedTimeEntries();
   }, [retrieveTimeEntries]);
+
+  function groupTimeEntriesByDate(
+    timeEntries: TimeEntry[],
+  ): { isoDate: string; timeEntries: TimeEntry[] }[] {
+    return timeEntries.reduce(
+      (groupedTimeEntries, timeEntry) => {
+        const isoDate = getIsoDate(timeEntry.startTime);
+
+        const group = groupedTimeEntries.find(
+          ({ isoDate: currentIsoDate }) => isoDate === currentIsoDate,
+        );
+
+        if (group) {
+          group.timeEntries.push(timeEntry);
+        } else {
+          groupedTimeEntries.push({ isoDate, timeEntries: [timeEntry] });
+        }
+
+        return groupedTimeEntries;
+      },
+      [] as { isoDate: string; timeEntries: TimeEntry[] }[],
+    );
+  }
 
   // TODO: Split this function up?
   async function handleStartStopButtonClick() {
@@ -104,28 +134,32 @@ function App({
               <PlayIcon className="h-8 w-8" data-testid="start-icon" />
             )}
           </button>
-          {startTime && formatTime(startTime)}
+          {startTime && formatAsIsoDateTime(startTime)}
         </div>
         {/* TODO: Use different element here? */}
-        <ul>
-          {completeTimeEntries.map((timeEntry) => (
-            <li
-              key={timeEntry.id}
-              className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
-            >
-              {formatTime(timeEntry.startTime)} -{" "}
-              {timeEntry.stopTime ? formatTime(timeEntry.stopTime) : ""}{" "}
-              {timeEntry.stopTime && (
-                <button
-                  onClick={() => handleDeleteButtonClick(timeEntry)}
-                  className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+        {timeEntriesGroupedByDate.map(({ isoDate, timeEntries }) => (
+          <section key={isoDate} className="mb-4">
+            <h2 className="mb-2 text-lg font-bold">{isoDate}</h2>
+            <ul>
+              {timeEntries.map((timeEntry) => (
+                <li
+                  key={timeEntry.id}
+                  className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
                 >
-                  <XMarkIcon className="h-5 w-5" data-testid="delete-icon" />
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
+                  {`${formatAsIsoDateTime(
+                    timeEntry.startTime,
+                  )} - ${formatAsIsoDateTime(timeEntry.stopTime)}`}
+                  <button
+                    onClick={() => handleDeleteButtonClick(timeEntry)}
+                    className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+                  >
+                    <XMarkIcon className="h-5 w-5" data-testid="delete-icon" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
       </main>
     </div>
   );
