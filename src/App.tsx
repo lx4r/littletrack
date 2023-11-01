@@ -95,7 +95,7 @@ function App({
 
     if (isTimerRunning) {
       const newTimeEntries = [
-        { id: crypto.randomUUID(), startTime, stopTime: currentTime },
+        { id: self.crypto.randomUUID(), startTime, stopTime: currentTime },
         ...completeTimeEntries,
       ];
 
