@@ -1,4 +1,9 @@
-import { PlayIcon, StopIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import {
+  PlayIcon,
+  ShareIcon,
+  StopIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 import { useEffect, useMemo, useState } from "react";
 import {
   formatAsIsoDate,
@@ -22,6 +27,10 @@ interface Props {
     persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
     retrieveTimeEntries: () => Promise<TimeEntry[]>;
   };
+  shareTimeEntries: {
+    shareTimeEntry: (timeEntry: TimeEntry) => Promise<void>;
+    isSharingAvailable: boolean;
+  };
 }
 
 function App({
@@ -30,6 +39,7 @@ function App({
   retrievePersistedStartTime,
   removePersistedStartTime,
   manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
+  shareTimeEntries: { shareTimeEntry, isSharingAvailable },
 }: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     [],
@@ -111,6 +121,7 @@ function App({
     }
   }
 
+  // TODO: move this out of component?
   async function handleDeleteButtonClick({ id }: TimeEntry) {
     const newTimeEntries = completeTimeEntries.filter(
       ({ id: currentId }) => id !== currentId,
@@ -155,6 +166,16 @@ function App({
                   )} - ${formatAsIsoTimeOfDayWithoutSeconds(
                     timeEntry.stopTime,
                   )}`}
+                  {isSharingAvailable && (
+                    <button
+                      onClick={() => shareTimeEntry(timeEntry)}
+                      className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+                      // TODO: add label to delete button as well?
+                      aria-label="Share"
+                    >
+                      <ShareIcon className="h-5 w-5" />
+                    </button>
+                  )}
                   <button
                     onClick={() => handleDeleteButtonClick(timeEntry)}
                     className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"

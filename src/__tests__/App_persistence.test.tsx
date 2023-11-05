@@ -41,6 +41,7 @@ it("persists start time when start button is clicked", async () => {
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -62,6 +63,7 @@ it("uses persisted start time if there is one and shows stop button", async () =
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -97,6 +99,7 @@ it("doesn't have a running time entry after stopping another and reloading the a
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -118,6 +121,7 @@ it("doesn't have a running time entry after stopping another and reloading the a
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -150,6 +154,7 @@ it("persists time entries across page reload", async () => {
         persistTimeEntries,
         retrieveTimeEntries,
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -179,6 +184,7 @@ it("persists time entries across page reload", async () => {
         persistTimeEntries,
         retrieveTimeEntries,
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -213,6 +219,7 @@ it("persists deletion of time entry across page reload", async () => {
         persistTimeEntries,
         retrieveTimeEntries,
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -248,6 +255,7 @@ it("persists deletion of time entry across page reload", async () => {
         persistTimeEntries,
         retrieveTimeEntries,
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 

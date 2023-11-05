@@ -43,6 +43,7 @@ it("groups time entries by date", async () => {
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 

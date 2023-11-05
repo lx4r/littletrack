@@ -35,6 +35,7 @@ it("can log multiple time entries", async () => {
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -100,6 +101,7 @@ it("can delete a time entry if there is just one", async () => {
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -135,6 +137,7 @@ it("can delete a time entry if there are multiple", async () => {
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
       }}
+      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
