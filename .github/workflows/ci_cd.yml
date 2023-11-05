@@ -29,3 +29,6 @@ jobs:
 
       - name: Run tests
         run: pnpm test:run
+
+      - name: Build app
+        run: pnpm build
