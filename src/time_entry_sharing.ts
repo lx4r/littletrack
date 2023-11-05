@@ -1,6 +1,16 @@
 import { TimeEntry } from "./App";
 import { formatAsIsoDateTime } from "./time_formatting";
-import { shareMessage } from "./web_share_api";
+
+function shareMessageViaWebShareApi(title: string, text: string) {
+  if (!navigator.share) {
+    throw new Error("Web Share API not supported");
+  }
+
+  return navigator.share({
+    title,
+    text,
+  });
+}
 
 export async function shareTimeEntry(timeEntry: TimeEntry) {
   const shareTitle = "Time Entry";
@@ -8,5 +18,9 @@ export async function shareTimeEntry(timeEntry: TimeEntry) {
     timeEntry.startTime,
   )}\nStop time: ${formatAsIsoDateTime(timeEntry.stopTime)}`;
 
-  await shareMessage(shareTitle, shareText);
+  await shareMessageViaWebShareApi(shareTitle, shareText);
+}
+
+export function isWebShareApiAvailable() {
+  return Boolean(navigator.share);
 }

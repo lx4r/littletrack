@@ -4,7 +4,6 @@ import { expect, it, vi } from "vitest";
 import App from "../App";
 import { shareTimeEntry } from "../time_entry_sharing";
 import { formatAsIsoDateTime } from "../time_formatting";
-import * as webShareApi from "../web_share_api";
 import {
   startTime1,
   startTime1TimeOfDayMatcher,
@@ -31,11 +30,11 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
   };
   const timeEntries = [timeEntry2, timeEntry1];
 
-  // TODO: Mock on global level instead here?
   // TODO: Also mock localforage in persistence test in a similar way?
-  const shareMessageSpy = vi
-    .spyOn(webShareApi, "shareMessage")
-    .mockImplementation(() => Promise.resolve());
+  const mockedWebShareApiShare = vi.fn(() => Promise.resolve());
+  vi.stubGlobal("navigator", {
+    share: mockedWebShareApiShare,
+  });
 
   render(
     <App
@@ -65,11 +64,20 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 
   await user.click(timeEntry1ShareButton);
 
-  expect(shareMessageSpy).toHaveBeenCalledTimes(1);
-  const [sharedTitle1, sharedText1] = shareMessageSpy.mock.calls[0];
-  expect(sharedTitle1).toMatch(/time entry/i);
-  expect(sharedText1).toMatch(new RegExp(formatAsIsoDateTime(startTime1)));
-  expect(sharedText1).toMatch(new RegExp(formatAsIsoDateTime(stopTime1)));
+  expect(mockedWebShareApiShare).toHaveBeenCalledTimes(1);
+  expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
+    expect.objectContaining({
+      title: expect.stringMatching(/time entry/i),
+      text: expect.stringMatching(
+        new RegExp(
+          `${formatAsIsoDateTime(startTime1)}.+${formatAsIsoDateTime(
+            stopTime1,
+          )}`,
+          "s",
+        ),
+      ),
+    }),
+  );
 
   const timeEntry2Row = screen.getByText(startTime2TimeOfDayMatcher);
   const timeEntry2ShareButton = within(timeEntry2Row).getByLabelText(/share/i);
@@ -78,11 +86,20 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 
   await user.click(timeEntry2ShareButton);
 
-  expect(shareMessageSpy).toHaveBeenCalledTimes(2);
-  const [sharedTitle2, sharedText2] = shareMessageSpy.mock.calls[1];
-  expect(sharedTitle2).toMatch(/time entry/i);
-  expect(sharedText2).toMatch(new RegExp(formatAsIsoDateTime(startTime2)));
-  expect(sharedText2).toMatch(new RegExp(formatAsIsoDateTime(stopTime2)));
+  expect(mockedWebShareApiShare).toHaveBeenCalledTimes(2);
+  expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
+    expect.objectContaining({
+      title: expect.stringMatching(/time entry/i),
+      text: expect.stringMatching(
+        new RegExp(
+          `${formatAsIsoDateTime(startTime2)}.+${formatAsIsoDateTime(
+            stopTime2,
+          )}`,
+          "s",
+        ),
+      ),
+    }),
+  );
 });
 
 it("doesn't show sharing button is Web Share API is not available", async () => {
