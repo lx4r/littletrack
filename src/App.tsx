@@ -166,22 +166,27 @@ function App({
                   )} - ${formatAsIsoTimeOfDayWithoutSeconds(
                     timeEntry.stopTime,
                   )}`}
-                  {isSharingAvailable && (
+                  <div>
+                    {isSharingAvailable && (
+                      <button
+                        onClick={() => shareTimeEntry(timeEntry)}
+                        className="mr-2 rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+                        // TODO: add label to delete button as well?
+                        aria-label="Share"
+                      >
+                        <ShareIcon className="h-5 w-5" />
+                      </button>
+                    )}
                     <button
-                      onClick={() => shareTimeEntry(timeEntry)}
+                      onClick={() => handleDeleteButtonClick(timeEntry)}
                       className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-                      // TODO: add label to delete button as well?
-                      aria-label="Share"
                     >
-                      <ShareIcon className="h-5 w-5" />
+                      <XMarkIcon
+                        className="h-5 w-5"
+                        data-testid="delete-icon"
+                      />
                     </button>
-                  )}
-                  <button
-                    onClick={() => handleDeleteButtonClick(timeEntry)}
-                    className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-                  >
-                    <XMarkIcon className="h-5 w-5" data-testid="delete-icon" />
-                  </button>
+                  </div>
                 </li>
               ))}
             </ul>
