@@ -3,8 +3,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App, { TimeEntry } from "./App.tsx";
 import "./index.css";
-import { shareTimeEntry } from "./time_entry_sharing.ts";
-import { isSharingAvailable } from "./web_share_api.ts";
+import {
+  isWebShareApiAvailable,
+  shareTimeEntry,
+} from "./time_entry_sharing.ts";
 
 const LOCAL_FORAGE_KEY_START_TIME = "startTime";
 const LOCAL_FORAGE_KEY_TIME_ENTRIES = "timeEntries";
@@ -66,7 +68,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       manageTimeEntries={{ persistTimeEntries, retrieveTimeEntries }}
       shareTimeEntries={{
         shareTimeEntry,
-        isSharingAvailable: isSharingAvailable(),
+        isSharingAvailable: isWebShareApiAvailable(),
       }}
     />
   </React.StrictMode>,
