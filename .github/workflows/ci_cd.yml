@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
@@ -32,3 +32,14 @@ jobs:
 
       - name: Build app
         run: pnpm build
+
+      - name: Deploy to Netlify
+        if: ${{ github.event_name == 'push' }}
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: dist
+          production-deploy: true
+          netlify-config-path: netlify.toml
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
