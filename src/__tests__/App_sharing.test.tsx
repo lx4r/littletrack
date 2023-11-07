@@ -2,9 +2,10 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
-import { shareTimeEntry } from "../time_entry_sharing";
+import { isWebShareApiAvailable, shareTimeEntry } from "../time_entry_sharing";
 import { formatAsIsoDateTime } from "../time_formatting";
 import {
+  DEFAULT_APP_PROPS,
   startTime1,
   startTime1TimeOfDayMatcher,
   startTime2,
@@ -15,8 +16,6 @@ import {
 
 it("allows for sharing a time entry if the Web Share API is available", async () => {
   const user = userEvent.setup();
-
-  const isSharingAvailable = true;
 
   const timeEntry1 = {
     id: "time-entry-1",
@@ -38,17 +37,14 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 
   render(
     <App
-      getCurrentTime={vi.fn()}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
+      {...DEFAULT_APP_PROPS}
+      shareTimeEntries={{
+        shareTimeEntry: shareTimeEntry,
+        isSharingAvailable: isWebShareApiAvailable(),
+      }}
       manageTimeEntries={{
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve(timeEntries)),
-      }}
-      shareTimeEntries={{
-        shareTimeEntry: shareTimeEntry,
-        isSharingAvailable,
       }}
     />,
   );
@@ -103,8 +99,6 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 });
 
 it("doesn't show sharing button is Web Share API is not available", async () => {
-  const isSharingAvailable = false;
-
   const timeEntry = {
     id: "time-entry-1",
     startTime: startTime1,
@@ -113,17 +107,14 @@ it("doesn't show sharing button is Web Share API is not available", async () => 
 
   render(
     <App
-      getCurrentTime={vi.fn()}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
+      {...DEFAULT_APP_PROPS}
       manageTimeEntries={{
         persistTimeEntries: vi.fn(),
         retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
       }}
       shareTimeEntries={{
-        shareTimeEntry: vi.fn(),
-        isSharingAvailable,
+        shareTimeEntry: shareTimeEntry,
+        isSharingAvailable: isWebShareApiAvailable(),
       }}
     />,
   );

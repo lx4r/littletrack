@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import { vi } from "vitest";
 import { formatAsIsoTimeOfDayWithoutSeconds } from "../time_formatting";
 
 export function getStartButtonIfExists() {
@@ -34,3 +35,18 @@ export const stopTime2 = new Date("2023-01-03T04:04:04.000Z");
 export const stopTime2TimeOfDayMatcher = new RegExp(
   formatAsIsoTimeOfDayWithoutSeconds(stopTime2),
 );
+
+export const DEFAULT_APP_PROPS = {
+  getCurrentTime: vi.fn(),
+  persistStartTime: vi.fn(),
+  retrievePersistedStartTime: vi.fn(() => Promise.resolve(null)),
+  removePersistedStartTime: vi.fn(),
+  manageTimeEntries: {
+    persistTimeEntries: vi.fn(),
+    retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+  },
+  shareTimeEntries: {
+    shareTimeEntry: vi.fn(),
+    isSharingAvailable: false,
+  },
+};

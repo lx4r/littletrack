@@ -18,13 +18,14 @@ export interface TimeEntry {
   stopTime: Date;
 }
 
-interface Props {
+export interface Props {
   getCurrentTime: () => Date;
   persistStartTime: (startTime: Date) => Promise<void>;
   retrievePersistedStartTime: () => Promise<Date | null>;
   removePersistedStartTime: () => Promise<void>;
   manageTimeEntries: {
     persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
+    // TODO: return null here if there are no time entries yet
     retrieveTimeEntries: () => Promise<TimeEntry[]>;
   };
   shareTimeEntries: {
