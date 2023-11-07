@@ -60,6 +60,7 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 
   await user.click(timeEntry1ShareButton);
 
+  // TODO: Split tests for sharing from tests for formatting?
   expect(mockedWebShareApiShare).toHaveBeenCalledTimes(1);
   expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
     expect.objectContaining({
