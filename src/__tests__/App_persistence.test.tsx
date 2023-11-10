@@ -8,13 +8,13 @@ import {
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App, { TimeEntry } from "../App";
-import { formatAsIsoDateTime } from "../time_formatting";
 import {
   getStartButtonIfExists,
   getStartButtonOrThrow,
   getStopButtonIfExists,
   getStopButtonOrThrow,
   startTime1,
+  startTime1IsoDateTime,
   startTime1TimeOfDayMatcher,
   startTime2,
   startTime2TimeOfDayMatcher,
@@ -67,9 +67,7 @@ it("uses persisted start time if there is one and shows stop button", async () =
     />,
   );
 
-  expect(
-    await screen.findByText(formatAsIsoDateTime(startTime1)),
-  ).toBeInTheDocument();
+  expect(await screen.findByText(startTime1IsoDateTime)).toBeInTheDocument();
   expect(getStopButtonIfExists()).toBeInTheDocument();
 });
 
@@ -127,9 +125,7 @@ it("doesn't have a running time entry after stopping another and reloading the a
 
   expect(getStopButtonIfExists()).not.toBeInTheDocument();
   expect(getStartButtonIfExists()).toBeInTheDocument();
-  expect(
-    screen.queryByText(formatAsIsoDateTime(startTime1)),
-  ).not.toBeInTheDocument();
+  expect(screen.queryByText(startTime1IsoDateTime)).not.toBeInTheDocument();
 });
 
 it("persists time entries across page reload", async () => {

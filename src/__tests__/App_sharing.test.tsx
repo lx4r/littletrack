@@ -3,15 +3,18 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
 import { isWebShareApiAvailable, shareTimeEntry } from "../time_entry_sharing";
-import { formatAsIsoDateTime } from "../time_formatting";
 import {
   DEFAULT_APP_PROPS,
   startTime1,
+  startTime1IsoDateTime,
   startTime1TimeOfDayMatcher,
   startTime2,
+  startTime2IsoDateTime,
   startTime2TimeOfDayMatcher,
   stopTime1,
+  stopTime1IsoDateTime,
   stopTime2,
+  stopTime2IsoDateTime,
 } from "./App_test_helpers";
 
 it("allows for sharing a time entry if the Web Share API is available", async () => {
@@ -66,12 +69,7 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
     expect.objectContaining({
       title: expect.stringMatching(/time entry/i),
       text: expect.stringMatching(
-        new RegExp(
-          `${formatAsIsoDateTime(startTime1)}.+${formatAsIsoDateTime(
-            stopTime1,
-          )}`,
-          "s",
-        ),
+        new RegExp(`${startTime1IsoDateTime}.+${stopTime1IsoDateTime}`, "s"),
       ),
     }),
   );
@@ -88,12 +86,7 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
     expect.objectContaining({
       title: expect.stringMatching(/time entry/i),
       text: expect.stringMatching(
-        new RegExp(
-          `${formatAsIsoDateTime(startTime2)}.+${formatAsIsoDateTime(
-            stopTime2,
-          )}`,
-          "s",
-        ),
+        new RegExp(`${startTime2IsoDateTime}.+${stopTime2IsoDateTime}`, "s"),
       ),
     }),
   );

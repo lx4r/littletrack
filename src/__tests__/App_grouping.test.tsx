@@ -3,10 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
 import {
-  formatAsIsoDate,
-  formatAsIsoTimeOfDayWithoutSeconds,
-} from "../time_formatting";
-import {
   getStartButtonOrThrow,
   getStopButtonOrThrow,
   startTime1,
@@ -20,16 +16,12 @@ import {
 it("groups time entries by date", async () => {
   const user = userEvent.setup();
 
-  const startTime3 = new Date(startTime2);
-  startTime3.setHours(startTime2.getHours() + 1);
-  const formattedStartTime3Matcher = new RegExp(
-    formatAsIsoTimeOfDayWithoutSeconds(startTime3),
-  );
-  const stopTime3 = new Date(startTime3);
-  stopTime3.setMinutes(startTime3.getMinutes() + 1);
+  const startTime3 = new Date("2023-01-02T05:05:05.000Z");
+  const startTime3TimeOfDayMatcher = /05:05/;
+  const stopTime3 = new Date("2023-01-02T06:06:06.000Z");
 
-  const isoDateForTimeEntry1 = formatAsIsoDate(startTime1);
-  const isoDateForTimeEntries2And3 = formatAsIsoDate(startTime2);
+  const isoDateForTimeEntry1 = "2023-01-01";
+  const isoDateForTimeEntries2And3 = "2023-01-02";
 
   const getCurrentTime = vi.fn(() => startTime1);
 
@@ -74,7 +66,7 @@ it("groups time entries by date", async () => {
     within(timeEntryGroup1!).queryByText(startTime2TimeOfDayMatcher),
   ).not.toBeInTheDocument();
   expect(
-    within(timeEntryGroup1!).queryByText(formattedStartTime3Matcher),
+    within(timeEntryGroup1!).queryByText(startTime3TimeOfDayMatcher),
   ).not.toBeInTheDocument();
 
   const timeEntryGroup2 = screen
@@ -90,6 +82,6 @@ it("groups time entries by date", async () => {
     within(timeEntryGroup2!).queryByText(startTime2TimeOfDayMatcher),
   ).toBeInTheDocument();
   expect(
-    within(timeEntryGroup2!).queryByText(formattedStartTime3Matcher),
+    within(timeEntryGroup2!).queryByText(startTime3TimeOfDayMatcher),
   ).toBeInTheDocument();
 });

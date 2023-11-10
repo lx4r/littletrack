@@ -8,5 +8,7 @@ export default defineConfig({
     environment: "happy-dom",
     setupFiles: ["./vitest.setup.ts"],
     unstubGlobals: true,
+    globals: true,
+    globalSetup: "./vitest.globals.ts",
   },
 });
