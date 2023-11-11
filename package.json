@@ -11,7 +11,8 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:run": "vitest --run",
-    "prepush": "pnpm run '/^(test:run|lint)$/'"
+    "check-types": "tsc --noEmit",
+    "prepush": "pnpm run '/^(test:run|lint|check-types)$/'"
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
