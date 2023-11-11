@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { Props as AppProps } from "../App";
 
 export function getStartButtonIfExists() {
   return screen.queryByTestId("start-icon");
@@ -34,17 +35,17 @@ export const stopTime2 = new Date("2023-01-03T04:04:04.000Z");
 export const stopTime2TimeOfDayMatcher = /04:04/;
 export const stopTime2IsoDateTime = "2023-01-03 04:04";
 
-export const DEFAULT_APP_PROPS = {
-  getCurrentTime: vi.fn(),
-  persistStartTime: vi.fn(),
-  retrievePersistedStartTime: vi.fn(() => Promise.resolve(null)),
-  removePersistedStartTime: vi.fn(),
+export const DEFAULT_APP_PROPS: AppProps = {
+  getCurrentTime: () => new Date(),
+  persistStartTime: () => Promise.resolve(),
+  retrievePersistedStartTime: () => Promise.resolve(null),
+  removePersistedStartTime: () => Promise.resolve(),
   manageTimeEntries: {
-    persistTimeEntries: vi.fn(),
-    retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
+    persistTimeEntries: () => Promise.resolve(),
+    retrieveTimeEntries: () => Promise.resolve([]),
   },
   shareTimeEntries: {
-    shareTimeEntry: vi.fn(),
+    shareTimeEntry: () => Promise.resolve(),
     isSharingAvailable: false,
   },
 };
