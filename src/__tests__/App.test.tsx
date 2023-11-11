@@ -3,6 +3,7 @@ import { userEvent } from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
 import {
+  DEFAULT_APP_PROPS,
   getStartButtonIfExists,
   getStartButtonOrThrow,
   getStopButtonIfExists,
@@ -25,19 +26,7 @@ it("can log multiple time entries", async () => {
 
   const getCurrentTime = vi.fn(() => startTime1);
 
-  render(
-    <App
-      getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
-    />,
-  );
+  render(<App {...DEFAULT_APP_PROPS} getCurrentTime={getCurrentTime} />);
 
   expect(getStartButtonIfExists()).toBeInTheDocument();
   expect(getStopButtonIfExists()).not.toBeInTheDocument();
@@ -91,19 +80,7 @@ it("can delete a time entry if there is just one", async () => {
 
   const getCurrentTime = vi.fn(() => startTime1);
 
-  render(
-    <App
-      getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
-    />,
-  );
+  render(<App {...DEFAULT_APP_PROPS} getCurrentTime={getCurrentTime} />);
 
   await user.click(getStartButtonOrThrow());
 
@@ -127,19 +104,7 @@ it("can delete a time entry if there are multiple", async () => {
 
   const getCurrentTime = vi.fn(() => startTime1);
 
-  render(
-    <App
-      getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
-    />,
-  );
+  render(<App {...DEFAULT_APP_PROPS} getCurrentTime={getCurrentTime} />);
 
   await user.click(getStartButtonOrThrow());
 

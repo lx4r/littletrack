@@ -9,6 +9,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App, { TimeEntry } from "../App";
 import {
+  DEFAULT_APP_PROPS,
   getStartButtonIfExists,
   getStartButtonOrThrow,
   getStopButtonIfExists,
@@ -28,20 +29,15 @@ import {
 it("persists start time when start button is clicked", async () => {
   const user = userEvent.setup();
 
+  // TODO: Just use normal functions here?
   const getCurrentTime = vi.fn(() => startTime1);
   const persistStartTime = vi.fn(() => Promise.resolve());
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
       persistStartTime={persistStartTime}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -55,15 +51,8 @@ it("uses persisted start time if there is one and shows stop button", async () =
 
   render(
     <App
-      getCurrentTime={vi.fn()}
-      persistStartTime={vi.fn()}
+      {...DEFAULT_APP_PROPS}
       retrievePersistedStartTime={retrievePersistedStartTime}
-      removePersistedStartTime={vi.fn()}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -89,15 +78,11 @@ it("doesn't have a running time entry after stopping another and reloading the a
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
       persistStartTime={persistStartTime}
       retrievePersistedStartTime={retrievePersistedStartTime}
       removePersistedStartTime={removePersistedStartTime}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -111,15 +96,9 @@ it("doesn't have a running time entry after stopping another and reloading the a
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
       persistStartTime={persistStartTime}
-      retrievePersistedStartTime={retrievePersistedStartTime}
-      removePersistedStartTime={removePersistedStartTime}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -142,15 +121,12 @@ it("persists time entries across page reload", async () => {
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
       manageTimeEntries={{
         persistTimeEntries,
         retrieveTimeEntries,
       }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -172,15 +148,12 @@ it("persists time entries across page reload", async () => {
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
       manageTimeEntries={{
         persistTimeEntries,
         retrieveTimeEntries,
       }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -207,15 +180,12 @@ it("persists deletion of time entry across page reload", async () => {
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
       manageTimeEntries={{
         persistTimeEntries,
         retrieveTimeEntries,
       }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 
@@ -243,15 +213,12 @@ it("persists deletion of time entry across page reload", async () => {
 
   render(
     <App
+      {...DEFAULT_APP_PROPS}
       getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
       manageTimeEntries={{
         persistTimeEntries,
         retrieveTimeEntries,
       }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
     />,
   );
 

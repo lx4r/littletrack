@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import App from "../App";
 import {
+  DEFAULT_APP_PROPS,
   getStartButtonOrThrow,
   getStopButtonOrThrow,
   startTime1,
@@ -25,19 +26,7 @@ it("groups time entries by date", async () => {
 
   const getCurrentTime = vi.fn(() => startTime1);
 
-  render(
-    <App
-      getCurrentTime={getCurrentTime}
-      persistStartTime={vi.fn()}
-      retrievePersistedStartTime={vi.fn(() => Promise.resolve(null))}
-      removePersistedStartTime={vi.fn()}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([])),
-      }}
-      shareTimeEntries={{ shareTimeEntry: vi.fn(), isSharingAvailable: false }}
-    />,
-  );
+  render(<App {...DEFAULT_APP_PROPS} getCurrentTime={getCurrentTime} />);
 
   await user.click(getStartButtonOrThrow());
   getCurrentTime.mockReturnValueOnce(stopTime1);

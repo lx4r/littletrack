@@ -1,5 +1,4 @@
 import { screen } from "@testing-library/react";
-import { vi } from "vitest";
 import { Props as AppProps } from "../App";
 
 export function getStartButtonIfExists() {
