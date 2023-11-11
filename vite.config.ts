@@ -9,6 +9,5 @@ export default defineConfig({
     setupFiles: ["./vitest.setup.ts"],
     unstubGlobals: true,
     globals: true,
-    globalSetup: "./vitest.globals.ts",
   },
 });

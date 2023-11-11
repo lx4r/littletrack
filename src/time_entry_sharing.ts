@@ -1,5 +1,5 @@
 import { TimeEntry } from "./App";
-import { formatAsIsoDateTime } from "./time_formatting";
+import { formatAsLocalIsoDateTime } from "./time_formatting";
 
 function shareMessageViaWebShareApi(title: string, text: string) {
   if (!navigator.share) {
@@ -12,11 +12,12 @@ function shareMessageViaWebShareApi(title: string, text: string) {
   });
 }
 
-export async function shareTimeEntry(timeEntry: TimeEntry) {
+export async function shareTimeEntry(timeEntry: TimeEntry, timeZone: string) {
   const shareTitle = "Time Entry";
-  const shareText = `Start time: ${formatAsIsoDateTime(
+  const shareText = `Start time: ${formatAsLocalIsoDateTime(
     timeEntry.startTime,
-  )}\nStop time: ${formatAsIsoDateTime(timeEntry.stopTime)}`;
+    timeZone,
+  )}\nStop time: ${formatAsLocalIsoDateTime(timeEntry.stopTime, timeZone)}`;
 
   await shareMessageViaWebShareApi(shareTitle, shareText);
 }

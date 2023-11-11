@@ -4,11 +4,11 @@ import {
   StopIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   formatAsIsoDate,
-  formatAsIsoDateTime,
   formatAsIsoTimeOfDayWithoutSeconds,
+  formatAsLocalIsoDateTime,
 } from "./time_formatting";
 
 // TODO: Move this type somewhere else?
@@ -29,11 +29,14 @@ export interface Props {
     retrieveTimeEntries: () => Promise<TimeEntry[]>;
   };
   shareTimeEntries: {
-    shareTimeEntry: (timeEntry: TimeEntry) => Promise<void>;
+    // TODO: Instead pass time entry outside of component?
+    shareTimeEntry: (timeEntry: TimeEntry, timeZone: string) => Promise<void>;
     isSharingAvailable: boolean;
   };
+  timeZone: string;
 }
 
+// TODO: Extract components here?
 function App({
   getCurrentTime,
   persistStartTime,
@@ -41,14 +44,10 @@ function App({
   removePersistedStartTime,
   manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
   shareTimeEntries: { shareTimeEntry, isSharingAvailable },
+  timeZone,
 }: Props) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     [],
-  );
-
-  const timeEntriesGroupedByDate = useMemo(
-    () => groupTimeEntriesByDate(completeTimeEntries),
-    [completeTimeEntries],
   );
 
   const [startTime, setStartTime] = useState<Date | null>(null);
@@ -82,7 +81,7 @@ function App({
   ): { isoDate: string; timeEntries: TimeEntry[] }[] {
     return timeEntries.reduce(
       (groupedTimeEntries, timeEntry) => {
-        const isoDate = formatAsIsoDate(timeEntry.startTime);
+        const isoDate = formatAsIsoDate(timeEntry.startTime, timeZone);
 
         const group = groupedTimeEntries.find(
           ({ isoDate: currentIsoDate }) => isoDate === currentIsoDate,
@@ -150,49 +149,53 @@ function App({
               <PlayIcon className="h-8 w-8" data-testid="start-icon" />
             )}
           </button>
-          {startTime && formatAsIsoDateTime(startTime)}
+          {startTime && formatAsLocalIsoDateTime(startTime, timeZone)}
         </div>
         {/* TODO: Use different element here? */}
-        {timeEntriesGroupedByDate.map(({ isoDate, timeEntries }) => (
-          <section key={isoDate} className="mb-4">
-            <h2 className="mb-2 text-lg">{isoDate}</h2>
-            <ul>
-              {timeEntries.map((timeEntry) => (
-                <li
-                  key={timeEntry.id}
-                  className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
-                >
-                  {`${formatAsIsoTimeOfDayWithoutSeconds(
-                    timeEntry.startTime,
-                  )} - ${formatAsIsoTimeOfDayWithoutSeconds(
-                    timeEntry.stopTime,
-                  )}`}
-                  <div>
-                    {isSharingAvailable && (
+        {groupTimeEntriesByDate(completeTimeEntries).map(
+          ({ isoDate, timeEntries }) => (
+            <section key={isoDate} className="mb-4">
+              <h2 className="mb-2 text-lg">{isoDate}</h2>
+              <ul>
+                {timeEntries.map((timeEntry) => (
+                  <li
+                    key={timeEntry.id}
+                    className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
+                  >
+                    {`${formatAsIsoTimeOfDayWithoutSeconds(
+                      timeEntry.startTime,
+                      timeZone,
+                    )} - ${formatAsIsoTimeOfDayWithoutSeconds(
+                      timeEntry.stopTime,
+                      timeZone,
+                    )}`}
+                    <div>
+                      {isSharingAvailable && (
+                        <button
+                          onClick={() => shareTimeEntry(timeEntry, timeZone)}
+                          className="mr-2 rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+                          // TODO: add label to delete button as well?
+                          aria-label="Share"
+                        >
+                          <ShareIcon className="h-5 w-5" />
+                        </button>
+                      )}
                       <button
-                        onClick={() => shareTimeEntry(timeEntry)}
-                        className="mr-2 rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-                        // TODO: add label to delete button as well?
-                        aria-label="Share"
+                        onClick={() => handleDeleteButtonClick(timeEntry)}
+                        className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
                       >
-                        <ShareIcon className="h-5 w-5" />
+                        <XMarkIcon
+                          className="h-5 w-5"
+                          data-testid="delete-icon"
+                        />
                       </button>
-                    )}
-                    <button
-                      onClick={() => handleDeleteButtonClick(timeEntry)}
-                      className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-                    >
-                      <XMarkIcon
-                        className="h-5 w-5"
-                        data-testid="delete-icon"
-                      />
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ),
+        )}
       </main>
     </div>
   );

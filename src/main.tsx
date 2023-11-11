@@ -70,6 +70,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         shareTimeEntry,
         isSharingAvailable: isWebShareApiAvailable(),
       }}
+      timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
     />
   </React.StrictMode>,
 );

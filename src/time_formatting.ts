@@ -1,24 +1,24 @@
-function formatAsIsoDateParts(date: Date) {
-  const [isoDate, isoTime] = date.toISOString().split("T");
-  const isoTimeOfDayWithoutSeconds = isoTime.slice(0, 5);
+// The locale "sv" stands for Sweden which uses the time format YYYY-MM-DD HH:MM we want.
 
-  return { isoDate, isoTimeOfDayWithoutSeconds };
+export function formatAsIsoTimeOfDayWithoutSeconds(
+  date: Date,
+  timeZone: string,
+) {
+  return date.toLocaleTimeString("sv", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
-export function formatAsIsoTimeOfDayWithoutSeconds(date: Date) {
-  const { isoTimeOfDayWithoutSeconds } = formatAsIsoDateParts(date);
-
-  return isoTimeOfDayWithoutSeconds;
+export function formatAsIsoDate(date: Date, timeZone: string) {
+  return date.toLocaleDateString("sv", { timeZone });
 }
 
-export function formatAsIsoDate(date: Date) {
-  const { isoDate } = formatAsIsoDateParts(date);
-
-  return isoDate;
-}
-
-export function formatAsIsoDateTime(date: Date) {
-  const { isoDate, isoTimeOfDayWithoutSeconds } = formatAsIsoDateParts(date);
-
-  return `${isoDate} ${isoTimeOfDayWithoutSeconds}`;
+export function formatAsLocalIsoDateTime(date: Date, timeZone: string) {
+  return date.toLocaleString("sv", {
+    dateStyle: "short",
+    timeStyle: "short",
+    timeZone,
+  });
 }
