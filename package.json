@@ -12,7 +12,7 @@
     "test:coverage": "vitest --coverage",
     "test:run": "vitest --run",
     "check-types": "tsc --noEmit",
-    "prepush": "pnpm run '/^(test:run|lint|check-types)$/'",
+    "precommit": "pnpm run '/^(test:run|lint|check-types)$/'",
     "prepare": "husky install"
   },
   "dependencies": {

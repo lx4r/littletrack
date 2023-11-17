@@ -29,7 +29,7 @@ export interface Props {
     retrieveTimeEntries: () => Promise<TimeEntry[]>;
   };
   shareTimeEntries: {
-    // TODO: Instead pass time entry outside of component?
+    // TODO: Instead pass time zone outside of component?
     shareTimeEntry: (timeEntry: TimeEntry, timeZone: string) => Promise<void>;
     isSharingAvailable: boolean;
   };
