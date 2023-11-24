@@ -11,6 +11,20 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      manifest: {
+        icons: [
+          {
+            src: "/pwa_icon_192x192.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "/pwa_icon_512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      },
     }),
   ],
   test: {
