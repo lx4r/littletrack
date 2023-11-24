@@ -12,6 +12,8 @@ export default defineConfig({
         enabled: true,
       },
       manifest: {
+        name: "LittleTrack",
+        short_name: "LittleTrack",
         theme_color: "#262626",
         icons: [
           {
