@@ -14,6 +14,7 @@ export default defineConfig({
       manifest: {
         name: "LittleTrack",
         short_name: "LittleTrack",
+        description: "Simple time tracking",
         theme_color: "#262626",
         icons: [
           {
