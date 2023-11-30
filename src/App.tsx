@@ -7,8 +7,8 @@ import {
 import { useEffect, useState } from "react";
 import {
   formatAsIsoDate,
+  formatAsIsoDateTime,
   formatAsIsoTimeOfDayWithoutSeconds,
-  formatAsLocalIsoDateTime,
 } from "./time_formatting";
 
 // TODO: Move this type somewhere else?
@@ -121,6 +121,23 @@ function App({
     }
   }
 
+  function formatTimeEntry(timeEntry: TimeEntry) {
+    if (
+      formatAsIsoDate(timeEntry.startTime, timeZone) !==
+      formatAsIsoDate(timeEntry.stopTime, timeZone)
+    ) {
+      return `${formatAsIsoDateTime(
+        timeEntry.startTime,
+        timeZone,
+      )} - ${formatAsIsoDateTime(timeEntry.stopTime, timeZone)}`;
+    }
+
+    return `${formatAsIsoTimeOfDayWithoutSeconds(
+      timeEntry.startTime,
+      timeZone,
+    )} - ${formatAsIsoTimeOfDayWithoutSeconds(timeEntry.stopTime, timeZone)}`;
+  }
+
   // TODO: move this out of component?
   async function handleDeleteButtonClick({ id }: TimeEntry) {
     const newTimeEntries = completeTimeEntries.filter(
@@ -149,7 +166,7 @@ function App({
               <PlayIcon className="h-8 w-8" data-testid="start-icon" />
             )}
           </button>
-          {startTime && formatAsLocalIsoDateTime(startTime, timeZone)}
+          {startTime && formatAsIsoDateTime(startTime, timeZone)}
         </div>
         {/* TODO: Use different element here? */}
         {groupTimeEntriesByDate(completeTimeEntries).map(
@@ -162,13 +179,7 @@ function App({
                     key={timeEntry.id}
                     className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
                   >
-                    {`${formatAsIsoTimeOfDayWithoutSeconds(
-                      timeEntry.startTime,
-                      timeZone,
-                    )} - ${formatAsIsoTimeOfDayWithoutSeconds(
-                      timeEntry.stopTime,
-                      timeZone,
-                    )}`}
+                    {formatTimeEntry(timeEntry)}
                     <div>
                       {isSharingAvailable && (
                         <button

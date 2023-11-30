@@ -15,7 +15,7 @@ export function formatAsIsoDate(date: Date, timeZone: string) {
   return date.toLocaleDateString("sv", { timeZone });
 }
 
-export function formatAsLocalIsoDateTime(date: Date, timeZone: string) {
+export function formatAsIsoDateTime(date: Date, timeZone: string) {
   return date.toLocaleString("sv", {
     dateStyle: "short",
     timeStyle: "short",
