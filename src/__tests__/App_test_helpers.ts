@@ -19,7 +19,6 @@ export function getStopButtonOrThrow() {
 
 export const startTime1 = new Date("2023-01-01T01:01:01.000Z");
 export const startTime1TimeOfDayMatcher = /01:01/;
-// TODO: "date" might be a confusing, because overloaded, term here.
 export const startTime1IsoDateTime = "2023-01-01 01:01";
 
 export const stopTime1 = new Date("2023-01-01T02:02:02.000Z");

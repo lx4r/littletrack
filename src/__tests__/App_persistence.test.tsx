@@ -86,6 +86,11 @@ it("doesn't have a running time entry after stopping another and reloading the a
     />,
   );
 
+  // Added this to resolve a "not wrapped in act(...)" warning
+  await waitFor(() => {
+    expect(screen.queryByTestId("start-icon")).toBeInTheDocument();
+  });
+
   await user.click(getStartButtonOrThrow());
 
   getCurrentTime.mockReturnValueOnce(stopTime1);
@@ -102,9 +107,11 @@ it("doesn't have a running time entry after stopping another and reloading the a
     />,
   );
 
-  expect(getStopButtonIfExists()).not.toBeInTheDocument();
-  expect(getStartButtonIfExists()).toBeInTheDocument();
-  expect(screen.queryByText(startTime1IsoDateTime)).not.toBeInTheDocument();
+  await waitFor(() => {
+    expect(getStopButtonIfExists()).not.toBeInTheDocument();
+    expect(getStartButtonIfExists()).toBeInTheDocument();
+    expect(screen.queryByText(startTime1IsoDateTime)).not.toBeInTheDocument();
+  });
 });
 
 it("persists time entries across page reload", async () => {
