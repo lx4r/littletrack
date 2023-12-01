@@ -25,8 +25,7 @@ export interface Props {
   removePersistedStartTime: () => Promise<void>;
   manageTimeEntries: {
     persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
-    // TODO: return null here if there are no time entries yet
-    retrieveTimeEntries: () => Promise<TimeEntry[]>;
+    retrieveTimeEntries: () => Promise<TimeEntry[] | null>;
   };
   shareTimeEntries: {
     // TODO: Instead pass time zone outside of component?
@@ -45,7 +44,7 @@ function App({
   manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
   shareTimeEntries: { shareTimeEntry, isSharingAvailable },
   timeZone,
-}: Props) {
+}: Readonly<Props>) {
   const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
     [],
   );
@@ -70,7 +69,7 @@ function App({
     async function loadPersistedTimeEntries() {
       const persistedTimeEntries = await retrieveTimeEntries();
 
-      setCompleteTimeEntries(persistedTimeEntries);
+      setCompleteTimeEntries(persistedTimeEntries ?? []);
     }
 
     loadPersistedTimeEntries();
