@@ -212,7 +212,7 @@ it("persists deletion of time entry across page reload", async () => {
 
   const secondTimeEntry = screen.getByText(startTime2TimeOfDayMatcher);
   const deleteButtonForSecondTimeEntry =
-    within(secondTimeEntry).getByTestId("delete-icon");
+    within(secondTimeEntry).getByLabelText(/delete/i);
 
   await user.click(deleteButtonForSecondTimeEntry);
 

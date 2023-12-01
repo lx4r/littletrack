@@ -184,7 +184,6 @@ function App({
                         <button
                           onClick={() => shareTimeEntry(timeEntry, timeZone)}
                           className="mr-2 rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-                          // TODO: add label to delete button as well?
                           aria-label="Share"
                         >
                           <ShareIcon className="h-5 w-5" />
@@ -193,6 +192,7 @@ function App({
                       <button
                         onClick={() => handleDeleteButtonClick(timeEntry)}
                         className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
+                        aria-label="Delete"
                       >
                         <XMarkIcon
                           className="h-5 w-5"

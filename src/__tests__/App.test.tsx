@@ -88,7 +88,7 @@ it("can delete a time entry if there is just one", async () => {
 
   await user.click(getStopButtonOrThrow());
 
-  const deleteButton = screen.getByTestId("delete-icon");
+  const deleteButton = screen.getByLabelText(/delete/i);
 
   expect(deleteButton).toBeInTheDocument();
 
@@ -125,7 +125,7 @@ it("can delete a time entry if there are multiple", async () => {
   expect(secondTimeEntry).toBeInTheDocument();
 
   const deleteButtonForSecondTimeEntry =
-    within(secondTimeEntry).getByTestId("delete-icon");
+    within(secondTimeEntry).getByLabelText(/delete/i);
 
   expect(deleteButtonForSecondTimeEntry).toBeInTheDocument();
 
