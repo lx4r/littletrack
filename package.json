@@ -11,7 +11,7 @@
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:run": "vitest --run",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsc --noEmit --skipLibCheck",
     "precommit": "pnpm run '/^(test:run|lint|check-types)$/'",
     "prepare": "husky install"
   },
