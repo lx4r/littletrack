@@ -115,7 +115,6 @@ function App({
       await removePersistedStartTime();
     } else {
       setStartTime(currentTime);
-
       await persistStartTime(currentTime);
     }
   }

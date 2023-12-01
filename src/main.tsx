@@ -57,6 +57,8 @@ async function retrieveTimeEntries() {
   return timeEntries;
 }
 
+console.info("commit hash:", __COMMIT_HASH__);
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App
