@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App, { TimeEntry } from "./App.tsx";
 import "./index.css";
+import { enablePeriodicServiceWorkerUpdates } from "./service_worker_updates.ts";
 import {
   isWebShareApiAvailable,
   shareTimeEntry,
@@ -58,6 +59,8 @@ async function retrieveTimeEntries() {
 }
 
 console.info("commit hash:", __COMMIT_HASH__);
+
+enablePeriodicServiceWorkerUpdates();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
