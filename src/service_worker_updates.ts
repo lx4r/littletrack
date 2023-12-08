@@ -1,9 +1,7 @@
 import { registerSW } from "virtual:pwa-register";
 
-const updateIntervalMS = 60 * 60 * 1000;
-
 // https://vite-pwa-org.netlify.app/guide/periodic-sw-updates.html#handling-edge-cases
-export function enablePeriodicServiceWorkerUpdates() {
+export function enablePeriodicServiceWorkerUpdates(updateIntervalMs: number) {
   registerSW({
     onRegisteredSW(serviceWorkerUrl, registration) {
       registration &&
@@ -27,7 +25,7 @@ export function enablePeriodicServiceWorkerUpdates() {
           if (resp?.status === 200) {
             await registration.update();
           }
-        }, updateIntervalMS);
+        }, updateIntervalMs);
     },
   });
 }

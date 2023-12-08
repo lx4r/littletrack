@@ -12,6 +12,8 @@ import {
 const LOCAL_FORAGE_KEY_START_TIME = "startTime";
 const LOCAL_FORAGE_KEY_TIME_ENTRIES = "timeEntries";
 
+const UPDATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
+
 // TODO: Move these functions somewhere else?
 
 function getCurrentTime() {
@@ -60,7 +62,7 @@ async function retrieveTimeEntries() {
 
 console.info("commit hash:", __COMMIT_HASH__);
 
-enablePeriodicServiceWorkerUpdates();
+enablePeriodicServiceWorkerUpdates(UPDATE_INTERVAL_MS);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
