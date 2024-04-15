@@ -35,7 +35,7 @@ jobs:
 
       - name: Deploy to Netlify
         if: ${{ github.event_name == 'push' }}
-        uses: nwtgck/actions-netlify@v2
+        uses: nwtgck/actions-netlify@v3
         with:
           publish-dir: dist
           production-deploy: true
