@@ -164,7 +164,9 @@ function App({
               <PlayIcon className="h-10 w-10" data-testid="start-icon" />
             )}
           </button>
-          {startTime && formatAsIsoDateTime(startTime, timeZone)}
+          <span className="text-lg lg:text-base">
+            {startTime && formatAsIsoDateTime(startTime, timeZone)}
+          </span>
         </div>
         {/* TODO: Use different element here? */}
         {groupTimeEntriesByDate(completeTimeEntries).map(
