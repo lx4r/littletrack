@@ -177,7 +177,7 @@ function App({
                 {timeEntries.map((timeEntry) => (
                   <li
                     key={timeEntry.id}
-                    className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 p-2 text-sm"
+                    className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 px-3 py-2 lg:text-sm"
                   >
                     {formatTimeEntry(timeEntry)}
                     <div>
