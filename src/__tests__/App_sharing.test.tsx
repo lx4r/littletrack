@@ -4,121 +4,121 @@ import { expect, it, vi } from "vitest";
 import App from "../App";
 import { isWebShareApiAvailable, shareTimeEntry } from "../time_entry_sharing";
 import {
-  DEFAULT_APP_PROPS,
-  startTime1,
-  startTime1IsoDateTime,
-  startTime1TimeOfDayMatcher,
-  startTime2,
-  startTime2IsoDateTime,
-  startTime2TimeOfDayMatcher,
-  stopTime1,
-  stopTime1IsoDateTime,
-  stopTime2,
-  stopTime2IsoDateTime,
+	DEFAULT_APP_PROPS,
+	startTime1,
+	startTime1IsoDateTime,
+	startTime1TimeOfDayMatcher,
+	startTime2,
+	startTime2IsoDateTime,
+	startTime2TimeOfDayMatcher,
+	stopTime1,
+	stopTime1IsoDateTime,
+	stopTime2,
+	stopTime2IsoDateTime,
 } from "./App_test_helpers";
 
 it("allows for sharing a time entry if the Web Share API is available", async () => {
-  const user = userEvent.setup();
+	const user = userEvent.setup();
 
-  const timeEntry1 = {
-    id: "time-entry-1",
-    startTime: startTime1,
-    stopTime: stopTime1,
-  };
-  const timeEntry2 = {
-    id: "time-entry-2",
-    startTime: startTime2,
-    stopTime: stopTime2,
-  };
-  const timeEntries = [timeEntry2, timeEntry1];
+	const timeEntry1 = {
+		id: "time-entry-1",
+		startTime: startTime1,
+		stopTime: stopTime1,
+	};
+	const timeEntry2 = {
+		id: "time-entry-2",
+		startTime: startTime2,
+		stopTime: stopTime2,
+	};
+	const timeEntries = [timeEntry2, timeEntry1];
 
-  // TODO: Also mock localforage in persistence test in a similar way?
-  const mockedWebShareApiShare = vi.fn(() => Promise.resolve());
-  vi.stubGlobal("navigator", {
-    share: mockedWebShareApiShare,
-  });
+	// TODO: Also mock localforage in persistence test in a similar way?
+	const mockedWebShareApiShare = vi.fn(() => Promise.resolve());
+	vi.stubGlobal("navigator", {
+		share: mockedWebShareApiShare,
+	});
 
-  render(
-    <App
-      {...DEFAULT_APP_PROPS}
-      shareTimeEntries={{
-        shareTimeEntry: shareTimeEntry,
-        isSharingAvailable: isWebShareApiAvailable(),
-      }}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve(timeEntries)),
-      }}
-    />,
-  );
+	render(
+		<App
+			{...DEFAULT_APP_PROPS}
+			shareTimeEntries={{
+				shareTimeEntry: shareTimeEntry,
+				isSharingAvailable: isWebShareApiAvailable(),
+			}}
+			manageTimeEntries={{
+				persistTimeEntries: vi.fn(),
+				retrieveTimeEntries: vi.fn(() => Promise.resolve(timeEntries)),
+			}}
+		/>,
+	);
 
-  expect(
-    await screen.findByText(startTime1TimeOfDayMatcher),
-  ).toBeInTheDocument();
+	expect(
+		await screen.findByText(startTime1TimeOfDayMatcher),
+	).toBeInTheDocument();
 
-  const timeEntry1Row = screen.getByText(startTime1TimeOfDayMatcher);
-  const timeEntry1ShareButton = within(timeEntry1Row).getByLabelText(/share/i);
+	const timeEntry1Row = screen.getByText(startTime1TimeOfDayMatcher);
+	const timeEntry1ShareButton = within(timeEntry1Row).getByLabelText(/share/i);
 
-  expect(timeEntry1ShareButton).toBeInTheDocument();
+	expect(timeEntry1ShareButton).toBeInTheDocument();
 
-  await user.click(timeEntry1ShareButton);
+	await user.click(timeEntry1ShareButton);
 
-  // TODO: Split tests for sharing from tests for formatting?
-  expect(mockedWebShareApiShare).toHaveBeenCalledTimes(1);
-  expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      title: expect.stringMatching(/time entry/i),
-      text: expect.stringMatching(
-        new RegExp(`${startTime1IsoDateTime}.+${stopTime1IsoDateTime}`, "s"),
-      ),
-    }),
-  );
+	// TODO: Split tests for sharing from tests for formatting?
+	expect(mockedWebShareApiShare).toHaveBeenCalledTimes(1);
+	expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
+		expect.objectContaining({
+			title: expect.stringMatching(/time entry/i),
+			text: expect.stringMatching(
+				new RegExp(`${startTime1IsoDateTime}.+${stopTime1IsoDateTime}`, "s"),
+			),
+		}),
+	);
 
-  const timeEntry2Row = screen.getByText(startTime2TimeOfDayMatcher);
-  const timeEntry2ShareButton = within(timeEntry2Row).getByLabelText(/share/i);
+	const timeEntry2Row = screen.getByText(startTime2TimeOfDayMatcher);
+	const timeEntry2ShareButton = within(timeEntry2Row).getByLabelText(/share/i);
 
-  expect(timeEntry2ShareButton).toBeInTheDocument();
+	expect(timeEntry2ShareButton).toBeInTheDocument();
 
-  await user.click(timeEntry2ShareButton);
+	await user.click(timeEntry2ShareButton);
 
-  expect(mockedWebShareApiShare).toHaveBeenCalledTimes(2);
-  expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      title: expect.stringMatching(/time entry/i),
-      text: expect.stringMatching(
-        new RegExp(`${startTime2IsoDateTime}.+${stopTime2IsoDateTime}`, "s"),
-      ),
-    }),
-  );
+	expect(mockedWebShareApiShare).toHaveBeenCalledTimes(2);
+	expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
+		expect.objectContaining({
+			title: expect.stringMatching(/time entry/i),
+			text: expect.stringMatching(
+				new RegExp(`${startTime2IsoDateTime}.+${stopTime2IsoDateTime}`, "s"),
+			),
+		}),
+	);
 });
 
 it("doesn't show sharing button is Web Share API is not available", async () => {
-  const timeEntry = {
-    id: "time-entry-1",
-    startTime: startTime1,
-    stopTime: stopTime1,
-  };
+	const timeEntry = {
+		id: "time-entry-1",
+		startTime: startTime1,
+		stopTime: stopTime1,
+	};
 
-  render(
-    <App
-      {...DEFAULT_APP_PROPS}
-      manageTimeEntries={{
-        persistTimeEntries: vi.fn(),
-        retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
-      }}
-      shareTimeEntries={{
-        shareTimeEntry: shareTimeEntry,
-        isSharingAvailable: isWebShareApiAvailable(),
-      }}
-    />,
-  );
+	render(
+		<App
+			{...DEFAULT_APP_PROPS}
+			manageTimeEntries={{
+				persistTimeEntries: vi.fn(),
+				retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
+			}}
+			shareTimeEntries={{
+				shareTimeEntry: shareTimeEntry,
+				isSharingAvailable: isWebShareApiAvailable(),
+			}}
+		/>,
+	);
 
-  expect(
-    await screen.findByText(startTime1TimeOfDayMatcher),
-  ).toBeInTheDocument();
+	expect(
+		await screen.findByText(startTime1TimeOfDayMatcher),
+	).toBeInTheDocument();
 
-  const timeEntryRow = screen.getByText(startTime1TimeOfDayMatcher);
-  const timeEntryShareButton = within(timeEntryRow).queryByLabelText(/share/i);
+	const timeEntryRow = screen.getByText(startTime1TimeOfDayMatcher);
+	const timeEntryShareButton = within(timeEntryRow).queryByLabelText(/share/i);
 
-  expect(timeEntryShareButton).not.toBeInTheDocument();
+	expect(timeEntryShareButton).not.toBeInTheDocument();
 });
