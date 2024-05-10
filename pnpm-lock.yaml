@@ -23,13 +23,13 @@ importers:
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.4.5
-        version: 6.4.5(vitest@1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0))
+        version: 6.4.5(vitest@1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0))
       '@testing-library/react':
         specifier: ^14.3.1
         version: 14.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
         specifier: ^14.5.2
-        version: 14.5.2(@testing-library/dom@10.0.0)
+        version: 14.5.2(@testing-library/dom@10.1.0)
       '@types/react':
         specifier: ^18.3.1
         version: 18.3.1
@@ -47,7 +47,7 @@ importers:
         version: 3.6.0(vite@5.2.11(@types/node@20.12.11)(terser@5.31.0))
       '@vitest/coverage-v8':
         specifier: ^1.6.0
-        version: 1.6.0(vitest@1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0))
+        version: 1.6.0(vitest@1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0))
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.19(postcss@8.4.38)
@@ -61,8 +61,8 @@ importers:
         specifier: ^0.4.7
         version: 0.4.7(eslint@8.57.0)
       happy-dom:
-        specifier: ^13.10.1
-        version: 13.10.1
+        specifier: ^14.10.1
+        version: 14.10.1
       husky:
         specifier: ^8.0.3
         version: 8.0.3
@@ -86,10 +86,10 @@ importers:
         version: 5.2.11(@types/node@20.12.11)(terser@5.31.0)
       vite-plugin-pwa:
         specifier: ^0.17.5
-        version: 0.17.5(vite@5.2.11(@types/node@20.12.11)(terser@5.31.0))(workbox-build@7.0.0)(workbox-window@7.1.0)
+        version: 0.17.5(vite@5.2.11(@types/node@20.12.11)(terser@5.31.0))(workbox-build@7.1.0)(workbox-window@7.1.0)
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0)
+        version: 1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0)
       workbox-window:
         specifier: ^7.1.0
         version: 7.1.0
@@ -924,22 +924,43 @@ packages:
       '@types/babel__core':
         optional: true
 
-  '@rollup/plugin-node-resolve@11.2.1':
-    resolution: {integrity: sha512-yc2n43jcqVyGE2sqV5/YCmocy9ArjVAP/BeXyTtADTBBX6V0e5UMqwO8CdQ0kzjb6zu5P1qMzsScCMRvE9OlVg==, tarball: https://registry.npmjs.org/@rollup/plugin-node-resolve/-/plugin-node-resolve-11.2.1.tgz}
-    engines: {node: '>= 10.0.0'}
+  '@rollup/plugin-node-resolve@15.2.3':
+    resolution: {integrity: sha512-j/lym8nf5E21LwBT4Df1VD6hRO2L2iwUeUmP7litikRsVp1H6NWx20NEp0Y7su+7XGc476GnXXc4kFeZNGmaSQ==, tarball: https://registry.npmjs.org/@rollup/plugin-node-resolve/-/plugin-node-resolve-15.2.3.tgz}
+    engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^1.20.0||^2.0.0
+      rollup: ^2.78.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/plugin-replace@2.4.2':
     resolution: {integrity: sha512-IGcu+cydlUMZ5En85jxHH4qj2hta/11BHq95iHEyb2sbgiN0eCdzvUcHw5gt9pBL5lTi4JDYJ1acCoMGpTvEZg==, tarball: https://registry.npmjs.org/@rollup/plugin-replace/-/plugin-replace-2.4.2.tgz}
     peerDependencies:
       rollup: ^1.20.0 || ^2.0.0
 
+  '@rollup/plugin-terser@0.4.4':
+    resolution: {integrity: sha512-XHeJC5Bgvs8LfukDwWZp7yeqin6ns8RTl2B9avbejt6tZqsqvVoWI7ZTQrcNsfKEDWBTnTxM8nMDkO2IFFbd0A==, tarball: https://registry.npmjs.org/@rollup/plugin-terser/-/plugin-terser-0.4.4.tgz}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
   '@rollup/pluginutils@3.1.0':
     resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==, tarball: https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-3.1.0.tgz}
     engines: {node: '>= 8.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0
+
+  '@rollup/pluginutils@5.1.0':
+    resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==, tarball: https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-5.1.0.tgz}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   '@rollup/rollup-android-arm-eabi@4.17.2':
     resolution: {integrity: sha512-NM0jFxY8bB8QLkoKxIQeObCaDlJKewVlIEkuyYKm5An1tdVZ966w2+MPQ2l8LBZLjR+SgyV+nRkTIunzOYBMLQ==, tarball: https://registry.npmjs.org/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.17.2.tgz}
@@ -1102,8 +1123,8 @@ packages:
   '@swc/types@0.1.6':
     resolution: {integrity: sha512-/JLo/l2JsT/LRd80C3HfbmVpxOAJ11FO2RCEslFrgzLltoP9j8XIbsyDcfCt2WWyX+CM96rBoNM+IToAkFOugg==, tarball: https://registry.npmjs.org/@swc/types/-/types-0.1.6.tgz}
 
-  '@testing-library/dom@10.0.0':
-    resolution: {integrity: sha512-PmJPnogldqoVFf+EwbHvbBJ98MmqASV8kLrBYgsDNxQcFMeIS7JFL48sfyXvuMtgmWO/wMhh25odr+8VhDmn4g==, tarball: https://registry.npmjs.org/@testing-library/dom/-/dom-10.0.0.tgz}
+  '@testing-library/dom@10.1.0':
+    resolution: {integrity: sha512-wdsYKy5zupPyLCW2Je5DLHSxSfbIp6h80WoHOQc+RPtmPGA52O9x5MJEkv92Sjonpq+poOAtUKhh1kBGAXBrNA==, tarball: https://registry.npmjs.org/@testing-library/dom/-/dom-10.1.0.tgz}
     engines: {node: '>=18'}
 
   '@testing-library/dom@9.3.4':
@@ -1168,8 +1189,8 @@ packages:
   '@types/react@18.3.1':
     resolution: {integrity: sha512-V0kuGBX3+prX+DQ/7r2qsv1NsdfnCLnTgnRJ1pYnxykBhGMz+qj+box5lq7XsO5mtZsBqpjwwTu/7wszPfMBcw==, tarball: https://registry.npmjs.org/@types/react/-/react-18.3.1.tgz}
 
-  '@types/resolve@1.17.1':
-    resolution: {integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==, tarball: https://registry.npmjs.org/@types/resolve/-/resolve-1.17.1.tgz}
+  '@types/resolve@1.20.2':
+    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==, tarball: https://registry.npmjs.org/@types/resolve/-/resolve-1.20.2.tgz}
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==, tarball: https://registry.npmjs.org/@types/semver/-/semver-7.5.8.tgz}
@@ -1680,6 +1701,9 @@ packages:
   estree-walker@1.0.1:
     resolution: {integrity: sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==, tarball: https://registry.npmjs.org/estree-walker/-/estree-walker-1.0.1.tgz}
 
+  estree-walker@2.0.2:
+    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==, tarball: https://registry.npmjs.org/estree-walker/-/estree-walker-2.0.2.tgz}
+
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==, tarball: https://registry.npmjs.org/estree-walker/-/estree-walker-3.0.3.tgz}
 
@@ -1824,8 +1848,8 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==, tarball: https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz}
 
-  happy-dom@13.10.1:
-    resolution: {integrity: sha512-9GZLEFvQL5EgfJX2zcBgu1nsPUn98JF/EiJnSfQbdxI6YEQGqpd09lXXxOmYonRBIEFz9JlGCOiPflDzgS1p8w==, tarball: https://registry.npmjs.org/happy-dom/-/happy-dom-13.10.1.tgz}
+  happy-dom@14.10.1:
+    resolution: {integrity: sha512-GRbrZYIezi8+tTtffF4v2QcF8bk1h2loUTO5VYQz3GZdrL08Vk0fI+bwf/vFEBf4C/qVf/easLJ/MY1wwdhytA==, tarball: https://registry.npmjs.org/happy-dom/-/happy-dom-14.10.1.tgz}
     engines: {node: '>=16.0.0'}
 
   has-bigints@1.0.2:
@@ -1920,6 +1944,10 @@ packages:
   is-boolean-object@1.1.2:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==, tarball: https://registry.npmjs.org/is-boolean-object/-/is-boolean-object-1.1.2.tgz}
     engines: {node: '>= 0.4'}
+
+  is-builtin-module@3.2.1:
+    resolution: {integrity: sha512-BSLE3HnV2syZ0FK0iMA/yUGplUeMmNz4AW5fnTunbCIqZi4vG3WjJT9FHMy5D69xmAYBHXQhJdALdpwVxV501A==, tarball: https://registry.npmjs.org/is-builtin-module/-/is-builtin-module-3.2.1.tgz}
+    engines: {node: '>=6'}
 
   is-callable@1.2.7:
     resolution: {integrity: sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA==, tarball: https://registry.npmjs.org/is-callable/-/is-callable-1.2.7.tgz}
@@ -2052,10 +2080,6 @@ packages:
     resolution: {integrity: sha512-61btcOHNnLnsOdtLgA5efqQWjnSi/vow5HbI7HMdKKWqvrKR1bLK3BPlJn9gcSaP2ewuamUSMB5XEy76KUIS2w==, tarball: https://registry.npmjs.org/jake/-/jake-10.9.1.tgz}
     engines: {node: '>=10'}
     hasBin: true
-
-  jest-worker@26.6.2:
-    resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==, tarball: https://registry.npmjs.org/jest-worker/-/jest-worker-26.6.2.tgz}
-    engines: {node: '>= 10.13.0'}
 
   jiti@1.21.0:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==, tarball: https://registry.npmjs.org/jiti/-/jiti-1.21.0.tgz}
@@ -2560,12 +2584,6 @@ packages:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==, tarball: https://registry.npmjs.org/rimraf/-/rimraf-3.0.2.tgz}
     hasBin: true
 
-  rollup-plugin-terser@7.0.2:
-    resolution: {integrity: sha512-w3iIaU4OxcF52UUXiZNsNeuXIMDvFrr+ZXK6bFZ0Q60qyVfq4uLptoS4bbq3paG3x216eQllFZX7zt6TIImguQ==, tarball: https://registry.npmjs.org/rollup-plugin-terser/-/rollup-plugin-terser-7.0.2.tgz}
-    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
-    peerDependencies:
-      rollup: ^2.0.0
-
   rollup@2.79.1:
     resolution: {integrity: sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==, tarball: https://registry.npmjs.org/rollup/-/rollup-2.79.1.tgz}
     engines: {node: '>=10.0.0'}
@@ -2602,8 +2620,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  serialize-javascript@4.0.0:
-    resolution: {integrity: sha512-GaNA54380uFefWghODBWEGisLZFj00nS5ACs6yHa9nLqlLpVLO8ChDGeKRjZnV4Nh4n0Qi7nhYZD/9fCPzEqkw==, tarball: https://registry.npmjs.org/serialize-javascript/-/serialize-javascript-4.0.0.tgz}
+  serialize-javascript@6.0.2:
+    resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==, tarball: https://registry.npmjs.org/serialize-javascript/-/serialize-javascript-6.0.2.tgz}
 
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==, tarball: https://registry.npmjs.org/set-function-length/-/set-function-length-1.2.2.tgz}
@@ -2635,6 +2653,9 @@ packages:
   slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==, tarball: https://registry.npmjs.org/slash/-/slash-3.0.0.tgz}
     engines: {node: '>=8'}
+
+  smob@1.5.0:
+    resolution: {integrity: sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==, tarball: https://registry.npmjs.org/smob/-/smob-1.5.0.tgz}
 
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==, tarball: https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.0.tgz}
@@ -2990,58 +3011,51 @@ packages:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==, tarball: https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.5.tgz}
     engines: {node: '>=0.10.0'}
 
-  workbox-background-sync@7.0.0:
-    resolution: {integrity: sha512-S+m1+84gjdueM+jIKZ+I0Lx0BDHkk5Nu6a3kTVxP4fdj3gKouRNmhO8H290ybnJTOPfBDtTMXSQA/QLTvr7PeA==, tarball: https://registry.npmjs.org/workbox-background-sync/-/workbox-background-sync-7.0.0.tgz}
+  workbox-background-sync@7.1.0:
+    resolution: {integrity: sha512-rMbgrzueVWDFcEq1610YyDW71z0oAXLfdRHRQcKw4SGihkfOK0JUEvqWHFwA6rJ+6TClnMIn7KQI5PNN1XQXwQ==, tarball: https://registry.npmjs.org/workbox-background-sync/-/workbox-background-sync-7.1.0.tgz}
 
-  workbox-broadcast-update@7.0.0:
-    resolution: {integrity: sha512-oUuh4jzZrLySOo0tC0WoKiSg90bVAcnE98uW7F8GFiSOXnhogfNDGZelPJa+6KpGBO5+Qelv04Hqx2UD+BJqNQ==, tarball: https://registry.npmjs.org/workbox-broadcast-update/-/workbox-broadcast-update-7.0.0.tgz}
+  workbox-broadcast-update@7.1.0:
+    resolution: {integrity: sha512-O36hIfhjej/c5ar95pO67k1GQw0/bw5tKP7CERNgK+JdxBANQhDmIuOXZTNvwb2IHBx9hj2kxvcDyRIh5nzOgQ==, tarball: https://registry.npmjs.org/workbox-broadcast-update/-/workbox-broadcast-update-7.1.0.tgz}
 
-  workbox-build@7.0.0:
-    resolution: {integrity: sha512-CttE7WCYW9sZC+nUYhQg3WzzGPr4IHmrPnjKiu3AMXsiNQKx+l4hHl63WTrnicLmKEKHScWDH8xsGBdrYgtBzg==, tarball: https://registry.npmjs.org/workbox-build/-/workbox-build-7.0.0.tgz}
+  workbox-build@7.1.0:
+    resolution: {integrity: sha512-F6R94XAxjB2j4ETMkP1EXKfjECOtDmyvt0vz3BzgWJMI68TNSXIVNkgatwUKBlPGOfy9n2F/4voYRNAhEvPJNg==, tarball: https://registry.npmjs.org/workbox-build/-/workbox-build-7.1.0.tgz}
     engines: {node: '>=16.0.0'}
 
-  workbox-cacheable-response@7.0.0:
-    resolution: {integrity: sha512-0lrtyGHn/LH8kKAJVOQfSu3/80WDc9Ma8ng0p2i/5HuUndGttH+mGMSvOskjOdFImLs2XZIimErp7tSOPmu/6g==, tarball: https://registry.npmjs.org/workbox-cacheable-response/-/workbox-cacheable-response-7.0.0.tgz}
-
-  workbox-core@7.0.0:
-    resolution: {integrity: sha512-81JkAAZtfVP8darBpfRTovHg8DGAVrKFgHpOArZbdFd78VqHr5Iw65f2guwjE2NlCFbPFDoez3D3/6ZvhI/rwQ==, tarball: https://registry.npmjs.org/workbox-core/-/workbox-core-7.0.0.tgz}
+  workbox-cacheable-response@7.1.0:
+    resolution: {integrity: sha512-iwsLBll8Hvua3xCuBB9h92+/e0wdsmSVgR2ZlvcfjepZWwhd3osumQB3x9o7flj+FehtWM2VHbZn8UJeBXXo6Q==, tarball: https://registry.npmjs.org/workbox-cacheable-response/-/workbox-cacheable-response-7.1.0.tgz}
 
   workbox-core@7.1.0:
     resolution: {integrity: sha512-5KB4KOY8rtL31nEF7BfvU7FMzKT4B5TkbYa2tzkS+Peqj0gayMT9SytSFtNzlrvMaWgv6y/yvP9C0IbpFjV30Q==, tarball: https://registry.npmjs.org/workbox-core/-/workbox-core-7.1.0.tgz}
 
-  workbox-expiration@7.0.0:
-    resolution: {integrity: sha512-MLK+fogW+pC3IWU9SFE+FRStvDVutwJMR5if1g7oBJx3qwmO69BNoJQVaMXq41R0gg3MzxVfwOGKx3i9P6sOLQ==, tarball: https://registry.npmjs.org/workbox-expiration/-/workbox-expiration-7.0.0.tgz}
+  workbox-expiration@7.1.0:
+    resolution: {integrity: sha512-m5DcMY+A63rJlPTbbBNtpJ20i3enkyOtSgYfv/l8h+D6YbbNiA0zKEkCUaMsdDlxggla1oOfRkyqTvl5Ni5KQQ==, tarball: https://registry.npmjs.org/workbox-expiration/-/workbox-expiration-7.1.0.tgz}
 
-  workbox-google-analytics@7.0.0:
-    resolution: {integrity: sha512-MEYM1JTn/qiC3DbpvP2BVhyIH+dV/5BjHk756u9VbwuAhu0QHyKscTnisQuz21lfRpOwiS9z4XdqeVAKol0bzg==, tarball: https://registry.npmjs.org/workbox-google-analytics/-/workbox-google-analytics-7.0.0.tgz}
-    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
+  workbox-google-analytics@7.1.0:
+    resolution: {integrity: sha512-FvE53kBQHfVTcZyczeBVRexhh7JTkyQ8HAvbVY6mXd2n2A7Oyz/9fIwnY406ZcDhvE4NFfKGjW56N4gBiqkrew==, tarball: https://registry.npmjs.org/workbox-google-analytics/-/workbox-google-analytics-7.1.0.tgz}
 
-  workbox-navigation-preload@7.0.0:
-    resolution: {integrity: sha512-juWCSrxo/fiMz3RsvDspeSLGmbgC0U9tKqcUPZBCf35s64wlaLXyn2KdHHXVQrb2cqF7I0Hc9siQalainmnXJA==, tarball: https://registry.npmjs.org/workbox-navigation-preload/-/workbox-navigation-preload-7.0.0.tgz}
+  workbox-navigation-preload@7.1.0:
+    resolution: {integrity: sha512-4wyAbo0vNI/X0uWNJhCMKxnPanNyhybsReMGN9QUpaePLTiDpKxPqFxl4oUmBNddPwIXug01eTSLVIFXimRG/A==, tarball: https://registry.npmjs.org/workbox-navigation-preload/-/workbox-navigation-preload-7.1.0.tgz}
 
-  workbox-precaching@7.0.0:
-    resolution: {integrity: sha512-EC0vol623LJqTJo1mkhD9DZmMP604vHqni3EohhQVwhJlTgyKyOkMrZNy5/QHfOby+39xqC01gv4LjOm4HSfnA==, tarball: https://registry.npmjs.org/workbox-precaching/-/workbox-precaching-7.0.0.tgz}
+  workbox-precaching@7.1.0:
+    resolution: {integrity: sha512-LyxzQts+UEpgtmfnolo0hHdNjoB7EoRWcF7EDslt+lQGd0lW4iTvvSe3v5JiIckQSB5KTW5xiCqjFviRKPj1zA==, tarball: https://registry.npmjs.org/workbox-precaching/-/workbox-precaching-7.1.0.tgz}
 
-  workbox-range-requests@7.0.0:
-    resolution: {integrity: sha512-SxAzoVl9j/zRU9OT5+IQs7pbJBOUOlriB8Gn9YMvi38BNZRbM+RvkujHMo8FOe9IWrqqwYgDFBfv6sk76I1yaQ==, tarball: https://registry.npmjs.org/workbox-range-requests/-/workbox-range-requests-7.0.0.tgz}
+  workbox-range-requests@7.1.0:
+    resolution: {integrity: sha512-m7+O4EHolNs5yb/79CrnwPR/g/PRzMFYEdo01LqwixVnc/sbzNSvKz0d04OE3aMRel1CwAAZQheRsqGDwATgPQ==, tarball: https://registry.npmjs.org/workbox-range-requests/-/workbox-range-requests-7.1.0.tgz}
 
-  workbox-recipes@7.0.0:
-    resolution: {integrity: sha512-DntcK9wuG3rYQOONWC0PejxYYIDHyWWZB/ueTbOUDQgefaeIj1kJ7pdP3LZV2lfrj8XXXBWt+JDRSw1lLLOnww==, tarball: https://registry.npmjs.org/workbox-recipes/-/workbox-recipes-7.0.0.tgz}
+  workbox-recipes@7.1.0:
+    resolution: {integrity: sha512-NRrk4ycFN9BHXJB6WrKiRX3W3w75YNrNrzSX9cEZgFB5ubeGoO8s/SDmOYVrFYp9HMw6sh1Pm3eAY/1gVS8YLg==, tarball: https://registry.npmjs.org/workbox-recipes/-/workbox-recipes-7.1.0.tgz}
 
-  workbox-routing@7.0.0:
-    resolution: {integrity: sha512-8YxLr3xvqidnbVeGyRGkaV4YdlKkn5qZ1LfEePW3dq+ydE73hUUJJuLmGEykW3fMX8x8mNdL0XrWgotcuZjIvA==, tarball: https://registry.npmjs.org/workbox-routing/-/workbox-routing-7.0.0.tgz}
+  workbox-routing@7.1.0:
+    resolution: {integrity: sha512-oOYk+kLriUY2QyHkIilxUlVcFqwduLJB7oRZIENbqPGeBP/3TWHYNNdmGNhz1dvKuw7aqvJ7CQxn27/jprlTdg==, tarball: https://registry.npmjs.org/workbox-routing/-/workbox-routing-7.1.0.tgz}
 
-  workbox-strategies@7.0.0:
-    resolution: {integrity: sha512-dg3qJU7tR/Gcd/XXOOo7x9QoCI9nk74JopaJaYAQ+ugLi57gPsXycVdBnYbayVj34m6Y8ppPwIuecrzkpBVwbA==, tarball: https://registry.npmjs.org/workbox-strategies/-/workbox-strategies-7.0.0.tgz}
+  workbox-strategies@7.1.0:
+    resolution: {integrity: sha512-/UracPiGhUNehGjRm/tLUQ+9PtWmCbRufWtV0tNrALuf+HZ4F7cmObSEK+E4/Bx1p8Syx2tM+pkIrvtyetdlew==, tarball: https://registry.npmjs.org/workbox-strategies/-/workbox-strategies-7.1.0.tgz}
 
-  workbox-streams@7.0.0:
-    resolution: {integrity: sha512-moVsh+5to//l6IERWceYKGiftc+prNnqOp2sgALJJFbnNVpTXzKISlTIsrWY+ogMqt+x1oMazIdHj25kBSq/HQ==, tarball: https://registry.npmjs.org/workbox-streams/-/workbox-streams-7.0.0.tgz}
+  workbox-streams@7.1.0:
+    resolution: {integrity: sha512-WyHAVxRXBMfysM8ORwiZnI98wvGWTVAq/lOyBjf00pXFvG0mNaVz4Ji+u+fKa/mf1i2SnTfikoYKto4ihHeS6w==, tarball: https://registry.npmjs.org/workbox-streams/-/workbox-streams-7.1.0.tgz}
 
-  workbox-sw@7.0.0:
-    resolution: {integrity: sha512-SWfEouQfjRiZ7GNABzHUKUyj8pCoe+RwjfOIajcx6J5mtgKkN+t8UToHnpaJL5UVVOf5YhJh+OHhbVNIHe+LVA==, tarball: https://registry.npmjs.org/workbox-sw/-/workbox-sw-7.0.0.tgz}
-
-  workbox-window@7.0.0:
-    resolution: {integrity: sha512-j7P/bsAWE/a7sxqTzXo3P2ALb1reTfZdvVp6OJ/uLr/C2kZAMvjeWGm8V4htQhor7DOvYg0sSbFN2+flT5U0qA==, tarball: https://registry.npmjs.org/workbox-window/-/workbox-window-7.0.0.tgz}
+  workbox-sw@7.1.0:
+    resolution: {integrity: sha512-Hml/9+/njUXBglv3dtZ9WBKHI235AQJyLBV1G7EFmh4/mUdSQuXui80RtjDeVRrXnm/6QWgRUEHG3/YBVbxtsA==, tarball: https://registry.npmjs.org/workbox-sw/-/workbox-sw-7.1.0.tgz}
 
   workbox-window@7.1.0:
     resolution: {integrity: sha512-ZHeROyqR+AS5UPzholQRDttLFqGMwP0Np8MKWAdyxsDETxq3qOAyXvqessc3GniohG6e0mAqSQyKOHmT8zPF7g==, tarball: https://registry.npmjs.org/workbox-window/-/workbox-window-7.1.0.tgz}
@@ -3969,14 +3983,15 @@ snapshots:
       '@rollup/pluginutils': 3.1.0(rollup@2.79.1)
       rollup: 2.79.1
 
-  '@rollup/plugin-node-resolve@11.2.1(rollup@2.79.1)':
+  '@rollup/plugin-node-resolve@15.2.3(rollup@2.79.1)':
     dependencies:
-      '@rollup/pluginutils': 3.1.0(rollup@2.79.1)
-      '@types/resolve': 1.17.1
-      builtin-modules: 3.3.0
+      '@rollup/pluginutils': 5.1.0(rollup@2.79.1)
+      '@types/resolve': 1.20.2
       deepmerge: 4.3.1
+      is-builtin-module: 3.2.1
       is-module: 1.0.0
       resolve: 1.22.8
+    optionalDependencies:
       rollup: 2.79.1
 
   '@rollup/plugin-replace@2.4.2(rollup@2.79.1)':
@@ -3985,11 +4000,27 @@ snapshots:
       magic-string: 0.25.9
       rollup: 2.79.1
 
+  '@rollup/plugin-terser@0.4.4(rollup@2.79.1)':
+    dependencies:
+      serialize-javascript: 6.0.2
+      smob: 1.5.0
+      terser: 5.31.0
+    optionalDependencies:
+      rollup: 2.79.1
+
   '@rollup/pluginutils@3.1.0(rollup@2.79.1)':
     dependencies:
       '@types/estree': 0.0.39
       estree-walker: 1.0.1
       picomatch: 2.3.1
+      rollup: 2.79.1
+
+  '@rollup/pluginutils@5.1.0(rollup@2.79.1)':
+    dependencies:
+      '@types/estree': 1.0.5
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
+    optionalDependencies:
       rollup: 2.79.1
 
   '@rollup/rollup-android-arm-eabi@4.17.2':
@@ -4101,7 +4132,7 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@testing-library/dom@10.0.0':
+  '@testing-library/dom@10.1.0':
     dependencies:
       '@babel/code-frame': 7.24.2
       '@babel/runtime': 7.24.5
@@ -4123,7 +4154,7 @@ snapshots:
       lz-string: 1.5.0
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@6.4.5(vitest@1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0))':
+  '@testing-library/jest-dom@6.4.5(vitest@1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0))':
     dependencies:
       '@adobe/css-tools': 4.3.3
       '@babel/runtime': 7.24.5
@@ -4134,7 +4165,7 @@ snapshots:
       lodash: 4.17.21
       redent: 3.0.0
     optionalDependencies:
-      vitest: 1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0)
+      vitest: 1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0)
 
   '@testing-library/react@14.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -4144,9 +4175,9 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@testing-library/user-event@14.5.2(@testing-library/dom@10.0.0)':
+  '@testing-library/user-event@14.5.2(@testing-library/dom@10.1.0)':
     dependencies:
-      '@testing-library/dom': 10.0.0
+      '@testing-library/dom': 10.1.0
 
   '@types/aria-query@5.0.4': {}
 
@@ -4159,6 +4190,7 @@ snapshots:
   '@types/node@20.12.11':
     dependencies:
       undici-types: 5.26.5
+    optional: true
 
   '@types/prop-types@15.7.12': {}
 
@@ -4171,9 +4203,7 @@ snapshots:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3
 
-  '@types/resolve@1.17.1':
-    dependencies:
-      '@types/node': 20.12.11
+  '@types/resolve@1.20.2': {}
 
   '@types/semver@7.5.8': {}
 
@@ -4274,7 +4304,7 @@ snapshots:
     transitivePeerDependencies:
       - '@swc/helpers'
 
-  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0))':
+  '@vitest/coverage-v8@1.6.0(vitest@1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 0.2.3
@@ -4289,7 +4319,7 @@ snapshots:
       std-env: 3.7.0
       strip-literal: 2.1.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0)
+      vitest: 1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -4857,6 +4887,8 @@ snapshots:
 
   estree-walker@1.0.1: {}
 
+  estree-walker@2.0.2: {}
+
   estree-walker@3.0.3:
     dependencies:
       '@types/estree': 1.0.5
@@ -5027,7 +5059,7 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  happy-dom@13.10.1:
+  happy-dom@14.10.1:
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -5111,6 +5143,10 @@ snapshots:
     dependencies:
       call-bind: 1.0.7
       has-tostringtag: 1.0.2
+
+  is-builtin-module@3.2.1:
+    dependencies:
+      builtin-modules: 3.3.0
 
   is-callable@1.2.7: {}
 
@@ -5227,12 +5263,6 @@ snapshots:
       chalk: 4.1.2
       filelist: 1.0.4
       minimatch: 3.1.2
-
-  jest-worker@26.6.2:
-    dependencies:
-      '@types/node': 20.12.11
-      merge-stream: 2.0.0
-      supports-color: 7.2.0
 
   jiti@1.21.0: {}
 
@@ -5638,14 +5668,6 @@ snapshots:
     dependencies:
       glob: 7.2.3
 
-  rollup-plugin-terser@7.0.2(rollup@2.79.1):
-    dependencies:
-      '@babel/code-frame': 7.24.2
-      jest-worker: 26.6.2
-      rollup: 2.79.1
-      serialize-javascript: 4.0.0
-      terser: 5.31.0
-
   rollup@2.79.1:
     optionalDependencies:
       fsevents: 2.3.3
@@ -5699,7 +5721,7 @@ snapshots:
 
   semver@7.6.2: {}
 
-  serialize-javascript@4.0.0:
+  serialize-javascript@6.0.2:
     dependencies:
       randombytes: 2.1.0
 
@@ -5737,6 +5759,8 @@ snapshots:
   signal-exit@4.1.0: {}
 
   slash@3.0.0: {}
+
+  smob@1.5.0: {}
 
   source-map-js@1.2.0: {}
 
@@ -5989,7 +6013,8 @@ snapshots:
       has-symbols: 1.0.3
       which-boxed-primitive: 1.0.2
 
-  undici-types@5.26.5: {}
+  undici-types@5.26.5:
+    optional: true
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
@@ -6039,13 +6064,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-pwa@0.17.5(vite@5.2.11(@types/node@20.12.11)(terser@5.31.0))(workbox-build@7.0.0)(workbox-window@7.1.0):
+  vite-plugin-pwa@0.17.5(vite@5.2.11(@types/node@20.12.11)(terser@5.31.0))(workbox-build@7.1.0)(workbox-window@7.1.0):
     dependencies:
       debug: 4.3.4
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
       vite: 5.2.11(@types/node@20.12.11)(terser@5.31.0)
-      workbox-build: 7.0.0
+      workbox-build: 7.1.0
       workbox-window: 7.1.0
     transitivePeerDependencies:
       - supports-color
@@ -6060,7 +6085,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.0
 
-  vitest@1.6.0(@types/node@20.12.11)(happy-dom@13.10.1)(terser@5.31.0):
+  vitest@1.6.0(@types/node@20.12.11)(happy-dom@14.10.1)(terser@5.31.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -6084,7 +6109,7 @@ snapshots:
       why-is-node-running: 2.2.2
     optionalDependencies:
       '@types/node': 20.12.11
-      happy-dom: 13.10.1
+      happy-dom: 14.10.1
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -6140,24 +6165,25 @@ snapshots:
 
   word-wrap@1.2.5: {}
 
-  workbox-background-sync@7.0.0:
+  workbox-background-sync@7.1.0:
     dependencies:
       idb: 7.1.1
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-broadcast-update@7.0.0:
+  workbox-broadcast-update@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-build@7.0.0:
+  workbox-build@7.1.0:
     dependencies:
       '@apideck/better-ajv-errors': 0.3.6(ajv@8.13.0)
       '@babel/core': 7.24.5
       '@babel/preset-env': 7.24.5(@babel/core@7.24.5)
       '@babel/runtime': 7.24.5
       '@rollup/plugin-babel': 5.3.1(@babel/core@7.24.5)(rollup@2.79.1)
-      '@rollup/plugin-node-resolve': 11.2.1(rollup@2.79.1)
+      '@rollup/plugin-node-resolve': 15.2.3(rollup@2.79.1)
       '@rollup/plugin-replace': 2.4.2(rollup@2.79.1)
+      '@rollup/plugin-terser': 0.4.4(rollup@2.79.1)
       '@surma/rollup-plugin-off-main-thread': 2.2.3
       ajv: 8.13.0
       common-tags: 1.8.2
@@ -6167,93 +6193,85 @@ snapshots:
       lodash: 4.17.21
       pretty-bytes: 5.6.0
       rollup: 2.79.1
-      rollup-plugin-terser: 7.0.2(rollup@2.79.1)
       source-map: 0.8.0-beta.0
       stringify-object: 3.3.0
       strip-comments: 2.0.1
       tempy: 0.6.0
       upath: 1.2.0
-      workbox-background-sync: 7.0.0
-      workbox-broadcast-update: 7.0.0
-      workbox-cacheable-response: 7.0.0
-      workbox-core: 7.0.0
-      workbox-expiration: 7.0.0
-      workbox-google-analytics: 7.0.0
-      workbox-navigation-preload: 7.0.0
-      workbox-precaching: 7.0.0
-      workbox-range-requests: 7.0.0
-      workbox-recipes: 7.0.0
-      workbox-routing: 7.0.0
-      workbox-strategies: 7.0.0
-      workbox-streams: 7.0.0
-      workbox-sw: 7.0.0
-      workbox-window: 7.0.0
+      workbox-background-sync: 7.1.0
+      workbox-broadcast-update: 7.1.0
+      workbox-cacheable-response: 7.1.0
+      workbox-core: 7.1.0
+      workbox-expiration: 7.1.0
+      workbox-google-analytics: 7.1.0
+      workbox-navigation-preload: 7.1.0
+      workbox-precaching: 7.1.0
+      workbox-range-requests: 7.1.0
+      workbox-recipes: 7.1.0
+      workbox-routing: 7.1.0
+      workbox-strategies: 7.1.0
+      workbox-streams: 7.1.0
+      workbox-sw: 7.1.0
+      workbox-window: 7.1.0
     transitivePeerDependencies:
       - '@types/babel__core'
       - supports-color
 
-  workbox-cacheable-response@7.0.0:
+  workbox-cacheable-response@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
-
-  workbox-core@7.0.0: {}
+      workbox-core: 7.1.0
 
   workbox-core@7.1.0: {}
 
-  workbox-expiration@7.0.0:
+  workbox-expiration@7.1.0:
     dependencies:
       idb: 7.1.1
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-google-analytics@7.0.0:
+  workbox-google-analytics@7.1.0:
     dependencies:
-      workbox-background-sync: 7.0.0
-      workbox-core: 7.0.0
-      workbox-routing: 7.0.0
-      workbox-strategies: 7.0.0
+      workbox-background-sync: 7.1.0
+      workbox-core: 7.1.0
+      workbox-routing: 7.1.0
+      workbox-strategies: 7.1.0
 
-  workbox-navigation-preload@7.0.0:
+  workbox-navigation-preload@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-precaching@7.0.0:
+  workbox-precaching@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
-      workbox-routing: 7.0.0
-      workbox-strategies: 7.0.0
+      workbox-core: 7.1.0
+      workbox-routing: 7.1.0
+      workbox-strategies: 7.1.0
 
-  workbox-range-requests@7.0.0:
+  workbox-range-requests@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-recipes@7.0.0:
+  workbox-recipes@7.1.0:
     dependencies:
-      workbox-cacheable-response: 7.0.0
-      workbox-core: 7.0.0
-      workbox-expiration: 7.0.0
-      workbox-precaching: 7.0.0
-      workbox-routing: 7.0.0
-      workbox-strategies: 7.0.0
+      workbox-cacheable-response: 7.1.0
+      workbox-core: 7.1.0
+      workbox-expiration: 7.1.0
+      workbox-precaching: 7.1.0
+      workbox-routing: 7.1.0
+      workbox-strategies: 7.1.0
 
-  workbox-routing@7.0.0:
+  workbox-routing@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-strategies@7.0.0:
+  workbox-strategies@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
+      workbox-core: 7.1.0
 
-  workbox-streams@7.0.0:
+  workbox-streams@7.1.0:
     dependencies:
-      workbox-core: 7.0.0
-      workbox-routing: 7.0.0
+      workbox-core: 7.1.0
+      workbox-routing: 7.1.0
 
-  workbox-sw@7.0.0: {}
-
-  workbox-window@7.0.0:
-    dependencies:
-      '@types/trusted-types': 2.0.7
-      workbox-core: 7.0.0
+  workbox-sw@7.1.0: {}
 
   workbox-window@7.1.0:
     dependencies:
