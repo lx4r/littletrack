@@ -30,7 +30,7 @@ export interface Props {
 }
 
 // TODO: Extract components here?
-function App({
+const App = ({
 	getCurrentTime,
 	persistStartTime,
 	retrievePersistedStartTime,
@@ -38,7 +38,7 @@ function App({
 	manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
 	shareTimeEntries: { shareTimeEntry, isSharingAvailable },
 	timeZone,
-}: Readonly<Props>) {
+}: Readonly<Props>) => {
 	const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
 		[],
 	);
@@ -48,30 +48,30 @@ function App({
 	const isTimerRunning = startTime !== null;
 
 	useEffect(() => {
-		async function loadPersistedStartTime() {
+		const loadPersistedStartTime = async () => {
 			const persistedStartTime = await retrievePersistedStartTime();
 
 			if (persistedStartTime !== null) {
 				setStartTime(persistedStartTime);
 			}
-		}
+		};
 
 		loadPersistedStartTime();
 	}, [retrievePersistedStartTime]);
 
 	useEffect(() => {
-		async function loadPersistedTimeEntries() {
+		const loadPersistedTimeEntries = async () => {
 			const persistedTimeEntries = await retrieveTimeEntries();
 
 			setCompleteTimeEntries(persistedTimeEntries ?? []);
-		}
+		};
 
 		loadPersistedTimeEntries();
 	}, [retrieveTimeEntries]);
 
-	function groupTimeEntriesByDate(
+	const groupTimeEntriesByDate = (
 		timeEntries: TimeEntry[],
-	): { isoDate: string; timeEntries: TimeEntry[] }[] {
+	): { isoDate: string; timeEntries: TimeEntry[] }[] => {
 		return timeEntries.reduce(
 			(groupedTimeEntries, timeEntry) => {
 				const isoDate = formatAsIsoDate(timeEntry.startTime, timeZone);
@@ -90,9 +90,9 @@ function App({
 			},
 			[] as { isoDate: string; timeEntries: TimeEntry[] }[],
 		);
-	}
+	};
 
-	async function handleStartStopButtonClick() {
+	const handleStartStopButtonClick = async () => {
 		const currentTime = getCurrentTime();
 
 		if (isTimerRunning) {
@@ -110,9 +110,9 @@ function App({
 			setStartTime(currentTime);
 			await persistStartTime(currentTime);
 		}
-	}
+	};
 
-	function formatTimeEntry(timeEntry: TimeEntry) {
+	const formatTimeEntry = (timeEntry: TimeEntry) => {
 		if (
 			formatAsIsoDate(timeEntry.startTime, timeZone) !==
 			formatAsIsoDate(timeEntry.stopTime, timeZone)
@@ -127,16 +127,16 @@ function App({
 			timeEntry.startTime,
 			timeZone,
 		)} - ${formatAsIsoTimeOfDayWithoutSeconds(timeEntry.stopTime, timeZone)}`;
-	}
+	};
 
-	async function handleDeleteButtonClick({ id }: TimeEntry) {
+	const handleDeleteButtonClick = async ({ id }: TimeEntry) => {
 		const newTimeEntries = completeTimeEntries.filter(
 			({ id: currentId }) => id !== currentId,
 		);
 
 		setCompleteTimeEntries(newTimeEntries);
 		await persistTimeEntries(newTimeEntries);
-	}
+	};
 
 	return (
 		<div className="flex justify-center">
@@ -204,6 +204,6 @@ function App({
 			</main>
 		</div>
 	);
-}
+};
 
 export default App;

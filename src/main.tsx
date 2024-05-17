@@ -17,19 +17,18 @@ const UPDATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 // TODO: Move these functions somewhere else?
 
-function getCurrentTime() {
+const getCurrentTime = () => {
 	return new Date();
-}
+};
 
-// TODO: Use arrow function syntax here?
-async function persistStartTime(startTime: Date) {
+const persistStartTime = async (startTime: Date) => {
 	await localForage.setItem(
 		LOCAL_FORAGE_KEY_START_TIME,
 		startTime.toISOString(),
 	);
-}
+};
 
-async function retrievePersistedStartTime() {
+const retrievePersistedStartTime = async () => {
 	const startTime = await localForage.getItem<string>(
 		LOCAL_FORAGE_KEY_START_TIME,
 	);
@@ -39,17 +38,17 @@ async function retrievePersistedStartTime() {
 	}
 
 	return new Date(startTime);
-}
+};
 
-async function removePersistedStartTime() {
+const removePersistedStartTime = async () => {
 	await localForage.removeItem(LOCAL_FORAGE_KEY_START_TIME);
-}
+};
 
-async function persistTimeEntries(timeEntries: TimeEntry[]) {
+const persistTimeEntries = async (timeEntries: TimeEntry[]) => {
 	await localForage.setItem(LOCAL_FORAGE_KEY_TIME_ENTRIES, timeEntries);
-}
+};
 
-async function retrieveTimeEntries() {
+const retrieveTimeEntries = async () => {
 	const timeEntries = await localForage.getItem<TimeEntry[]>(
 		LOCAL_FORAGE_KEY_TIME_ENTRIES,
 	);
@@ -59,7 +58,7 @@ async function retrieveTimeEntries() {
 	}
 
 	return timeEntries;
-}
+};
 
 console.info("commit hash:", __COMMIT_HASH__);
 
