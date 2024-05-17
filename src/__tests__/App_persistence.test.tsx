@@ -30,7 +30,6 @@ import {
 it("persists start time when start button is clicked", async () => {
 	const user = userEvent.setup();
 
-	// TODO: Just use normal functions here?
 	const getCurrentTime = vi.fn(() => startTime1);
 	const persistStartTime = vi.fn(() => Promise.resolve());
 
@@ -48,7 +47,7 @@ it("persists start time when start button is clicked", async () => {
 });
 
 it("uses persisted start time if there is one and shows stop button", async () => {
-	const retrievePersistedStartTime = vi.fn(() => Promise.resolve(startTime1));
+	const retrievePersistedStartTime = () => Promise.resolve(startTime1);
 
 	render(
 		<App
