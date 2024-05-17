@@ -1,5 +1,5 @@
-import type { TimeEntry } from "./App";
 import { formatAsIsoDateTime } from "./time_formatting";
+import type { TimeEntry } from "./types";
 
 function shareMessageViaWebShareApi(title: string, text: string) {
 	if (!navigator.share) {

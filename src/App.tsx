@@ -10,13 +10,7 @@ import {
 	formatAsIsoDateTime,
 	formatAsIsoTimeOfDayWithoutSeconds,
 } from "./time_formatting";
-
-// TODO: Move this type somewhere else?
-export interface TimeEntry {
-	id: string;
-	startTime: Date;
-	stopTime: Date;
-}
+import type { TimeEntry } from "./types";
 
 export interface Props {
 	getCurrentTime: () => Date;

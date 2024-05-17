@@ -7,7 +7,8 @@ import {
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
-import App, { type TimeEntry } from "../App";
+import App from "../App";
+import type { TimeEntry } from "../types";
 import {
 	DEFAULT_APP_PROPS,
 	getStartButtonIfExists,

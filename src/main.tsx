@@ -1,13 +1,14 @@
 import localForage from "localforage";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App, { type TimeEntry } from "./App.tsx";
+import App from "./App.tsx";
 import "./index.css";
 import { enablePeriodicServiceWorkerUpdates } from "./service_worker_updates.ts";
 import {
 	isWebShareApiAvailable,
 	shareTimeEntry,
 } from "./time_entry_sharing.ts";
+import type { TimeEntry } from "./types.ts";
 
 const LOCAL_FORAGE_KEY_START_TIME = "startTime";
 const LOCAL_FORAGE_KEY_TIME_ENTRIES = "timeEntries";
