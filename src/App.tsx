@@ -161,7 +161,6 @@ function App({
 						{startTime && formatAsIsoDateTime(startTime, timeZone)}
 					</span>
 				</div>
-				{/* TODO: Use different element here? */}
 				{groupTimeEntriesByDate(completeTimeEntries).map(
 					({ isoDate, timeEntries }) => (
 						<section key={isoDate} className="mb-4">
