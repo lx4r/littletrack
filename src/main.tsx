@@ -15,15 +15,13 @@ import {
 	shareTimeEntry,
 } from "./time_entry_sharing.ts";
 
-const UPDATE_INTERVAL_MS = 24 * 60 * 60 * 1000;
-
 const getCurrentTime = () => {
 	return new Date();
 };
 
 console.info("commit hash:", __COMMIT_HASH__);
 
-enablePeriodicServiceWorkerUpdates(UPDATE_INTERVAL_MS);
+enablePeriodicServiceWorkerUpdates();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
