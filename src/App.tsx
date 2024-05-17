@@ -98,7 +98,6 @@ function App({
 		);
 	}
 
-	// TODO: Split this function up?
 	async function handleStartStopButtonClick() {
 		const currentTime = getCurrentTime();
 
@@ -136,7 +135,6 @@ function App({
 		)} - ${formatAsIsoTimeOfDayWithoutSeconds(timeEntry.stopTime, timeZone)}`;
 	}
 
-	// TODO: move this out of component?
 	async function handleDeleteButtonClick({ id }: TimeEntry) {
 		const newTimeEntries = completeTimeEntries.filter(
 			({ id: currentId }) => id !== currentId,
