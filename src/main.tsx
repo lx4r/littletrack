@@ -15,10 +15,6 @@ import {
 	shareTimeEntry,
 } from "./time_entry_sharing.ts";
 
-const getCurrentTime = () => {
-	return new Date();
-};
-
 console.info("commit hash:", __COMMIT_HASH__);
 
 enablePeriodicServiceWorkerUpdates();
@@ -26,7 +22,7 @@ enablePeriodicServiceWorkerUpdates();
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
 		<App
-			getCurrentTime={getCurrentTime}
+			getCurrentTime={() => new Date()}
 			persistStartTime={persistStartTime}
 			retrievePersistedStartTime={retrievePersistedStartTime}
 			removePersistedStartTime={removePersistedStartTime}
