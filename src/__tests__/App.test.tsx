@@ -20,8 +20,7 @@ import {
 
 // TODO: Add test for start time being displayed in proper format
 
-// TODO: Check order of time entries?
-it("can log multiple time entries", async () => {
+it("can log multiple time entries and show them in reverse chronological order", async () => {
 	const user = userEvent.setup();
 
 	const getCurrentTime = vi.fn(() => startTime1);
@@ -68,11 +67,21 @@ it("can log multiple time entries", async () => {
 
 	await user.click(getStopButtonOrThrow());
 
-	expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();
+	const startTime1Element = screen.queryByText(startTime1TimeOfDayMatcher);
+
+	const startTime2Element = screen.queryByText(startTime2TimeOfDayMatcher);
+
+	expect(startTime1Element).toBeInTheDocument();
 	expect(screen.queryByText(stopTime1TimeOfDayMatcher)).toBeInTheDocument();
 
-	expect(screen.queryByText(startTime2TimeOfDayMatcher)).toBeInTheDocument();
+	expect(startTime2Element).toBeInTheDocument();
 	expect(screen.queryByText(stopTime2TimeOfDayMatcher)).toBeInTheDocument();
+
+	expect(
+		(startTime2Element as HTMLElement).compareDocumentPosition(
+			startTime1Element as HTMLElement,
+		),
+	).toEqual(Node.DOCUMENT_POSITION_FOLLOWING);
 });
 
 it("can delete a time entry if there is just one", async () => {
