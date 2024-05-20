@@ -99,6 +99,10 @@ it("doesn't show sharing button is Web Share API isn't available", async () => {
 		stopTime: stopTime1,
 	};
 
+	vi.stubGlobal("navigator", {
+		share: undefined,
+	});
+
 	render(
 		<App
 			{...DEFAULT_APP_PROPS}
