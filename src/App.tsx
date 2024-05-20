@@ -1,15 +1,7 @@
-import {
-	PlayIcon,
-	ShareIcon,
-	StopIcon,
-	XMarkIcon,
-} from "@heroicons/react/24/solid";
+import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import {
-	formatAsIsoDate,
-	formatAsIsoDateTime,
-	formatAsIsoTimeOfDayWithoutSeconds,
-} from "./time_formatting";
+import { TimeEntryRow } from "./TimeEntryRow";
+import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
 
 export interface Props {
@@ -29,7 +21,6 @@ export interface Props {
 	timeZone: string;
 }
 
-// TODO: Extract components here?
 const App = ({
 	getCurrentTime,
 	persistStartTime,
@@ -112,23 +103,6 @@ const App = ({
 		}
 	};
 
-	const formatTimeEntry = (timeEntry: TimeEntry) => {
-		if (
-			formatAsIsoDate(timeEntry.startTime, timeZone) !==
-			formatAsIsoDate(timeEntry.stopTime, timeZone)
-		) {
-			return `${formatAsIsoDateTime(
-				timeEntry.startTime,
-				timeZone,
-			)} - ${formatAsIsoDateTime(timeEntry.stopTime, timeZone)}`;
-		}
-
-		return `${formatAsIsoTimeOfDayWithoutSeconds(
-			timeEntry.startTime,
-			timeZone,
-		)} - ${formatAsIsoTimeOfDayWithoutSeconds(timeEntry.stopTime, timeZone)}`;
-	};
-
 	const handleDeleteButtonClick = async ({ id }: TimeEntry) => {
 		const newTimeEntries = completeTimeEntries.filter(
 			({ id: currentId }) => id !== currentId,
@@ -167,35 +141,16 @@ const App = ({
 							<h2 className="mb-2 text-lg">{isoDate}</h2>
 							<ul>
 								{timeEntries.map((timeEntry) => (
-									<li
+									<TimeEntryRow
 										key={timeEntry.id}
-										className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 px-3 py-2 lg:text-sm"
-									>
-										{formatTimeEntry(timeEntry)}
-										<div>
-											{isSharingAvailable && (
-												<button
-													type="button"
-													onClick={() => shareTimeEntry(timeEntry, timeZone)}
-													className="mr-2 rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-													aria-label="Share"
-												>
-													<ShareIcon className="h-5 w-5" />
-												</button>
-											)}
-											<button
-												type="button"
-												onClick={() => handleDeleteButtonClick(timeEntry)}
-												className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
-												aria-label="Delete"
-											>
-												<XMarkIcon
-													className="h-5 w-5"
-													data-testid="delete-icon"
-												/>
-											</button>
-										</div>
-									</li>
+										timeEntry={timeEntry}
+										timeZone={timeZone}
+										isSharingAvailable={isSharingAvailable}
+										onDeleteButtonClick={handleDeleteButtonClick}
+										onShareButtonClick={(timeEntry: TimeEntry) =>
+											shareTimeEntry(timeEntry, timeZone)
+										}
+									/>
 								))}
 							</ul>
 						</section>
