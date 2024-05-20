@@ -42,7 +42,7 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 		<App
 			{...DEFAULT_APP_PROPS}
 			shareTimeEntries={{
-				shareTimeEntry: shareTimeEntry,
+				shareTimeEntry: (timeEntry) => shareTimeEntry(timeEntry, "UTC"),
 				isSharingAvailable: isWebShareApiAvailable(),
 			}}
 			manageTimeEntries={{
@@ -92,7 +92,7 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 	);
 });
 
-it("doesn't show sharing button is Web Share API is not available", async () => {
+it("doesn't show sharing button is Web Share API isn't available", async () => {
 	const timeEntry = {
 		id: "time-entry-1",
 		startTime: startTime1,
@@ -107,7 +107,7 @@ it("doesn't show sharing button is Web Share API is not available", async () => 
 				retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
 			}}
 			shareTimeEntries={{
-				shareTimeEntry: shareTimeEntry,
+				shareTimeEntry: () => Promise.resolve(),
 				isSharingAvailable: isWebShareApiAvailable(),
 			}}
 		/>,

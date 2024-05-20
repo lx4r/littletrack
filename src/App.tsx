@@ -14,8 +14,7 @@ export interface Props {
 		retrieveTimeEntries: () => Promise<TimeEntry[] | null>;
 	};
 	shareTimeEntries: {
-		// TODO: Instead pass time zone outside of component?
-		shareTimeEntry: (timeEntry: TimeEntry, timeZone: string) => Promise<void>;
+		shareTimeEntry: (timeEntry: TimeEntry) => Promise<void>;
 		isSharingAvailable: boolean;
 	};
 	timeZone: string;
@@ -147,9 +146,7 @@ const App = ({
 										timeZone={timeZone}
 										isSharingAvailable={isSharingAvailable}
 										onDeleteButtonClick={handleDeleteButtonClick}
-										onShareButtonClick={(timeEntry: TimeEntry) =>
-											shareTimeEntry(timeEntry, timeZone)
-										}
+										onShareButtonClick={shareTimeEntry}
 									/>
 								))}
 							</ul>

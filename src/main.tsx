@@ -19,6 +19,8 @@ console.info("commit hash:", __COMMIT_HASH__);
 
 enablePeriodicServiceWorkerUpdates();
 
+const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
 		<App
@@ -28,10 +30,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 			removePersistedStartTime={removePersistedStartTime}
 			manageTimeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 			shareTimeEntries={{
-				shareTimeEntry,
+				shareTimeEntry: (timeEntry) => shareTimeEntry(timeEntry, timeZone),
 				isSharingAvailable: isWebShareApiAvailable(),
 			}}
-			timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
+			timeZone={timeZone}
 		/>
 	</React.StrictMode>,
 );
