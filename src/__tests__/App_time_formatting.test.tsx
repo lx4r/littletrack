@@ -7,6 +7,7 @@ import {
 	getStartButtonOrThrow,
 	getStopButtonOrThrow,
 	startTime1,
+	startTime1IsoDateTime,
 	startTime1TimeOfDayMatcher,
 	stopTime1,
 	stopTime1TimeOfDayMatcher,
@@ -49,4 +50,18 @@ it("formats dates and times according to local time zone, not only according to 
 		screen.queryByText(stopTime1TimeOfDayInTokyoMatcher),
 	).toBeInTheDocument();
 	expect(screen.queryByText(startTime1Date)).toBeInTheDocument();
+});
+
+it("formats start time as ISO date while time entry is incomplete", async () => {
+	const user = userEvent.setup();
+
+	const getCurrentTime = () => startTime1;
+
+	render(<App {...DEFAULT_APP_PROPS} getCurrentTime={getCurrentTime} />);
+
+	expect(screen.queryByText(startTime1IsoDateTime)).not.toBeInTheDocument();
+
+	await user.click(getStartButtonOrThrow());
+
+	expect(screen.queryByText(startTime1IsoDateTime)).toBeInTheDocument();
 });

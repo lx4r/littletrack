@@ -18,8 +18,6 @@ import {
 	stopTime2TimeOfDayMatcher,
 } from "./App_test_helpers";
 
-// TODO: Add test for start time being displayed in proper format
-
 it("can log multiple time entries and show them in reverse chronological order", async () => {
 	const user = userEvent.setup();
 
