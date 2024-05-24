@@ -17,7 +17,7 @@ import {
 	stopTime2IsoDateTime,
 } from "./App_test_helpers";
 
-it("allows for sharing a time entry if the Web Share API is available", async () => {
+it("allows for sharing time entries if the Web Share API is available", async () => {
 	const user = userEvent.setup();
 
 	const timeEntry1 = {
@@ -63,7 +63,6 @@ it("allows for sharing a time entry if the Web Share API is available", async ()
 
 	await user.click(timeEntry1ShareButton);
 
-	// TODO: Split tests for sharing from tests for formatting?
 	expect(mockedWebShareApiShare).toHaveBeenCalledTimes(1);
 	expect(mockedWebShareApiShare).toHaveBeenLastCalledWith(
 		expect.objectContaining({
