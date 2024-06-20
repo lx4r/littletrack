@@ -57,7 +57,7 @@ export const TimeEntryRow = ({
 				className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow hover:bg-neutral-600 hover:text-neutral-100"
 				aria-label="Delete"
 			>
-				<XMarkIcon className="h-5 w-5" data-testid="delete-icon" />
+				<XMarkIcon className="h-5 w-5" />
 			</button>
 		</div>
 	</li>
