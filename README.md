@@ -1,31 +1,49 @@
-# React + TypeScript + Vite
+# LittleTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A small time tracking app to be used when you don't have access to your main time tracking app.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Simple tracking of start and end of a time entry
+- Persistence: Time entries are saved locally.
+- PWA support: The app can be installed on your phone for quick access.
+  - Offline use
+  - Time entry sharing via the Web Share API (availability depends on the device)
 
-## Expanding the ESLint configuration
+## Features not offered
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Descriptions or tags for time entries
+- Synchronization with some kind of online data storage
+- Export of time entries, e.g., as a PDF
 
-- Configure the top-level `parserOptions` property like this:
+In general, the idea is that you don't use LittleTrack too often and transfer the time entries to your main time tracking app regularly.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Installation as a PWA
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Visit the app's URL, and you should see an option to "Add to Home Screen" or an equivalent prompt, depending on your browser. This will install the app on your device, making it accessible just like any other installed app.
 
-## Powered by
+## Development
 
-- [Heroicons](https://heroicons.com/)
+### Prerequisites
+
+- Node.js
+- pnpm
+
+### Setup
+
+- Clone the repository to your local machine
+- Install the dependencies by running `pnpm install`
+
+### Most important scripts
+
+- `pnpm dev`: Starts the development server on `localhost:5174`.
+- `pnpm build`: Builds the app for production
+- `pnpm test`: Runs the tests
+
+# Contributing
+
+Contributions are welcome! Please feel free to submit pull requests or open issues to suggest improvements or add new features.
+
+# License
+
+See [here](LICENSE).
