@@ -6,11 +6,10 @@
 
 ## Features
 
-- Simple tracking of start and end of a time entry
-- Persistence: Time entries are saved locally.
-- PWA support: The app can be installed on your phone for quick access.
-  - Offline use
-  - Time entry sharing via the Web Share API (availability depends on the device)
+- Simple tracking of start and end of time entries.
+- Persistence: Your time entries are saved locally on the device, ensuring your data is retained between sessions.
+- Sharing: Share your time entries via the Web Share API on supported devices.
+- Progressive Web App (PWA) support: You can install the app on your phone for quick access and offline use.
 
 ## Features not offered
 
