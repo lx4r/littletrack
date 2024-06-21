@@ -88,7 +88,7 @@ it("doesn't have a running time entry after stopping another and reloading the a
 
 	// Added this to resolve a "not wrapped in act(...)" warning
 	await waitFor(() => {
-		expect(screen.queryByTestId("start-icon")).toBeInTheDocument();
+		expect(getStartButtonIfExists()).toBeInTheDocument();
 	});
 
 	await user.click(getStartButtonOrThrow());

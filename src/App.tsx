@@ -6,9 +6,11 @@ import type { TimeEntry } from "./types";
 
 export interface Props {
 	getCurrentTime: () => Date;
+	// TODO: group props related to start time
 	persistStartTime: (startTime: Date) => Promise<void>;
 	retrievePersistedStartTime: () => Promise<Date | null>;
 	removePersistedStartTime: () => Promise<void>;
+	// TODO: rename prop
 	manageTimeEntries: {
 		persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
 		retrieveTimeEntries: () => Promise<TimeEntry[] | null>;
@@ -127,7 +129,7 @@ const App = ({
 						{isTimerRunning ? (
 							<StopIcon className="h-10 w-10" data-testid="stop-icon" />
 						) : (
-							<PlayIcon className="h-10 w-10" data-testid="start-icon" />
+							<PlayIcon className="h-10 w-10" aria-label="Start" />
 						)}
 					</button>
 					<span className="text-lg lg:text-base">

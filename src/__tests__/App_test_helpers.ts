@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import type { Props as AppProps } from "../App";
 
 export function getStartButtonIfExists() {
-	return screen.queryByTestId("start-icon");
+	return screen.queryByLabelText("Start");
 }
 
 export function getStopButtonIfExists() {
@@ -10,7 +10,7 @@ export function getStopButtonIfExists() {
 }
 
 export function getStartButtonOrThrow() {
-	return screen.getByTestId("start-icon");
+	return screen.getByLabelText("Start");
 }
 
 export function getStopButtonOrThrow() {
