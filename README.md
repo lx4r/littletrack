@@ -18,7 +18,7 @@
 - Synchronization with some kind of online data storage
 - Export of time entries, e.g., as a PDF
 
-In general, the idea is that you don't use LittleTrack too often and transfer the time entries to your main time tracking app regularly.
+In general, the idea is that you only use LittleTrack occasionally and transfer the time entries to your main time tracking app regularly.
 
 ## Installation as a PWA
 
