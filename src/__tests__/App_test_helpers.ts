@@ -6,7 +6,7 @@ export function getStartButtonIfExists() {
 }
 
 export function getStopButtonIfExists() {
-	return screen.queryByTestId("stop-icon");
+	return screen.queryByLabelText("Stop");
 }
 
 export function getStartButtonOrThrow() {
@@ -14,7 +14,7 @@ export function getStartButtonOrThrow() {
 }
 
 export function getStopButtonOrThrow() {
-	return screen.getByTestId("stop-icon");
+	return screen.getByLabelText("Stop");
 }
 
 export const startTime1 = new Date("2023-01-01T01:01:01.000Z");

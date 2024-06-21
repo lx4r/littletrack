@@ -127,7 +127,7 @@ const App = ({
 						className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
 					>
 						{isTimerRunning ? (
-							<StopIcon className="h-10 w-10" data-testid="stop-icon" />
+							<StopIcon className="h-10 w-10" aria-label="Stop" />
 						) : (
 							<PlayIcon className="h-10 w-10" aria-label="Start" />
 						)}
