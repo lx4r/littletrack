@@ -1,6 +1,8 @@
 # LittleTrack
 
-> A small time tracking app to be used when you don't have access to your main time tracking app.
+> A small time tracking app for when you don't have access to your main time tracking app.
+
+![screenshot](assets/screenshot.png)
 
 ## Features
 
