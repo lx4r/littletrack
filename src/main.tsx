@@ -11,7 +11,7 @@ import {
 } from "./persistence.ts";
 import { enablePeriodicServiceWorkerUpdates } from "./service_worker_updates.ts";
 import {
-	isWebShareApiAvailable,
+	isSharingAvailable,
 	shareTimeEntry,
 } from "./time_entry_sharing.ts";
 
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 			manageTimeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 			shareTimeEntries={{
 				shareTimeEntry: (timeEntry) => shareTimeEntry(timeEntry, timeZone),
-				isSharingAvailable: isWebShareApiAvailable(),
+				isSharingAvailable: isSharingAvailable(),
 			}}
 			timeZone={timeZone}
 		/>

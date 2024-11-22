@@ -22,6 +22,26 @@ export async function shareTimeEntry(timeEntry: TimeEntry, timeZone: string) {
 	await shareMessageViaWebShareApi(shareTitle, shareText);
 }
 
-export function isWebShareApiAvailable() {
-	return Boolean(navigator.share);
+export async function isSharingAvailable() {
+	const testShareData = {
+		title: "Test",
+		text: "Test",
+	};
+
+	if (!navigator.share || !navigator.canShare?.(testShareData)) {
+		return false;
+	}
+
+	try {
+		await navigator.share(testShareData);
+		console.warn(
+			"Web Share API is available, but sharing concrete data is not supported",
+		);
+		return true;
+	} catch {
+		console.log(
+			"Web Share API is available and sharing concrete data is supported",
+		)
+		return false;
+	}
 }
