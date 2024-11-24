@@ -17,14 +17,15 @@ import {
 	stopTime2IsoDateTime,
 } from "./App_test_helpers";
 
+const timeEntry1 = {
+	id: "time-entry-1",
+	startTime: startTime1,
+	stopTime: stopTime1,
+};
+
 it("allows for sharing time entries if Web Share API is available", async () => {
 	const user = userEvent.setup();
 
-	const timeEntry1 = {
-		id: "time-entry-1",
-		startTime: startTime1,
-		stopTime: stopTime1,
-	};
 	const timeEntry2 = {
 		id: "time-entry-2",
 		startTime: startTime2,
@@ -43,8 +44,8 @@ it("allows for sharing time entries if Web Share API is available", async () => 
 		<App
 			{...DEFAULT_APP_PROPS}
 			shareTimeEntries={{
+				isSharingAvailable: () => Promise.resolve(true),
 				shareTimeEntry: (timeEntry) => shareTimeEntry(timeEntry, "UTC"),
-				isSharingAvailable,
 			}}
 			manageTimeEntries={{
 				persistTimeEntries: vi.fn(),
@@ -90,88 +91,26 @@ it("allows for sharing time entries if Web Share API is available", async () => 
 	);
 });
 
-it("doesn't show sharing button if Web Share API isn't available", async () => {
-	const timeEntry = {
-		id: "time-entry-1",
-		startTime: startTime1,
-		stopTime: stopTime1,
-	};
-
-	vi.stubGlobal("navigator", {
+it.for([
+	{
+		testName: "Web Share API isn't available",
 		share: undefined,
 		canShare: undefined,
-	});
-
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				persistTimeEntries: vi.fn(),
-				retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
-			}}
-			shareTimeEntries={{
-				shareTimeEntry: () => Promise.resolve(),
-				isSharingAvailable,
-			}}
-		/>,
-	);
-
-	expect(
-		await screen.findByText(startTime1TimeOfDayMatcher),
-	).toBeInTheDocument();
-
-	const timeEntryRow = screen.getByText(startTime1TimeOfDayMatcher);
-	const timeEntryShareButton = within(timeEntryRow).queryByLabelText(/share/i);
-
-	expect(timeEntryShareButton).not.toBeInTheDocument();
-});
-
-it("doesn't show sharing button if share() is available but canShare() returns false", async () => {
-	const timeEntry = {
-		id: "time-entry-1",
-		startTime: startTime1,
-		stopTime: stopTime1,
-	};
-
-	vi.stubGlobal("navigator", {
+	},
+	{
+		testName: "share() is available but canShare() returns false",
 		share: () => Promise.resolve(),
 		canShare: () => false,
-	});
-
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				persistTimeEntries: vi.fn(),
-				retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
-			}}
-			shareTimeEntries={{
-				shareTimeEntry: () => Promise.resolve(),
-				isSharingAvailable,
-			}}
-		/>,
-	);
-
-	expect(
-		await screen.findByText(startTime1TimeOfDayMatcher),
-	).toBeInTheDocument();
-
-	const timeEntryRow = screen.getByText(startTime1TimeOfDayMatcher);
-	const timeEntryShareButton = within(timeEntryRow).queryByLabelText(/share/i);
-
-	expect(timeEntryShareButton).not.toBeInTheDocument();
-});
-
-it("doesn't show sharing button is Web Share API is available, canShare() returns true, but sharing test data throws errors", async () => {
-	const timeEntry = {
-		id: "time-entry-1",
-		startTime: startTime1,
-		stopTime: stopTime1,
-	};
-
-	vi.stubGlobal("navigator", {
+	},
+	{
+		testName: "canShare() returns true but sharing test data throws errors",
 		share: () => Promise.reject(),
 		canShare: () => false,
+	},
+])(`doesn't show sharing button if $testName`, async ({ share, canShare }) => {
+	vi.stubGlobal("navigator", {
+		share,
+		canShare,
 	});
 
 	render(
@@ -179,10 +118,10 @@ it("doesn't show sharing button is Web Share API is available, canShare() return
 			{...DEFAULT_APP_PROPS}
 			manageTimeEntries={{
 				persistTimeEntries: vi.fn(),
-				retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry])),
+				retrieveTimeEntries: vi.fn(() => Promise.resolve([timeEntry1])),
 			}}
 			shareTimeEntries={{
-				shareTimeEntry: () => Promise.resolve(),
+				...DEFAULT_APP_PROPS.shareTimeEntries,
 				isSharingAvailable,
 			}}
 		/>,
