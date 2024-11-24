@@ -44,7 +44,7 @@ export const DEFAULT_APP_PROPS: AppProps = {
 	},
 	shareTimeEntries: {
 		shareTimeEntry: () => Promise.resolve(),
-		isSharingAvailable: false,
+		isSharingAvailable: () => Promise.resolve(true),
 	},
 	timeZone: "UTC",
 };

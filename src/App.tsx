@@ -17,7 +17,7 @@ export interface Props {
 	};
 	shareTimeEntries: {
 		shareTimeEntry: (timeEntry: TimeEntry) => Promise<void>;
-		isSharingAvailable: boolean;
+		isSharingAvailable: () => Promise<boolean>;
 	};
 	timeZone: string;
 }
@@ -36,6 +36,9 @@ const App = ({
 	);
 
 	const [startTime, setStartTime] = useState<Date | null>(null);
+
+	const [isTimeEntrySharingAvailable, setIsTimeEntrySharingAvailable] =
+		useState(false);
 
 	const isTimerRunning = startTime !== null;
 
@@ -60,6 +63,14 @@ const App = ({
 
 		loadPersistedTimeEntries();
 	}, [retrieveTimeEntries]);
+
+	useEffect(() => {
+		async function loadSharingAvailability() {
+			setIsTimeEntrySharingAvailable(await isSharingAvailable());
+		}
+
+		loadSharingAvailability();
+	}, [isSharingAvailable]);
 
 	const groupTimeEntriesByDate = (
 		timeEntries: TimeEntry[],
@@ -146,7 +157,7 @@ const App = ({
 										key={timeEntry.id}
 										timeEntry={timeEntry}
 										timeZone={timeZone}
-										isSharingAvailable={isSharingAvailable}
+										isSharingAvailable={isTimeEntrySharingAvailable}
 										onDeleteButtonClick={handleDeleteButtonClick}
 										onShareButtonClick={shareTimeEntry}
 									/>

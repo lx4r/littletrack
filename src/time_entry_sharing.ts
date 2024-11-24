@@ -22,6 +22,22 @@ export async function shareTimeEntry(timeEntry: TimeEntry, timeZone: string) {
 	await shareMessageViaWebShareApi(shareTitle, shareText);
 }
 
-export function isWebShareApiAvailable() {
-	return Boolean(navigator.share);
+export async function isSharingAvailable() {
+	const testShareData = {
+		title: "Test",
+		text: "Test",
+	};
+
+	if (!navigator.share || !navigator.canShare?.(testShareData)) {
+		return false;
+	}
+
+	// In some browsers navigator.canShare(testShareData) returns true even though
+	// navigator.share(testShareData) throws an error. Therefore, this extra check is needed.
+	try {
+		await navigator.share(testShareData);
+		return true;
+	} catch {
+		return false;
+	}
 }
