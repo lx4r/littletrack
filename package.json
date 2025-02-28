@@ -44,5 +44,8 @@
 		"vite-plugin-pwa": "^0.21.1",
 		"vitest": "^2.1.8",
 		"workbox-window": "^7.3.0"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": ["@biomejs/biome", "@swc/core", "esbuild"]
 	}
 }
