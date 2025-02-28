@@ -126,7 +126,7 @@ const App = ({
 
 	return (
 		<div className="flex justify-center">
-			<main className="w-full max-w-screen-md">
+			<main className="w-full max-w-(--breakpoint-md)">
 				<div
 					className={`mb-4 flex items-center ${
 						isTimerRunning ? "justify-between" : ""
