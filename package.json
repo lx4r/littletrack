@@ -9,7 +9,7 @@
 		"build": "tsc && vite build",
 		"check": "biome check .",
 		"check:staged": "biome check --staged --no-errors-on-unmatched .",
-		"check:fix": "biome check --apply .",
+		"check:fix": "biome check --write .",
 		"preview": "vite preview",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
