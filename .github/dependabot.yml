@@ -1,10 +1,59 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+      interval: "weekly"
+    groups:
+      css:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "postcss"
+      vite:
+        patterns:
+          - "vite"
+          - "vite-*"
+          - "@vitejs/"
+          - "vitest"
+          - "@vitest/*"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+      linting:
+        patterns:
+          - "@biomejs/*"
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "happy-dom"
+      # This groups is supposed to reduce the number of simultaneously open PRs by bundling a large
+      # number of dependencies that usually don’t cause issues when they are updated. Feel free to
+      # split it if it causes problems.
+      misc:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "postcss"
+          - "vite"
+          - "vite-*"
+          - "@vitejs/"
+          - "vitest"
+          - "@vitest/*"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+          - "@biomejs/*"
+          - "@testing-library/*"
+          - "happy-dom"
+        update-types:
+          - "minor"
+          - "patch"
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
