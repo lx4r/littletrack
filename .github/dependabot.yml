@@ -14,7 +14,7 @@ updates:
         patterns:
           - "vite"
           - "vite-*"
-          - "@vitejs/"
+          - "@vitejs/*"
           - "vitest"
           - "@vitest/*"
       react:
@@ -41,7 +41,7 @@ updates:
           - "postcss"
           - "vite"
           - "vite-*"
-          - "@vitejs/"
+          - "@vitejs/*"
           - "vitest"
           - "@vitest/*"
           - "react"
