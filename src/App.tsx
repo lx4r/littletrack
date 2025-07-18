@@ -1,4 +1,4 @@
-import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
+import { PlayIcon, StopIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { TimeEntryRow } from "./TimeEntryRow";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
@@ -150,7 +150,30 @@ const App = ({
 				{groupTimeEntriesByDate(completeTimeEntries).map(
 					({ isoDate, timeEntries }) => (
 						<section key={isoDate} className="mb-4">
-							<h2 className="mb-2 text-lg">{isoDate}</h2>
+							<div className="flex items-center justify-between">
+								<h2 className="mb-2 text-lg">{isoDate}</h2>
+								<button
+									type="button"
+									className="mb-2 rounded-md bg-neutral-600 p-2 text-neutral-200 text-sm shadow-md hover:bg-neutral-700 hover:text-neutral-100"
+								>
+									<TrashIcon
+										className="h-5 w-5"
+										aria-label="Delete multiple time entries"
+									/>
+								</button>
+							</div>
+							<div className="bg-neutral-600 p-4 mb-2">
+								<p>
+									Do you want to delete all selected time entries from the week
+									2025-01-01 to 2025-01-07?
+								</p>
+								<button
+									type="button"
+									className="mt-2 rounded-md bg-red-900 p-2 text-neutral-200 shadow-md hover:bg-red-950 hover:text-neutral-100"
+								>
+									Yes, I'm sure
+								</button>
+							</div>
 							<ul>
 								{timeEntries.map((timeEntry) => (
 									<TimeEntryRow
