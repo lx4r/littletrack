@@ -22,6 +22,12 @@
 				"useNumberNamespace": "error",
 				"noInferrableTypes": "error",
 				"noUselessElse": "error"
+			},
+			"nursery": {
+				"useSortedClasses": {
+					"level": "on",
+					"fix": "safe"
+				}
 			}
 		}
 	},

@@ -1,6 +1,7 @@
-import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
+import { PlayIcon, StopIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { TimeEntryRow } from "./TimeEntryRow";
+import TimeEntryRowGroup from "./TimeEntryRowGroup";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
 
@@ -143,27 +144,23 @@ const App = ({
 							<PlayIcon className="h-10 w-10" aria-label="Start" />
 						)}
 					</button>
+
 					<span className="text-lg lg:text-base">
 						{startTime && formatAsIsoDateTime(startTime, timeZone)}
 					</span>
 				</div>
+
 				{groupTimeEntriesByDate(completeTimeEntries).map(
 					({ isoDate, timeEntries }) => (
-						<section key={isoDate} className="mb-4">
-							<h2 className="mb-2 text-lg">{isoDate}</h2>
-							<ul>
-								{timeEntries.map((timeEntry) => (
-									<TimeEntryRow
-										key={timeEntry.id}
-										timeEntry={timeEntry}
-										timeZone={timeZone}
-										isSharingAvailable={isTimeEntrySharingAvailable}
-										onDeleteButtonClick={handleDeleteButtonClick}
-										onShareButtonClick={shareTimeEntry}
-									/>
-								))}
-							</ul>
-						</section>
+						<TimeEntryRowGroup
+							key={isoDate}
+							timeEntries={timeEntries}
+							isoDate={isoDate}
+							timeZone={timeZone}
+							isTimeEntrySharingAvailable={isTimeEntrySharingAvailable}
+							onDeleteTimeEntryButtonClick={handleDeleteButtonClick}
+							shareTimeEntry={shareTimeEntry}
+						/>
 					),
 				)}
 			</main>
