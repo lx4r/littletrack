@@ -1,20 +1,14 @@
-import localForage from "localforage";
 import type { TimeEntry } from "./types.ts";
 
-const LOCAL_FORAGE_KEY_START_TIME = "startTime";
-const LOCAL_FORAGE_KEY_TIME_ENTRIES = "timeEntries";
+export const STORAGE_KEY_START_TIME = "littletrack_start_time";
+export const STORAGE_KEY_TIME_ENTRIES = "littletrack_time_entries";
 
 export const persistStartTime = async (startTime: Date) => {
-	await localForage.setItem(
-		LOCAL_FORAGE_KEY_START_TIME,
-		startTime.toISOString(),
-	);
+	localStorage.setItem(STORAGE_KEY_START_TIME, startTime.toISOString());
 };
 
 export const retrievePersistedStartTime = async () => {
-	const startTime = await localForage.getItem<string>(
-		LOCAL_FORAGE_KEY_START_TIME,
-	);
+	const startTime = localStorage.getItem(STORAGE_KEY_START_TIME);
 
 	if (startTime === null) {
 		return null;
@@ -24,21 +18,41 @@ export const retrievePersistedStartTime = async () => {
 };
 
 export const removePersistedStartTime = async () => {
-	await localForage.removeItem(LOCAL_FORAGE_KEY_START_TIME);
+	localStorage.removeItem(STORAGE_KEY_START_TIME);
 };
 
 export const persistTimeEntries = async (timeEntries: TimeEntry[]) => {
-	await localForage.setItem(LOCAL_FORAGE_KEY_TIME_ENTRIES, timeEntries);
+	localStorage.setItem(STORAGE_KEY_TIME_ENTRIES, JSON.stringify(timeEntries));
 };
 
 export const retrieveTimeEntries = async () => {
-	const timeEntries = await localForage.getItem<TimeEntry[]>(
-		LOCAL_FORAGE_KEY_TIME_ENTRIES,
-	);
+	const timeEntriesJson = localStorage.getItem(STORAGE_KEY_TIME_ENTRIES);
 
-	if (timeEntries === null) {
+	if (timeEntriesJson === null) {
 		return null;
 	}
 
-	return timeEntries;
+	try {
+		const rawTimeEntries = JSON.parse(timeEntriesJson);
+
+		if (!Array.isArray(rawTimeEntries)) {
+			console.error("Time entries data is not an array");
+			return null;
+		}
+
+		return rawTimeEntries.map(
+			(entry: {
+				id: string;
+				startTime: string;
+				stopTime: string;
+			}): TimeEntry => ({
+				id: entry.id,
+				startTime: new Date(entry.startTime),
+				stopTime: new Date(entry.stopTime),
+			}),
+		);
+	} catch (error) {
+		console.error("Failed to parse time entries from localStorage:", error);
+		return null;
+	}
 };
