@@ -55,7 +55,7 @@ export const TimeEntryRow = ({
 				type="button"
 				onClick={() => onDeleteButtonClick(timeEntry)}
 				className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100"
-				aria-label="Delete"
+				aria-label="Delete time entry"
 			>
 				<XMarkIcon className="h-5 w-5" />
 			</button>
