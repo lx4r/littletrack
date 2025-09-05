@@ -159,7 +159,26 @@ const App = ({
 					</div>
 				</div>
 
-				{isBatchDeleteModeEnabled && "Batch delete mode is enabled"}
+				{completeTimeEntries.length > 0 && isBatchDeleteModeEnabled && (
+					<div className="mb-4">
+						<div className="flex gap-2">
+							<button
+								type="button"
+								onClick={() => setIsBatchDeleteModeEnabled(false)}
+								className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+							>
+								Yes, delete the selected time entries
+							</button>
+							<button
+								type="button"
+								onClick={() => setIsBatchDeleteModeEnabled(false)}
+								className="rounded-md bg-neutral-600 px-3 py-1 text-sm text-white hover:bg-neutral-700"
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				)}
 
 				{groupTimeEntriesByDate(completeTimeEntries).map(
 					({ isoDate, timeEntries }) => (
