@@ -1,5 +1,6 @@
 import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import KebabMenu from "./KebabMenu";
 import { TimeEntryRow } from "./TimeEntryRow";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
@@ -38,6 +39,9 @@ const App = ({
 	const [startTime, setStartTime] = useState<Date | null>(null);
 
 	const [isTimeEntrySharingAvailable, setIsTimeEntrySharingAvailable] =
+		useState(false);
+
+	const [isBatchDeleteModeEnabled, setIsBatchDeleteModeEnabled] =
 		useState(false);
 
 	const isTimerRunning = startTime !== null;
@@ -143,10 +147,20 @@ const App = ({
 							<PlayIcon className="h-10 w-10" aria-label="Start" />
 						)}
 					</button>
-					<span className="text-lg lg:text-base">
-						{startTime && formatAsIsoDateTime(startTime, timeZone)}
-					</span>
+					<div className="flex items-center gap-3">
+						<span className="text-lg lg:text-base">
+							{startTime && formatAsIsoDateTime(startTime, timeZone)}
+						</span>
+						{completeTimeEntries.length > 0 && (
+							<KebabMenu
+								onBatchDeleteClick={() => setIsBatchDeleteModeEnabled(true)}
+							/>
+						)}
+					</div>
 				</div>
+
+				{isBatchDeleteModeEnabled && "Batch delete mode is enabled"}
+
 				{groupTimeEntriesByDate(completeTimeEntries).map(
 					({ isoDate, timeEntries }) => (
 						<section key={isoDate} className="mb-4">
