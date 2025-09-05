@@ -65,5 +65,10 @@ it("allows enabling batch deletion mode via kebab menu if there are time entries
 	expect(enableBatchDeletionModeButton).toBeVisible();
 	await user.click(enableBatchDeletionModeButton);
 
-	expect(screen.getByText(/batch delete mode is enabled/i)).toBeVisible();
+	expect(
+		screen.getByRole("button", {
+			name: /yes, delete the selected time entries/i,
+		}),
+	).toBeVisible();
+	expect(screen.getByRole("button", { name: /cancel/i })).toBeVisible();
 });
