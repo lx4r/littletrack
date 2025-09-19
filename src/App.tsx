@@ -44,6 +44,25 @@ const App = ({
 	const [isBatchDeleteModeEnabled, setIsBatchDeleteModeEnabled] =
 		useState(false);
 
+	const [
+		isoDatesSelectedForBatchDeletion,
+		setIsoDatesSelectedForBatchDeletion,
+	] = useState<Set<string>>(new Set());
+
+	const handleIsoDateCheckboxChange = (isoDate: string) => {
+		setIsoDatesSelectedForBatchDeletion((prev) => {
+			const updatedSet = new Set(prev);
+
+			if (updatedSet.has(isoDate)) {
+				updatedSet.delete(isoDate);
+			} else {
+				updatedSet.add(isoDate);
+			}
+
+			return updatedSet;
+		});
+	};
+
 	const isTimerRunning = startTime !== null;
 
 	useEffect(() => {
@@ -181,23 +200,44 @@ const App = ({
 				)}
 
 				{groupTimeEntriesByDate(completeTimeEntries).map(
-					({ isoDate, timeEntries }) => (
-						<section key={isoDate} className="mb-4">
-							<h2 className="mb-2 text-lg">{isoDate}</h2>
-							<ul>
-								{timeEntries.map((timeEntry) => (
-									<TimeEntryRow
-										key={timeEntry.id}
-										timeEntry={timeEntry}
-										timeZone={timeZone}
-										isSharingAvailable={isTimeEntrySharingAvailable}
-										onDeleteButtonClick={handleDeleteButtonClick}
-										onShareButtonClick={shareTimeEntry}
-									/>
-								))}
-							</ul>
-						</section>
-					),
+					({ isoDate, timeEntries }) => {
+						const classesForSelectedState =
+							"rounded-md border-2 border-dashed p-2 bg-neutral-900 border-red-500";
+						const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
+
+						return (
+							<section
+								key={isoDate}
+								className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
+							>
+								<div className="mb-2 flex items-center">
+									{isBatchDeleteModeEnabled && (
+										<label className="mr-3 flex items-center">
+											<input
+												type="checkbox"
+												checked={isSelected}
+												onChange={() => handleIsoDateCheckboxChange(isoDate)}
+												className="h-5 w-5"
+											/>
+										</label>
+									)}
+									<h2 className="text-lg">{isoDate}</h2>
+								</div>
+								<ul>
+									{timeEntries.map((timeEntry) => (
+										<TimeEntryRow
+											key={timeEntry.id}
+											timeEntry={timeEntry}
+											timeZone={timeZone}
+											isSharingAvailable={isTimeEntrySharingAvailable}
+											onDeleteButtonClick={handleDeleteButtonClick}
+											onShareButtonClick={shareTimeEntry}
+										/>
+									))}
+								</ul>
+							</section>
+						);
+					},
 				)}
 			</main>
 		</div>
