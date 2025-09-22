@@ -72,3 +72,46 @@ it("allows enabling batch deletion mode via kebab menu if there are time entries
 	).toBeVisible();
 	expect(screen.getByRole("button", { name: /cancel/i })).toBeVisible();
 });
+
+it("clears date selections when canceling batch deletion mode", async () => {
+	const user = userEvent.setup();
+
+	const persistedTimeEntries: TimeEntry[] = [
+		{
+			id: "entry-1",
+			startTime: startTime1,
+			stopTime: stopTime1,
+		},
+	];
+	const isoDateOfStartTime1 = startTime1.toISOString().split("T")[0];
+
+	render(
+		<App
+			{...DEFAULT_APP_PROPS}
+			manageTimeEntries={{
+				...DEFAULT_APP_PROPS.manageTimeEntries,
+				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
+			}}
+		/>,
+	);
+
+	await user.click(await screen.findByLabelText(/open menu/i));
+	await user.click(
+		screen.getByRole("button", {
+			name: /batch delete/i,
+		}),
+	);
+
+	const dateCheckbox = screen.getByRole("checkbox");
+	await user.click(dateCheckbox);
+	expect(dateCheckbox).toBeChecked();
+
+	const dateSection = screen.getByRole("region", {
+		name: new RegExp(isoDateOfStartTime1, "i"),
+	});
+	expect(dateSection).toHaveAttribute("aria-current", "true");
+
+	await user.click(screen.getByRole("button", { name: /cancel/i }));
+
+	expect(dateSection).toHaveAttribute("aria-current", "false");
+});
