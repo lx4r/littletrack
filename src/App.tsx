@@ -147,6 +147,11 @@ const App = ({
 		await persistTimeEntries(newTimeEntries);
 	};
 
+	const handleBatchDeleteCancelClick = () => {
+		setIsBatchDeleteModeEnabled(false);
+		setIsoDatesSelectedForBatchDeletion(new Set());
+	};
+
 	return (
 		<div className="flex justify-center">
 			<main className="w-full max-w-(--breakpoint-md)">
@@ -190,7 +195,7 @@ const App = ({
 							</button>
 							<button
 								type="button"
-								onClick={() => setIsBatchDeleteModeEnabled(false)}
+								onClick={handleBatchDeleteCancelClick}
 								className="rounded-md bg-neutral-600 px-3 py-1 text-sm text-white hover:bg-neutral-700"
 							>
 								Cancel
@@ -209,6 +214,8 @@ const App = ({
 							<section
 								key={isoDate}
 								className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
+								aria-label={`Time entries for ${isoDate}`}
+								aria-current={isSelected ? "true" : "false"}
 							>
 								<div className="mb-2 flex items-center">
 									{isBatchDeleteModeEnabled && (
