@@ -17,15 +17,13 @@ import {
 const isoDateOfStartTime1 = startTime1.toISOString().split("T")[0];
 const isoDateOfStartTime2 = startTime2.toISOString().split("T")[0];
 
-const findKebabMenuButton = () => screen.findByLabelText(/open menu/i);
-const getBatchDeleteButton = () =>
-	screen.getByRole("button", { name: /batch delete/i });
+const findBatchDeleteButton = () => screen.findByLabelText(/batch delete/i);
 const getConfirmBatchDeleteButton = () =>
 	screen.getByRole("button", {
 		name: /yes, delete the selected time entries/i,
 	});
 
-it("doesn't show kebab menu to enable batch deletion mode if there are no time entries", async () => {
+it("doesn't show batch delete button if there are no time entries", async () => {
 	render(
 		<App
 			{...DEFAULT_APP_PROPS}
@@ -38,11 +36,11 @@ it("doesn't show kebab menu to enable batch deletion mode if there are no time e
 
 	await waitFor(() => {
 		expect(getStartButtonIfExists()).toBeInTheDocument();
-		expect(screen.queryByLabelText(/open menu/i)).not.toBeInTheDocument();
+		expect(screen.queryByLabelText(/batch delete/i)).not.toBeInTheDocument();
 	});
 });
 
-it("allows enabling batch deletion mode via kebab menu if there are time entries", async () => {
+it("allows enabling batch deletion mode if there are time entries", async () => {
 	const user = userEvent.setup();
 
 	const persistedTimeEntries: TimeEntry[] = [
@@ -68,15 +66,9 @@ it("allows enabling batch deletion mode via kebab menu if there are time entries
 		/>,
 	);
 
-	const kebabMenuButton = await findKebabMenuButton();
-	expect(kebabMenuButton).toBeVisible();
-	await user.click(kebabMenuButton);
-
-	const enableBatchDeletionModeButton = screen.getByRole("button", {
-		name: /batch delete/i,
-	});
-	expect(enableBatchDeletionModeButton).toBeVisible();
-	await user.click(enableBatchDeletionModeButton);
+	const batchDeleteButton = await findBatchDeleteButton();
+	expect(batchDeleteButton).toBeVisible();
+	await user.click(batchDeleteButton);
 
 	expect(getConfirmBatchDeleteButton()).toBeVisible();
 	expect(screen.getByRole("button", { name: /cancel/i })).toBeVisible();
@@ -102,12 +94,7 @@ it("clears date selections when canceling batch deletion mode", async () => {
 		/>,
 	);
 
-	await user.click(await findKebabMenuButton());
-	await user.click(
-		screen.getByRole("button", {
-			name: /batch delete/i,
-		}),
-	);
+	await user.click(await findBatchDeleteButton());
 
 	const dateCheckbox = screen.getByRole("checkbox");
 	await user.click(dateCheckbox);
@@ -141,8 +128,7 @@ it("deletes entries for a single selected date on confirm", async () => {
 		/>,
 	);
 
-	await user.click(await findKebabMenuButton());
-	await user.click(getBatchDeleteButton());
+	await user.click(await findBatchDeleteButton());
 
 	const dateSection1 = screen.getByRole("region", {
 		name: new RegExp(isoDateOfStartTime1, "i"),
@@ -180,8 +166,7 @@ it("deletes entries for multiple selected dates on confirm", async () => {
 		/>,
 	);
 
-	await user.click(await findKebabMenuButton());
-	await user.click(getBatchDeleteButton());
+	await user.click(await findBatchDeleteButton());
 
 	const dateSection1 = screen.getByRole("region", {
 		name: new RegExp(isoDateOfStartTime1, "i"),
@@ -222,8 +207,7 @@ it("exits batch mode after confirming deletion", async () => {
 		/>,
 	);
 
-	await user.click(await findKebabMenuButton());
-	await user.click(getBatchDeleteButton());
+	await user.click(await findBatchDeleteButton());
 
 	const dateSection1 = screen.getByRole("region", {
 		name: new RegExp(isoDateOfStartTime1, "i"),
@@ -240,7 +224,7 @@ it("exits batch mode after confirming deletion", async () => {
 	expect(
 		screen.queryByRole("button", { name: /cancel/i }),
 	).not.toBeInTheDocument();
-	expect(screen.getByLabelText(/open menu/i)).toBeInTheDocument();
+	expect(screen.getByLabelText(/batch delete/i)).toBeInTheDocument();
 });
 
 it("disables confirm button when no date is selected", async () => {
@@ -260,8 +244,7 @@ it("disables confirm button when no date is selected", async () => {
 		/>,
 	);
 
-	await user.click(await findKebabMenuButton());
-	await user.click(getBatchDeleteButton());
+	await user.click(await findBatchDeleteButton());
 
 	expect(getConfirmBatchDeleteButton()).toBeDisabled();
 });

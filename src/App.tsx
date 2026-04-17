@@ -1,6 +1,9 @@
-import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
+import {
+	ArchiveBoxXMarkIcon,
+	PlayIcon,
+	StopIcon,
+} from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
-import KebabMenu from "./KebabMenu";
 import { TimeEntryRow } from "./TimeEntryRow";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
@@ -191,9 +194,14 @@ const App = ({
 							{startTime && formatAsIsoDateTime(startTime, timeZone)}
 						</span>
 						{completeTimeEntries.length > 0 && (
-							<KebabMenu
-								onBatchDeleteClick={() => setIsBatchDeleteModeEnabled(true)}
-							/>
+							<button
+								type="button"
+								onClick={() => setIsBatchDeleteModeEnabled(true)}
+								className="rounded-full bg-neutral-600 p-1.5 text-neutral-200 hover:bg-neutral-700 hover:text-neutral-100"
+								aria-label="Batch delete"
+							>
+								<ArchiveBoxXMarkIcon className="h-5 w-5" />
+							</button>
 						)}
 					</div>
 				</div>
