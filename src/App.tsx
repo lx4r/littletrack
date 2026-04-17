@@ -215,7 +215,7 @@ const App = ({
 								disabled={isoDatesSelectedForBatchDeletion.size === 0}
 								className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
 							>
-								Yes, delete the selected time entries
+								Delete entries for selected dates
 							</button>
 							<button
 								type="button"

@@ -20,7 +20,7 @@ const isoDateOfStartTime2 = startTime2.toISOString().split("T")[0];
 const findBatchDeleteButton = () => screen.findByLabelText(/batch delete/i);
 const getConfirmBatchDeleteButton = () =>
 	screen.getByRole("button", {
-		name: /yes, delete the selected time entries/i,
+		name: /delete entries for selected dates/i,
 	});
 
 it("doesn't show batch delete button if there are no time entries", async () => {
@@ -218,7 +218,7 @@ it("exits batch mode after confirming deletion", async () => {
 
 	expect(
 		screen.queryByRole("button", {
-			name: /yes, delete the selected time entries/i,
+			name: /delete entries for selected dates/i,
 		}),
 	).not.toBeInTheDocument();
 	expect(
