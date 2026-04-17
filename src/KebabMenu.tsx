@@ -38,7 +38,7 @@ const KebabMenu = ({ onBatchDeleteClick }: KebabMenuProps) => {
 			>
 				<EllipsisVerticalIcon className="h-5 w-5" />
 			</summary>
-			<div className="absolute right-0 top-8 z-10 w-48 rounded-md bg-neutral-700 shadow-lg ring-1 ring-black ring-opacity-5">
+			<div className="absolute left-0 top-8 z-10 w-48 rounded-md bg-neutral-700 shadow-lg border border-neutral-600">
 				<div className="py-1">
 					<button
 						type="button"
