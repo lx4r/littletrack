@@ -1,4 +1,4 @@
-import { ShareIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { ShareIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
 	formatAsIsoDate,
 	formatAsIsoDateTime,
@@ -60,7 +60,7 @@ export const TimeEntryRow = ({
 				className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100 disabled:opacity-50"
 				aria-label="Delete time entry"
 			>
-				<XMarkIcon className="h-5 w-5" />
+				<TrashIcon className="h-5 w-5" />
 			</button>
 		</div>
 	</li>
