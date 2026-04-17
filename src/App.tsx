@@ -152,6 +152,21 @@ const App = ({
 		setIsoDatesSelectedForBatchDeletion(new Set());
 	};
 
+	const handleBatchDeleteConfirmClick = async () => {
+		const newTimeEntries = completeTimeEntries.filter(
+			(entry) =>
+				!isoDatesSelectedForBatchDeletion.has(
+					formatAsIsoDate(entry.startTime, timeZone),
+				),
+		);
+
+		setCompleteTimeEntries(newTimeEntries);
+		await persistTimeEntries(newTimeEntries);
+
+		setIsBatchDeleteModeEnabled(false);
+		setIsoDatesSelectedForBatchDeletion(new Set());
+	};
+
 	return (
 		<div className="flex justify-center">
 			<main className="w-full max-w-(--breakpoint-md)">
@@ -188,8 +203,9 @@ const App = ({
 						<div className="flex gap-2">
 							<button
 								type="button"
-								onClick={() => setIsBatchDeleteModeEnabled(false)}
-								className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
+								onClick={handleBatchDeleteConfirmClick}
+								disabled={isoDatesSelectedForBatchDeletion.size === 0}
+								className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
 							>
 								Yes, delete the selected time entries
 							</button>
