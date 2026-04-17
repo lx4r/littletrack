@@ -248,3 +248,28 @@ it("disables confirm button when no date is selected", async () => {
 
 	expect(getConfirmBatchDeleteButton()).toBeDisabled();
 });
+
+it("disables individual delete buttons during batch deletion mode", async () => {
+	const user = userEvent.setup();
+
+	const persistedTimeEntries: TimeEntry[] = [
+		{ id: "entry-1", startTime: startTime1, stopTime: stopTime1 },
+	];
+
+	render(
+		<App
+			{...DEFAULT_APP_PROPS}
+			manageTimeEntries={{
+				...DEFAULT_APP_PROPS.manageTimeEntries,
+				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
+			}}
+		/>,
+	);
+
+	const deleteButton = await screen.findByLabelText(/delete time entry/i);
+	expect(deleteButton).not.toBeDisabled();
+
+	await user.click(await findBatchDeleteButton());
+
+	expect(deleteButton).toBeDisabled();
+});

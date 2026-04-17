@@ -27,6 +27,7 @@ interface Props {
 	timeEntry: TimeEntry;
 	timeZone: string;
 	isSharingAvailable: boolean;
+	isDeleteEnabled: boolean;
 	onDeleteButtonClick: (timeEntry: TimeEntry) => void;
 	onShareButtonClick: (timeEntry: TimeEntry) => void;
 }
@@ -35,6 +36,7 @@ export const TimeEntryRow = ({
 	timeEntry,
 	timeZone,
 	isSharingAvailable,
+	isDeleteEnabled,
 	onDeleteButtonClick,
 	onShareButtonClick,
 }: Props) => (
@@ -54,7 +56,8 @@ export const TimeEntryRow = ({
 			<button
 				type="button"
 				onClick={() => onDeleteButtonClick(timeEntry)}
-				className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100"
+				disabled={!isDeleteEnabled}
+				className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100 disabled:opacity-50"
 				aria-label="Delete time entry"
 			>
 				<XMarkIcon className="h-5 w-5" />

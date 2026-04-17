@@ -261,6 +261,7 @@ const App = ({
 											timeEntry={timeEntry}
 											timeZone={timeZone}
 											isSharingAvailable={isTimeEntrySharingAvailable}
+											isDeleteEnabled={!isBatchDeleteModeEnabled}
 											onDeleteButtonClick={handleDeleteButtonClick}
 											onShareButtonClick={shareTimeEntry}
 										/>
