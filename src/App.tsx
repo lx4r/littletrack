@@ -171,8 +171,8 @@ const App = ({
 	};
 
 	return (
-		<div className="flex justify-center">
-			<main className="w-full max-w-(--breakpoint-md)">
+		<div className="flex justify-center h-dvh p-4 overflow-hidden">
+			<main className="w-full max-w-(--breakpoint-md) h-full flex flex-col">
 				<div
 					className={`mb-4 flex items-center ${
 						isTimerRunning ? "justify-between" : ""
@@ -230,49 +230,51 @@ const App = ({
 					</div>
 				)}
 
-				{groupTimeEntriesByDate(completeTimeEntries).map(
-					({ isoDate, timeEntries }) => {
-						const classesForSelectedState =
-							"rounded-md border-2 border-dashed p-2 bg-neutral-900 border-red-500";
-						const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
+				<div className="overflow-auto flex-1 min-h-0">
+					{groupTimeEntriesByDate(completeTimeEntries).map(
+						({ isoDate, timeEntries }) => {
+							const classesForSelectedState =
+								"rounded-md border-2 border-dashed p-2 bg-neutral-900 border-red-500";
+							const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
 
-						return (
-							<section
-								key={isoDate}
-								className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
-								aria-label={`Time entries for ${isoDate}`}
-								aria-current={isSelected ? "true" : "false"}
-							>
-								<div className="mb-2 flex items-center">
-									{isBatchDeleteModeEnabled && (
-										<label className="mr-3 flex items-center">
-											<input
-												type="checkbox"
-												checked={isSelected}
-												onChange={() => handleIsoDateCheckboxChange(isoDate)}
-												className="h-5 w-5"
+							return (
+								<section
+									key={isoDate}
+									className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
+									aria-label={`Time entries for ${isoDate}`}
+									aria-current={isSelected ? "true" : "false"}
+								>
+									<div className="mb-2 flex items-center">
+										{isBatchDeleteModeEnabled && (
+											<label className="mr-3 flex items-center">
+												<input
+													type="checkbox"
+													checked={isSelected}
+													onChange={() => handleIsoDateCheckboxChange(isoDate)}
+													className="h-5 w-5"
+												/>
+											</label>
+										)}
+										<h2 className="text-lg">{isoDate}</h2>
+									</div>
+									<ul>
+										{timeEntries.map((timeEntry) => (
+											<TimeEntryRow
+												key={timeEntry.id}
+												timeEntry={timeEntry}
+												timeZone={timeZone}
+												isSharingAvailable={isTimeEntrySharingAvailable}
+												isDeleteEnabled={!isBatchDeleteModeEnabled}
+												onDeleteButtonClick={handleDeleteButtonClick}
+												onShareButtonClick={shareTimeEntry}
 											/>
-										</label>
-									)}
-									<h2 className="text-lg">{isoDate}</h2>
-								</div>
-								<ul>
-									{timeEntries.map((timeEntry) => (
-										<TimeEntryRow
-											key={timeEntry.id}
-											timeEntry={timeEntry}
-											timeZone={timeZone}
-											isSharingAvailable={isTimeEntrySharingAvailable}
-											isDeleteEnabled={!isBatchDeleteModeEnabled}
-											onDeleteButtonClick={handleDeleteButtonClick}
-											onShareButtonClick={shareTimeEntry}
-										/>
-									))}
-								</ul>
-							</section>
-						);
-					},
-				)}
+										))}
+									</ul>
+								</section>
+							);
+						},
+					)}
+				</div>
 			</main>
 		</div>
 	);
