@@ -10,7 +10,6 @@ import {
 	retrieveTimeEntries,
 } from "./persistence.ts";
 import { enablePeriodicServiceWorkerUpdates } from "./service_worker_updates.ts";
-import { isSharingAvailable, shareTimeEntry } from "./time_entry_sharing.ts";
 
 console.info("commit hash:", __COMMIT_HASH__);
 
@@ -26,10 +25,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 			retrievePersistedStartTime={retrievePersistedStartTime}
 			removePersistedStartTime={removePersistedStartTime}
 			manageTimeEntries={{ persistTimeEntries, retrieveTimeEntries }}
-			shareTimeEntries={{
-				shareTimeEntry: (timeEntry) => shareTimeEntry(timeEntry, timeZone),
-				isSharingAvailable: isSharingAvailable,
-			}}
 			timeZone={timeZone}
 		/>
 	</React.StrictMode>,

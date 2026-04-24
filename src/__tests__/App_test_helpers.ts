@@ -42,9 +42,5 @@ export const DEFAULT_APP_PROPS: AppProps = {
 		persistTimeEntries: () => Promise.resolve(),
 		retrieveTimeEntries: () => Promise.resolve([]),
 	},
-	shareTimeEntries: {
-		shareTimeEntry: () => Promise.resolve(),
-		isSharingAvailable: () => Promise.resolve(true),
-	},
 	timeZone: "UTC",
 };

@@ -5,12 +5,12 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { TimeEntryRow } from "./TimeEntryRow";
+import { copyTimeEntryToClipboard } from "./time_entry_clipboard";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
 
 export interface Props {
 	getCurrentTime: () => Date;
-	// TODO: group props related to start time
 	persistStartTime: (startTime: Date) => Promise<void>;
 	retrievePersistedStartTime: () => Promise<Date | null>;
 	removePersistedStartTime: () => Promise<void>;
@@ -18,10 +18,6 @@ export interface Props {
 	manageTimeEntries: {
 		persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
 		retrieveTimeEntries: () => Promise<TimeEntry[] | null>;
-	};
-	shareTimeEntries: {
-		shareTimeEntry: (timeEntry: TimeEntry) => Promise<void>;
-		isSharingAvailable: () => Promise<boolean>;
 	};
 	timeZone: string;
 }
@@ -32,7 +28,6 @@ const App = ({
 	retrievePersistedStartTime,
 	removePersistedStartTime,
 	manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
-	shareTimeEntries: { shareTimeEntry, isSharingAvailable },
 	timeZone,
 }: Readonly<Props>) => {
 	const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
@@ -40,9 +35,6 @@ const App = ({
 	);
 
 	const [startTime, setStartTime] = useState<Date | null>(null);
-
-	const [isTimeEntrySharingAvailable, setIsTimeEntrySharingAvailable] =
-		useState(false);
 
 	const [isBatchDeleteModeEnabled, setIsBatchDeleteModeEnabled] =
 		useState(false);
@@ -89,14 +81,6 @@ const App = ({
 
 		loadPersistedTimeEntries();
 	}, [retrieveTimeEntries]);
-
-	useEffect(() => {
-		async function loadSharingAvailability() {
-			setIsTimeEntrySharingAvailable(await isSharingAvailable());
-		}
-
-		loadSharingAvailability();
-	}, [isSharingAvailable]);
 
 	const groupTimeEntriesByDate = (
 		timeEntries: TimeEntry[],
@@ -263,10 +247,11 @@ const App = ({
 												key={timeEntry.id}
 												timeEntry={timeEntry}
 												timeZone={timeZone}
-												isSharingAvailable={isTimeEntrySharingAvailable}
 												isDeleteEnabled={!isBatchDeleteModeEnabled}
 												onDeleteButtonClick={handleDeleteButtonClick}
-												onShareButtonClick={shareTimeEntry}
+												onCopyButtonClick={(timeEntry) =>
+													copyTimeEntryToClipboard(timeEntry, timeZone)
+												}
 											/>
 										))}
 									</ul>

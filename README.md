@@ -8,7 +8,7 @@
 
 - Simple tracking of start and end of time entries.
 - Persistence: Your time entries are saved locally on the device, ensuring your data is retained between sessions.
-- Sharing: Share your time entries via the Web Share API on supported devices.
+- Copy to clipboard: Copy time entries to the clipboard for easy pasting into other apps.
 - Progressive Web App (PWA) support: You can install the app on your phone for quick access and offline use.
 
 ## Features not offered
