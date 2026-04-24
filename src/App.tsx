@@ -178,31 +178,33 @@ const App = ({
 						isTimerRunning ? "justify-between" : ""
 					}`}
 				>
-					<button
-						type="button"
-						onClick={handleStartStopButtonClick}
-						className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
-					>
-						{isTimerRunning ? (
-							<StopIcon className="h-10 w-10" aria-label="Stop" />
-						) : (
-							<PlayIcon className="h-10 w-10" aria-label="Start" />
-						)}
-					</button>
-					<div className="flex items-center gap-3">
-						<span className="text-lg lg:text-base">
-							{startTime && formatAsIsoDateTime(startTime, timeZone)}
-						</span>
+					<div className="flex items-center">
+						<button
+							type="button"
+							onClick={handleStartStopButtonClick}
+							className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
+						>
+							{isTimerRunning ? (
+								<StopIcon className="h-10 w-10" aria-label="Stop" />
+							) : (
+								<PlayIcon className="h-10 w-10" aria-label="Start" />
+							)}
+						</button>
 						{completeTimeEntries.length > 0 && (
 							<button
 								type="button"
 								onClick={() => setIsBatchDeleteModeEnabled(true)}
-								className="rounded-full bg-neutral-600 p-1.5 text-neutral-200 hover:bg-neutral-700 hover:text-neutral-100"
+								className="rounded-full bg-neutral-600 p-1.5 text-neutral-200 hover:bg-neutral-700 hover:text-neutral-100 ml-2"
 								aria-label="Batch delete"
 							>
 								<ArchiveBoxXMarkIcon className="h-5 w-5" />
 							</button>
 						)}
+					</div>
+					<div className="flex items-center gap-3">
+						<span className="text-lg lg:text-base">
+							{startTime && formatAsIsoDateTime(startTime, timeZone)}
+						</span>
 					</div>
 				</div>
 
