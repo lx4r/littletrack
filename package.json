@@ -17,7 +17,7 @@
 		"check-types": "tsc --noEmit --skipLibCheck",
 		"precommit": "pnpm run '/^(test:run|check:staged|check-types)$/'",
 		"prepare": "husky",
-		"deploy": "netlify deploy --prod --dir dist"
+		"deploy": "netlify deploy --prod --dir dist --no-build"
 	},
 	"dependencies": {
 		"@heroicons/react": "^2.2.0",
