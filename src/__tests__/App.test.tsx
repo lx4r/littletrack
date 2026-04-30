@@ -95,7 +95,9 @@ it("can delete a time entry if there is just one", async () => {
 
 	await user.click(getStopButtonOrThrow());
 
-	const deleteButton = screen.getByLabelText(/delete time entry/i);
+	const deleteButton = screen.getByRole("button", {
+		name: /delete time entry/i,
+	});
 
 	expect(deleteButton).toBeInTheDocument();
 
@@ -133,8 +135,10 @@ it("can delete a time entry if there are multiple", async () => {
 
 	expect(secondTimeEntry).toBeInTheDocument();
 
-	const deleteButtonForSecondTimeEntry =
-		within(secondTimeEntry).getByLabelText(/delete time entry/i);
+	const deleteButtonForSecondTimeEntry = within(secondTimeEntry).getByRole(
+		"button",
+		{ name: /delete time entry/i },
+	);
 
 	expect(deleteButtonForSecondTimeEntry).toBeInTheDocument();
 
