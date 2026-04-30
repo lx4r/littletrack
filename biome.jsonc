@@ -22,6 +22,17 @@
 				"useNumberNamespace": "error",
 				"noInferrableTypes": "error",
 				"noUselessElse": "error"
+			},
+			// Source: https://github.com/biomejs/biome/issues/1274#issuecomment-3490774696
+			"nursery": {
+				"useSortedClasses": {
+					"fix": "safe",
+					"level": "warn",
+					"options": {
+						"attributes": ["classList"],
+						"functions": ["cn", "clsx", "cva", "tw"]
+					}
+				}
 			}
 		}
 	},

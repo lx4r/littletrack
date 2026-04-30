@@ -116,7 +116,11 @@ export function TimeEntryRow({
 							? "inline-flex items-center rounded-full bg-red-600 p-1 text-neutral-200 text-sm shadow-sm hover:bg-red-700 hover:text-white disabled:opacity-50"
 							: "rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100 disabled:opacity-50"
 					}
-					aria-label={deleteState === "waiting_for_confirmation" ? "Confirm delete" : "Delete time entry"}
+					aria-label={
+						deleteState === "waiting_for_confirmation"
+							? "Confirm delete"
+							: "Delete time entry"
+					}
 				>
 					{deleteState === "waiting_for_confirmation" ? (
 						"Confirm delete"

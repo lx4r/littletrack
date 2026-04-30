@@ -155,8 +155,8 @@ const App = ({
 	};
 
 	return (
-		<div className="flex justify-center h-dvh p-4 overflow-hidden">
-			<main className="w-full max-w-(--breakpoint-md) h-full flex flex-col">
+		<div className="flex h-dvh justify-center overflow-hidden p-4">
+			<main className="flex h-full w-full max-w-(--breakpoint-md) flex-col">
 				<div
 					className={`mb-4 flex items-center ${
 						isTimerRunning ? "justify-between" : ""
@@ -178,7 +178,7 @@ const App = ({
 							<button
 								type="button"
 								onClick={() => setIsBatchDeleteModeEnabled(true)}
-								className="rounded-full bg-neutral-600 p-1.5 text-neutral-200 hover:bg-neutral-700 hover:text-neutral-100 ml-2"
+								className="ml-2 rounded-full bg-neutral-600 p-1.5 text-neutral-200 hover:bg-neutral-700 hover:text-neutral-100"
 								aria-label="Batch delete"
 							>
 								<ArchiveBoxXMarkIcon className="h-5 w-5" />
@@ -214,7 +214,7 @@ const App = ({
 					</div>
 				)}
 
-				<div className="overflow-auto flex-1 min-h-0">
+				<div className="min-h-0 flex-1 overflow-auto">
 					{groupTimeEntriesByDate(completeTimeEntries).map(
 						({ isoDate, timeEntries }) => {
 							const classesForSelectedState =
