@@ -118,12 +118,12 @@ export function TimeEntryRow({
 					}
 					aria-label={
 						deleteState === "waiting_for_confirmation"
-							? "Confirm delete"
+							? undefined
 							: "Delete time entry"
 					}
 				>
 					{deleteState === "waiting_for_confirmation" ? (
-						"Confirm delete"
+						"Delete!"
 					) : (
 						<TrashIcon className="h-5 w-5" />
 					)}

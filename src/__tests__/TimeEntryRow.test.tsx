@@ -53,7 +53,7 @@ const getDeleteButton = () =>
 	screen.getByRole("button", { name: "Delete time entry" });
 
 const getConfirmDeleteButton = () =>
-	screen.getByRole("button", { name: "Confirm delete" });
+	screen.getByRole("button", { name: "Delete!" });
 
 const getCopyButton = () => screen.getByRole("button", { name: "Copy" });
 
@@ -161,16 +161,14 @@ describe("TimeEntryRow", () => {
 
 			await user.click(getDeleteButton());
 
-			expect(
-				screen.getByRole("button", { name: "Confirm delete" }),
-			).toBeVisible();
+			expect(screen.getByRole("button", { name: "Delete!" })).toBeVisible();
 			expect(
 				screen.queryByRole("button", { name: "Delete time entry" }),
 			).not.toBeInTheDocument();
 			expect(onDeleteButtonClick).not.toHaveBeenCalled();
 		});
 
-		it("second click calls onDeleteButtonClick with the time entry", async () => {
+		it("calls onDeleteButtonClick on second click with the time entry", async () => {
 			const { onDeleteButtonClick } = setupDeletion();
 			const user = userEvent.setup();
 
@@ -192,9 +190,7 @@ describe("TimeEntryRow", () => {
 				fireEvent.click(getDeleteButton());
 			});
 
-			expect(
-				screen.getByRole("button", { name: "Confirm delete" }),
-			).toBeVisible();
+			expect(screen.getByRole("button", { name: "Delete!" })).toBeVisible();
 
 			await act(async () => {
 				vi.advanceTimersByTime(3000);
@@ -202,7 +198,7 @@ describe("TimeEntryRow", () => {
 
 			expect(getDeleteButton()).toBeVisible();
 			expect(
-				screen.queryByRole("button", { name: "Confirm delete" }),
+				screen.queryByRole("button", { name: "Delete!" }),
 			).not.toBeInTheDocument();
 		});
 	});
