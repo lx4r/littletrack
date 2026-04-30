@@ -66,6 +66,9 @@ export function TimeEntryRow({
 	const [copyState, setCopyState] = useState<"idle" | "success" | "error">(
 		"idle",
 	);
+	const [deleteState, setDeleteState] = useState<
+		"idle" | "waiting_for_confirmation"
+	>("idle");
 
 	const handleCopyClick = async () => {
 		try {
@@ -77,6 +80,15 @@ export function TimeEntryRow({
 		setTimeout(() => setCopyState("idle"), 2000);
 	};
 
+	const handleDeleteClick = () => {
+		if (deleteState === "idle") {
+			setDeleteState("waiting_for_confirmation");
+			setTimeout(() => setDeleteState("idle"), 3000);
+		} else {
+			onDeleteButtonClick(timeEntry);
+		}
+	};
+
 	const {
 		label: copyButtonLabel,
 		className: copyButtonClassName,
@@ -86,7 +98,7 @@ export function TimeEntryRow({
 	return (
 		<li className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 px-3 py-2 lg:text-sm">
 			{formatTimeEntry(timeEntry, timeZone)}
-			<div>
+			<div className="flex items-center">
 				<button
 					type="button"
 					onClick={handleCopyClick}
@@ -97,12 +109,20 @@ export function TimeEntryRow({
 				</button>
 				<button
 					type="button"
-					onClick={() => onDeleteButtonClick(timeEntry)}
+					onClick={handleDeleteClick}
 					disabled={!isDeleteEnabled}
-					className="rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100 disabled:opacity-50"
-					aria-label="Delete time entry"
+					className={
+						deleteState === "waiting_for_confirmation"
+							? "inline-flex items-center rounded-full bg-red-600 p-1 text-neutral-200 text-sm shadow-sm hover:bg-red-700 hover:text-white disabled:opacity-50"
+							: "rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100 disabled:opacity-50"
+					}
+					aria-label={deleteState === "waiting_for_confirmation" ? "Confirm delete" : "Delete time entry"}
 				>
-					<TrashIcon className="h-5 w-5" />
+					{deleteState === "waiting_for_confirmation" ? (
+						"Confirm delete"
+					) : (
+						<TrashIcon className="h-5 w-5" />
+					)}
 				</button>
 			</div>
 		</li>

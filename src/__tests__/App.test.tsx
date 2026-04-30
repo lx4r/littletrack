@@ -100,6 +100,8 @@ it("can delete a time entry if there is just one", async () => {
 	expect(deleteButton).toBeInTheDocument();
 
 	await user.click(deleteButton);
+	// Confirm deletion
+	await user.click(deleteButton);
 
 	expect(
 		screen.queryByText(startTime1TimeOfDayMatcher),
@@ -136,6 +138,8 @@ it("can delete a time entry if there are multiple", async () => {
 
 	expect(deleteButtonForSecondTimeEntry).toBeInTheDocument();
 
+	await user.click(deleteButtonForSecondTimeEntry);
+	// Confirm deletion
 	await user.click(deleteButtonForSecondTimeEntry);
 
 	expect(screen.queryByText(startTime1TimeOfDayMatcher)).toBeInTheDocument();

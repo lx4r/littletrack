@@ -29,6 +29,32 @@ function setup(onCopyButtonClick: (timeEntry: TimeEntry) => Promise<void>) {
 	);
 }
 
+function setupDeletion({
+	onDeleteButtonClick = vi.fn(),
+	isDeleteEnabled = true,
+}: {
+	onDeleteButtonClick?: (timeEntry: TimeEntry) => void;
+	isDeleteEnabled?: boolean;
+} = {}) {
+	render(
+		<TimeEntryRow
+			timeEntry={timeEntry}
+			timeZone="UTC"
+			isDeleteEnabled={isDeleteEnabled}
+			onDeleteButtonClick={onDeleteButtonClick}
+			onCopyButtonClick={vi.fn(() => Promise.resolve())}
+		/>,
+	);
+
+	return { onDeleteButtonClick };
+}
+
+const getDeleteButton = () =>
+	screen.getByRole("button", { name: "Delete time entry" });
+
+const getConfirmDeleteButton = () =>
+	screen.getByRole("button", { name: "Confirm delete" });
+
 const getCopyButton = () => screen.getByRole("button", { name: "Copy" });
 
 describe("TimeEntryRow", () => {
@@ -118,6 +144,65 @@ describe("TimeEntryRow", () => {
 			expect(getCopyButton()).toBeInTheDocument();
 			expect(
 				screen.queryByRole("button", { name: "Copied" }),
+			).not.toBeInTheDocument();
+		});
+	});
+
+	describe("delete button", () => {
+		it("is disabled when isDeleteEnabled is false", () => {
+			setupDeletion({ isDeleteEnabled: false });
+
+			expect(getDeleteButton()).toBeDisabled();
+		});
+
+		it("shows confirmation state on first click without calling onDeleteButtonClick", async () => {
+			const user = userEvent.setup();
+			const { onDeleteButtonClick } = setupDeletion();
+
+			await user.click(getDeleteButton());
+
+			expect(
+				screen.getByRole("button", { name: "Confirm delete" }),
+			).toBeVisible();
+			expect(
+				screen.queryByRole("button", { name: "Delete time entry" }),
+			).not.toBeInTheDocument();
+			expect(onDeleteButtonClick).not.toHaveBeenCalled();
+		});
+
+		it("second click calls onDeleteButtonClick with the time entry", async () => {
+			const { onDeleteButtonClick } = setupDeletion();
+			const user = userEvent.setup();
+
+			await user.click(getDeleteButton());
+			await user.click(getConfirmDeleteButton());
+
+			expect(onDeleteButtonClick).toHaveBeenCalledWith(timeEntry);
+			expect(onDeleteButtonClick).toHaveBeenCalledTimes(1);
+		});
+
+		it("resets to idle after 3s without confirming", async () => {
+			vi.useFakeTimers();
+			setupDeletion();
+
+			// userEvent hangs with fake timers because it waits for all pending timers
+			// to settle — including the 2s reset timer we want to advance manually.
+			// -> Use fireEvent to keep manual timer control.
+			await act(async () => {
+				fireEvent.click(getDeleteButton());
+			});
+
+			expect(
+				screen.getByRole("button", { name: "Confirm delete" }),
+			).toBeVisible();
+
+			await act(async () => {
+				vi.advanceTimersByTime(3000);
+			});
+
+			expect(getDeleteButton()).toBeVisible();
+			expect(
+				screen.queryByRole("button", { name: "Confirm delete" }),
 			).not.toBeInTheDocument();
 		});
 	});

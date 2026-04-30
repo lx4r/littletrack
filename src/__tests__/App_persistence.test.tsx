@@ -206,9 +206,13 @@ it("persists deletion of time entry across page reload", async () => {
 	await user.click(getStopButtonOrThrow());
 
 	const secondTimeEntry = screen.getByText(startTime2TimeOfDayMatcher);
-	const deleteButtonForSecondTimeEntry =
-		within(secondTimeEntry).getByLabelText(/delete/i);
+	const deleteButtonForSecondTimeEntry = within(secondTimeEntry).getByRole(
+		"button",
+		{ name: /delete/i },
+	);
 
+	await user.click(deleteButtonForSecondTimeEntry);
+	// Confirm deletion
 	await user.click(deleteButtonForSecondTimeEntry);
 
 	cleanup();
