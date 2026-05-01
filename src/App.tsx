@@ -6,6 +6,7 @@ import {
 import { useEffect, useState } from "react";
 import { TimeEntryRow } from "./TimeEntryRow";
 import { copyTimeEntryToClipboard } from "./time_entry_clipboard";
+import { groupTimeEntriesByDate } from "./time_entry_grouping";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
 
@@ -81,29 +82,6 @@ const App = ({
 
 		loadPersistedTimeEntries();
 	}, [retrieveTimeEntries]);
-
-	const groupTimeEntriesByDate = (
-		timeEntries: TimeEntry[],
-	): { isoDate: string; timeEntries: TimeEntry[] }[] => {
-		return timeEntries.reduce(
-			(groupedTimeEntries, timeEntry) => {
-				const isoDate = formatAsIsoDate(timeEntry.startTime, timeZone);
-
-				const group = groupedTimeEntries.find(
-					({ isoDate: currentIsoDate }) => isoDate === currentIsoDate,
-				);
-
-				if (group) {
-					group.timeEntries.push(timeEntry);
-				} else {
-					groupedTimeEntries.push({ isoDate, timeEntries: [timeEntry] });
-				}
-
-				return groupedTimeEntries;
-			},
-			[] as { isoDate: string; timeEntries: TimeEntry[] }[],
-		);
-	};
 
 	const handleStartStopButtonClick = async () => {
 		const currentTime = getCurrentTime();
@@ -215,7 +193,7 @@ const App = ({
 				)}
 
 				<div className="min-h-0 flex-1 overflow-auto">
-					{groupTimeEntriesByDate(completeTimeEntries).map(
+					{groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
 						({ isoDate, timeEntries }) => {
 							const classesForSelectedState =
 								"rounded-md border-2 border-dashed p-2 bg-neutral-900 border-red-500";
