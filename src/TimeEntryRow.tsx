@@ -33,7 +33,7 @@ const COPY_BUTTON_PROPS = {
 	idle: {
 		label: "Copy",
 		className:
-			"mr-2 rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100",
+			"mr-2 rounded-full bg-neutral-200 p-1 text-neutral-800 shadow-sm hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-500 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:hover:text-neutral-100",
 		Icon: ClipboardIcon,
 	},
 	success: {
@@ -96,7 +96,7 @@ export function TimeEntryRow({
 	} = COPY_BUTTON_PROPS[copyState];
 
 	return (
-		<li className="mb-2 flex items-center justify-between rounded-md bg-neutral-700 px-3 py-2 lg:text-sm">
+		<li className="mb-2 flex items-center justify-between rounded-md bg-neutral-100 px-3 py-2 lg:text-sm dark:bg-neutral-700">
 			{formatTimeEntry(timeEntry, timeZone)}
 			<div className="flex items-center">
 				<button
@@ -114,7 +114,7 @@ export function TimeEntryRow({
 					className={
 						deleteState === "waiting_for_confirmation"
 							? "inline-flex items-center rounded-full bg-red-600 p-1 text-neutral-200 text-sm shadow-sm hover:bg-red-700 hover:text-white disabled:opacity-50"
-							: "rounded-full bg-neutral-500 p-1 text-neutral-200 shadow-sm hover:bg-neutral-600 hover:text-neutral-100 disabled:opacity-50"
+							: "rounded-full bg-neutral-200 p-1 text-neutral-800 shadow-sm hover:bg-neutral-300 hover:text-neutral-900 disabled:opacity-50 dark:bg-neutral-500 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:hover:text-neutral-100"
 					}
 					aria-label={
 						deleteState === "waiting_for_confirmation"

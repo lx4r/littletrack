@@ -1,1 +1,17 @@
 @import "tailwindcss";
+/* Make dark: activate when <html> has class="dark" rather than reading the OS setting directly. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Base colors live here, not as class attributes on <body> in index.html — Tailwind utility classes
+   have higher specificity than this element rule and would silently override it. */
+body {
+	@apply bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-400;
+}
+
+/* Tell the browser which scheme is active so native UI (scrollbars, inputs, autofill) adapts. */
+html.dark {
+	color-scheme: dark;
+}
+html:not(.dark) {
+	color-scheme: light;
+}

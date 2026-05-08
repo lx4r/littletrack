@@ -135,16 +135,12 @@ const App = ({
 	return (
 		<div className="flex h-dvh justify-center overflow-hidden p-4">
 			<main className="flex h-full w-full max-w-(--breakpoint-md) flex-col">
-				<div
-					className={`mb-4 flex items-center ${
-						isTimerRunning ? "justify-between" : ""
-					}`}
-				>
+				<div className="mb-4 flex items-center justify-between">
 					<div className="flex items-center">
 						<button
 							type="button"
 							onClick={handleStartStopButtonClick}
-							className="rounded-full bg-neutral-600 p-2 text-neutral-200 shadow-md hover:bg-neutral-700 hover:text-neutral-100"
+							className="rounded-full bg-neutral-200 p-2 text-neutral-800 shadow-md hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
 						>
 							{isTimerRunning ? (
 								<StopIcon className="h-10 w-10" aria-label="Stop" />
@@ -156,7 +152,7 @@ const App = ({
 							<button
 								type="button"
 								onClick={() => setIsBatchDeleteModeEnabled(true)}
-								className="ml-2 rounded-full bg-neutral-600 p-1.5 text-neutral-200 hover:bg-neutral-700 hover:text-neutral-100"
+								className="ml-2 rounded-full bg-neutral-200 p-1.5 text-neutral-800 hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
 								aria-label="Batch delete"
 							>
 								<ArchiveBoxXMarkIcon className="h-5 w-5" />
@@ -184,7 +180,7 @@ const App = ({
 							<button
 								type="button"
 								onClick={handleBatchDeleteCancelClick}
-								className="rounded-md bg-neutral-600 px-3 py-1 text-sm text-white hover:bg-neutral-700"
+								className="rounded-md bg-neutral-200 px-3 py-1 text-neutral-800 text-sm hover:bg-neutral-300 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-700"
 							>
 								Cancel
 							</button>
@@ -196,7 +192,7 @@ const App = ({
 					{groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
 						({ isoDate, timeEntries }) => {
 							const classesForSelectedState =
-								"rounded-md border-2 border-dashed p-2 bg-neutral-900 border-red-500";
+								"rounded-md border-2 border-dashed p-2 bg-neutral-100 border-red-500 dark:bg-neutral-900";
 							const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
 
 							return (
