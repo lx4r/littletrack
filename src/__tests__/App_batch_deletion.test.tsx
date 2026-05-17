@@ -17,13 +17,19 @@ import {
 const isoDateOfStartTime1 = startTime1.toISOString().split("T")[0];
 const isoDateOfStartTime2 = startTime2.toISOString().split("T")[0];
 
-const findBatchDeleteButton = () => screen.findByLabelText(/batch delete/i);
+const findBatchDeleteButton = async () => {
+	await userEvent.setup().click(screen.getByRole("button", { name: "Menu" }));
+	return screen.findByRole("menuitem", { name: /select dates to delete/i });
+};
+
 const getConfirmBatchDeleteButton = () =>
 	screen.getByRole("button", {
 		name: /delete entries for selected dates/i,
 	});
 
 it("doesn't show batch delete button if there are no time entries", async () => {
+	const user = userEvent.setup();
+
 	render(
 		<App
 			{...DEFAULT_APP_PROPS}
@@ -36,8 +42,12 @@ it("doesn't show batch delete button if there are no time entries", async () => 
 
 	await waitFor(() => {
 		expect(getStartButtonIfExists()).toBeInTheDocument();
-		expect(screen.queryByLabelText(/batch delete/i)).not.toBeInTheDocument();
 	});
+	await user.click(screen.getByRole("button", { name: "Menu" }));
+
+	expect(
+		screen.queryByRole("menuitem", { name: /select dates to delete/i }),
+	).not.toBeInTheDocument();
 });
 
 it("allows enabling batch deletion mode if there are time entries", async () => {
@@ -224,7 +234,7 @@ it("exits batch mode after confirming deletion", async () => {
 	expect(
 		screen.queryByRole("button", { name: /cancel/i }),
 	).not.toBeInTheDocument();
-	expect(screen.getByLabelText(/batch delete/i)).toBeInTheDocument();
+	expect(screen.getByRole("button", { name: "Menu" })).toBeInTheDocument();
 });
 
 it("disables confirm button when no date is selected", async () => {

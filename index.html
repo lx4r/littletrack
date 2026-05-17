@@ -1,7 +1,19 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
+  <!-- Applies saved theme preference before first paint to prevent a flash of light theme.
+       Must be inline + synchronous (no defer/async) so it runs before the stylesheet renders.
+       try/catch guards against localStorage throwing in private/incognito mode. -->
+  <script>
+    try {
+      const localStoragePreference = localStorage.getItem("theme");
+      const preferenceIsDark = localStoragePreference === "dark" || (localStoragePreference !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+      if (preferenceIsDark) {
+        document.documentElement.classList.add("dark");
+      }
+    } catch (_) { }
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LittleTrack</title>

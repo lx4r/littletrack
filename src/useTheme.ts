@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type ThemePreference = "light" | "dark" | "system";
+export type ThemePreference = "light" | "dark" | "system";
 
 export function useTheme() {
 	const [preference, setPreferenceState] = useState<ThemePreference>(

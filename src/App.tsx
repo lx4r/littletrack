@@ -1,14 +1,12 @@
-import {
-	ArchiveBoxXMarkIcon,
-	PlayIcon,
-	StopIcon,
-} from "@heroicons/react/24/solid";
+import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import { HeaderMenu } from "./HeaderMenu";
 import { TimeEntryRow } from "./TimeEntryRow";
 import { copyTimeEntryToClipboard } from "./time_entry_clipboard";
 import { groupTimeEntriesByDate } from "./time_entry_grouping";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
+import { useTheme } from "./useTheme";
 
 export interface Props {
 	getCurrentTime: () => Date;
@@ -58,6 +56,8 @@ const App = ({
 			return updatedSet;
 		});
 	};
+
+	const { preference, setPreference } = useTheme();
 
 	const isTimerRunning = startTime !== null;
 
@@ -148,21 +148,17 @@ const App = ({
 								<PlayIcon className="h-10 w-10" aria-label="Start" />
 							)}
 						</button>
-						{completeTimeEntries.length > 0 && (
-							<button
-								type="button"
-								onClick={() => setIsBatchDeleteModeEnabled(true)}
-								className="ml-2 rounded-full bg-neutral-200 p-1.5 text-neutral-800 hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
-								aria-label="Batch delete"
-							>
-								<ArchiveBoxXMarkIcon className="h-5 w-5" />
-							</button>
-						)}
 					</div>
 					<div className="flex items-center gap-3">
 						<span className="text-lg lg:text-base">
 							{startTime && formatAsIsoDateTime(startTime, timeZone)}
 						</span>
+						<HeaderMenu
+							preference={preference}
+							setPreference={setPreference}
+							hasTimeEntries={completeTimeEntries.length > 0}
+							onBatchDeleteClick={() => setIsBatchDeleteModeEnabled(true)}
+						/>
 					</div>
 				</div>
 
