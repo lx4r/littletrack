@@ -1,4 +1,6 @@
 import { render, screen } from "@testing-library/react";
+import type { UserEvent } from "@testing-library/user-event";
+import type { Mock } from "vitest";
 import App, { type Props as AppProps } from "../App";
 import type { TimeEntry } from "../types";
 
@@ -56,3 +58,18 @@ export const renderWithEntries = (entries: TimeEntry[]) =>
 			}}
 		/>,
 	);
+
+export const recordTwoTimeEntries = async (
+	user: UserEvent,
+	getCurrentTime: Mock,
+) => {
+	getCurrentTime.mockReturnValueOnce(startTime1);
+	await user.click(getStartButtonOrThrow());
+	getCurrentTime.mockReturnValueOnce(stopTime1);
+	await user.click(getStopButtonOrThrow());
+
+	getCurrentTime.mockReturnValueOnce(startTime2);
+	await user.click(getStartButtonOrThrow());
+	getCurrentTime.mockReturnValueOnce(stopTime2);
+	await user.click(getStopButtonOrThrow());
+};

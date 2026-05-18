@@ -8,6 +8,7 @@ import {
 	getStartButtonOrThrow,
 	getStopButtonIfExists,
 	getStopButtonOrThrow,
+	recordTwoTimeEntries,
 	startTime1,
 	startTime1TimeOfDayMatcher,
 	startTime2,
@@ -113,23 +114,11 @@ it("can delete a time entry if there is just one", async () => {
 it("can delete a time entry if there are multiple", async () => {
 	const user = userEvent.setup();
 
-	const getCurrentTime = vi.fn(() => startTime1);
+	const getCurrentTime = vi.fn();
 
 	render(<App {...DEFAULT_APP_PROPS} getCurrentTime={getCurrentTime} />);
 
-	await user.click(getStartButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(stopTime1);
-
-	await user.click(getStopButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(startTime2);
-
-	await user.click(getStartButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(stopTime2);
-
-	await user.click(getStopButtonOrThrow());
+	await recordTwoTimeEntries(user, getCurrentTime);
 
 	const secondTimeEntry = screen.getByText(startTime2TimeOfDayMatcher);
 

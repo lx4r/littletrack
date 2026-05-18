@@ -15,14 +15,13 @@ import {
 	getStartButtonOrThrow,
 	getStopButtonIfExists,
 	getStopButtonOrThrow,
+	recordTwoTimeEntries,
 	startTime1,
 	startTime1IsoDateTime,
 	startTime1TimeOfDayMatcher,
-	startTime2,
 	startTime2TimeOfDayMatcher,
 	stopTime1,
 	stopTime1TimeOfDayMatcher,
-	stopTime2,
 	stopTime2TimeOfDayMatcher,
 } from "./App_test_helpers";
 
@@ -112,14 +111,14 @@ it("doesn't have a running time entry after stopping another and reloading the a
 it("persists time entries across page reload", async () => {
 	const user = userEvent.setup();
 
-	const getCurrentTime = vi.fn(() => startTime1);
-
 	let persistedTimeEntries: TimeEntry[] = [];
 	const persistTimeEntries = (timeEntries: TimeEntry[]) => {
 		persistedTimeEntries = timeEntries;
 		return Promise.resolve();
 	};
 	const retrieveTimeEntries = () => Promise.resolve(persistedTimeEntries);
+
+	const getCurrentTime = vi.fn();
 
 	render(
 		<App
@@ -132,19 +131,7 @@ it("persists time entries across page reload", async () => {
 		/>,
 	);
 
-	await user.click(getStartButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(stopTime1);
-
-	await user.click(getStopButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(startTime2);
-
-	await user.click(getStartButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(stopTime2);
-
-	await user.click(getStopButtonOrThrow());
+	await recordTwoTimeEntries(user, getCurrentTime);
 
 	cleanup();
 
@@ -171,14 +158,14 @@ it("persists time entries across page reload", async () => {
 it("persists deletion of time entry across page reload", async () => {
 	const user = userEvent.setup();
 
-	const getCurrentTime = vi.fn(() => startTime1);
-
 	let persistedTimeEntries: TimeEntry[] = [];
 	const persistTimeEntries = (timeEntries: TimeEntry[]) => {
 		persistedTimeEntries = timeEntries;
 		return Promise.resolve();
 	};
 	const retrieveTimeEntries = () => Promise.resolve(persistedTimeEntries);
+
+	const getCurrentTime = vi.fn();
 
 	render(
 		<App
@@ -191,19 +178,7 @@ it("persists deletion of time entry across page reload", async () => {
 		/>,
 	);
 
-	await user.click(getStartButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(stopTime1);
-
-	await user.click(getStopButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(startTime2);
-
-	await user.click(getStartButtonOrThrow());
-
-	getCurrentTime.mockReturnValueOnce(stopTime2);
-
-	await user.click(getStopButtonOrThrow());
+	await recordTwoTimeEntries(user, getCurrentTime);
 
 	const secondTimeEntry = screen.getByText(startTime2TimeOfDayMatcher);
 	const deleteButtonForSecondTimeEntry = within(secondTimeEntry).getByRole(
