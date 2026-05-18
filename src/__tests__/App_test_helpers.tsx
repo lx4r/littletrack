@@ -1,5 +1,6 @@
-import { screen } from "@testing-library/react";
-import type { Props as AppProps } from "../App";
+import { render, screen } from "@testing-library/react";
+import App, { type Props as AppProps } from "../App";
+import type { TimeEntry } from "../types";
 
 export function getStartButtonIfExists() {
 	return screen.queryByLabelText("Start");
@@ -44,3 +45,14 @@ export const DEFAULT_APP_PROPS: AppProps = {
 	},
 	timeZone: "UTC",
 };
+
+export const renderWithEntries = (entries: TimeEntry[]) =>
+	render(
+		<App
+			{...DEFAULT_APP_PROPS}
+			manageTimeEntries={{
+				...DEFAULT_APP_PROPS.manageTimeEntries,
+				retrieveTimeEntries: () => Promise.resolve(entries),
+			}}
+		/>,
+	);

@@ -1,11 +1,10 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
-import App from "../App";
 import type { TimeEntry } from "../types";
 import {
-	DEFAULT_APP_PROPS,
 	getStartButtonIfExists,
+	renderWithEntries,
 	startTime1,
 	startTime1TimeOfDayMatcher,
 	startTime2,
@@ -30,15 +29,7 @@ const getConfirmBatchDeleteButton = () =>
 it("doesn't show batch delete button if there are no time entries", async () => {
 	const user = userEvent.setup();
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve([]),
-			}}
-		/>,
-	);
+	renderWithEntries([]);
 
 	await waitFor(() => {
 		expect(getStartButtonIfExists()).toBeInTheDocument();
@@ -66,15 +57,7 @@ it("allows enabling batch deletion mode if there are time entries", async () => 
 		},
 	];
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	const batchDeleteButton = await findBatchDeleteButton();
 	expect(batchDeleteButton).toBeVisible();
@@ -94,15 +77,7 @@ it("clears date selections when canceling batch deletion mode", async () => {
 			stopTime: stopTime1,
 		},
 	];
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	await user.click(await findBatchDeleteButton());
 
@@ -128,15 +103,7 @@ it("deletes entries for a single selected date on confirm", async () => {
 		{ id: "entry-2", startTime: startTime2, stopTime: stopTime2 },
 	];
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	await user.click(await findBatchDeleteButton());
 
@@ -166,15 +133,7 @@ it("deletes entries for multiple selected dates on confirm", async () => {
 		{ id: "entry-3", startTime: startTime3, stopTime: stopTime3 },
 	];
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	await user.click(await findBatchDeleteButton());
 
@@ -207,15 +166,7 @@ it("exits batch mode after confirming deletion", async () => {
 		{ id: "entry-2", startTime: startTime2, stopTime: stopTime2 },
 	];
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	await user.click(await findBatchDeleteButton());
 
@@ -244,15 +195,7 @@ it("disables confirm button when no date is selected", async () => {
 		{ id: "entry-1", startTime: startTime1, stopTime: stopTime1 },
 	];
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	await user.click(await findBatchDeleteButton());
 
@@ -266,15 +209,7 @@ it("disables individual delete buttons during batch deletion mode", async () => 
 		{ id: "entry-1", startTime: startTime1, stopTime: stopTime1 },
 	];
 
-	render(
-		<App
-			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
-				retrieveTimeEntries: () => Promise.resolve(persistedTimeEntries),
-			}}
-		/>,
-	);
+	renderWithEntries(persistedTimeEntries);
 
 	const deleteButton = await screen.findByLabelText(/delete time entry/i);
 	expect(deleteButton).not.toBeDisabled();
