@@ -25,7 +25,18 @@ import {
 	stopTime2TimeOfDayMatcher,
 } from "./App_test_helpers";
 
-// TODO: rewrite this and the next test to match "realness" of the third test?
+const makeInMemoryTimeEntryPersistence = () => {
+	let entries: TimeEntry[] = [];
+
+	return {
+		persistTimeEntries: (timeEntries: TimeEntry[]) => {
+			entries = timeEntries;
+			return Promise.resolve();
+		},
+		retrieveTimeEntries: () => Promise.resolve(entries),
+	};
+};
+
 it("persists start time when start button is clicked", async () => {
 	const user = userEvent.setup();
 
@@ -111,13 +122,8 @@ it("doesn't have a running time entry after stopping another and reloading the a
 it("persists time entries across page reload", async () => {
 	const user = userEvent.setup();
 
-	let persistedTimeEntries: TimeEntry[] = [];
-	const persistTimeEntries = (timeEntries: TimeEntry[]) => {
-		persistedTimeEntries = timeEntries;
-		return Promise.resolve();
-	};
-	const retrieveTimeEntries = () => Promise.resolve(persistedTimeEntries);
-
+	const { persistTimeEntries, retrieveTimeEntries } =
+		makeInMemoryTimeEntryPersistence();
 	const getCurrentTime = vi.fn();
 
 	render(
@@ -158,13 +164,8 @@ it("persists time entries across page reload", async () => {
 it("persists deletion of time entry across page reload", async () => {
 	const user = userEvent.setup();
 
-	let persistedTimeEntries: TimeEntry[] = [];
-	const persistTimeEntries = (timeEntries: TimeEntry[]) => {
-		persistedTimeEntries = timeEntries;
-		return Promise.resolve();
-	};
-	const retrieveTimeEntries = () => Promise.resolve(persistedTimeEntries);
-
+	const { persistTimeEntries, retrieveTimeEntries } =
+		makeInMemoryTimeEntryPersistence();
 	const getCurrentTime = vi.fn();
 
 	render(
