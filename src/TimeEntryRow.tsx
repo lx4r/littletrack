@@ -4,7 +4,7 @@ import {
 	TrashIcon,
 	XMarkIcon,
 } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	formatAsIsoDate,
 	formatAsIsoDateTime,
@@ -72,6 +72,22 @@ export function TimeEntryRow({
 		"idle" | "waiting_for_confirmation"
 	>("idle");
 
+	useEffect(() => {
+		if (copyState !== "idle") {
+			const id = setTimeout(() => setCopyState("idle"), 2000);
+
+			return () => clearTimeout(id);
+		}
+	}, [copyState]);
+
+	useEffect(() => {
+		if (deleteState === "waiting_for_confirmation") {
+			const id = setTimeout(() => setDeleteState("idle"), 3000);
+
+			return () => clearTimeout(id);
+		}
+	}, [deleteState]);
+
 	const handleCopyClick = async () => {
 		try {
 			await onCopyButtonClick(timeEntry);
@@ -79,13 +95,11 @@ export function TimeEntryRow({
 		} catch {
 			setCopyState("error");
 		}
-		setTimeout(() => setCopyState("idle"), 2000);
 	};
 
 	const handleDeleteClick = () => {
 		if (deleteState === "idle") {
 			setDeleteState("waiting_for_confirmation");
-			setTimeout(() => setDeleteState("idle"), 3000);
 		} else {
 			onDeleteButtonClick(timeEntry);
 		}
