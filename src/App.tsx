@@ -139,7 +139,7 @@ const App = ({
 					<button
 						type="button"
 						onClick={handleStartStopButtonClick}
-						className="rounded-full bg-neutral-200 p-2 text-neutral-800 shadow-md hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+						className="rounded-full bg-neutral-400 p-2 text-neutral-800 shadow-md hover:bg-neutral-500 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
 					>
 						{isTimerRunning ? (
 							<StopIcon className="h-10 w-10" aria-label="Stop" />
@@ -175,7 +175,7 @@ const App = ({
 						<button
 							type="button"
 							onClick={handleBatchDeleteCancelClick}
-							className="rounded-md bg-neutral-200 px-3 py-1 text-neutral-800 text-sm hover:bg-neutral-300 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-700"
+							className="rounded-md bg-neutral-300 px-3 py-1 text-neutral-800 text-sm hover:bg-neutral-400 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-700"
 						>
 							Cancel
 						</button>
@@ -187,7 +187,7 @@ const App = ({
 				{groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
 					({ isoDate, timeEntries }) => {
 						const classesForSelectedState =
-							"rounded-md border-2 border-dashed p-2 bg-neutral-100 border-red-500 dark:bg-neutral-900";
+							"rounded-md border-2 border-dashed p-2 bg-neutral-50 border-red-500 dark:bg-neutral-900";
 						const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
 
 						return (

@@ -5,7 +5,7 @@
 /* Base colors live here, not as class attributes on <body> in index.html — Tailwind utility classes
    have higher specificity than this element rule and would silently override it. */
 body {
-	@apply bg-white text-neutral-900 dark:bg-neutral-900 dark:text-neutral-400;
+	@apply bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-400;
 }
 
 /* Tell the browser which scheme is active so native UI (scrollbars, inputs, autofill) adapts. */
