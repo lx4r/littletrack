@@ -29,11 +29,13 @@ const formatTimeEntry = (timeEntry: TimeEntry, timeZone: string) => {
 	)} - ${formatAsIsoTimeOfDayWithoutSeconds(timeEntry.stopTime, timeZone)}`;
 };
 
+const ICON_BUTTON_CLASSES =
+	"rounded-full bg-neutral-400 p-1 text-neutral-800 shadow-sm hover:bg-neutral-500 hover:text-neutral-900 dark:bg-neutral-500 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:hover:text-neutral-100";
+
 const COPY_BUTTON_PROPS = {
 	idle: {
 		label: "Copy",
-		className:
-			"mr-2 rounded-full bg-neutral-400 p-1 text-neutral-800 shadow-sm hover:bg-neutral-500 hover:text-neutral-900 dark:bg-neutral-500 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:hover:text-neutral-100",
+		className: `mr-2 ${ICON_BUTTON_CLASSES}`,
 		Icon: ClipboardIcon,
 	},
 	success: {
@@ -114,7 +116,7 @@ export function TimeEntryRow({
 					className={
 						deleteState === "waiting_for_confirmation"
 							? "inline-flex items-center rounded-full bg-red-600 p-1 text-neutral-200 text-sm shadow-sm hover:bg-red-700 hover:text-white disabled:opacity-50"
-							: "rounded-full bg-neutral-400 p-1 text-neutral-800 shadow-sm hover:bg-neutral-500 hover:text-neutral-900 disabled:opacity-50 dark:bg-neutral-500 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:hover:text-neutral-100"
+							: `${ICON_BUTTON_CLASSES} disabled:opacity-50`
 					}
 					aria-label={
 						deleteState === "waiting_for_confirmation"
