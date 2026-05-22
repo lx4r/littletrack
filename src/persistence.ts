@@ -1,7 +1,7 @@
 import type { TimeEntry } from "./types.ts";
 
+export const STORAGE_KEY_TIME_ENTRIES = "littletrack_time_entries";
 const STORAGE_KEY_START_TIME = "littletrack_start_time";
-const STORAGE_KEY_TIME_ENTRIES = "littletrack_time_entries";
 
 export const persistStartTime = async (startTime: Date) => {
 	localStorage.setItem(STORAGE_KEY_START_TIME, startTime.toISOString());
