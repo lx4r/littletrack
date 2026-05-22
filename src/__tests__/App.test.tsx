@@ -19,6 +19,12 @@ import {
 	stopTime2TimeOfDayMatcher,
 } from "./App_test_helpers";
 
+it("shows empty state message when there are no completed time entries", () => {
+	render(<App {...DEFAULT_APP_PROPS} />);
+
+	expect(screen.getByText(/to start tracking time/i)).toBeInTheDocument();
+});
+
 it("can log multiple time entries and show them in reverse chronological order", async () => {
 	const user = userEvent.setup();
 

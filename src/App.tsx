@@ -184,49 +184,55 @@ const App = ({
 			)}
 
 			<div className="min-h-0 flex-1 overflow-auto">
-				{groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
-					({ isoDate, timeEntries }) => {
-						const classesForSelectedState =
-							"rounded-md border-2 border-dashed p-2 bg-neutral-50 border-red-500 dark:bg-neutral-900";
-						const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
+				{completeTimeEntries.length === 0 ? (
+					<p className="mt-8 text-center text-neutral-400 dark:text-neutral-500">
+						Tap the play button to start tracking time
+					</p>
+				) : (
+					groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
+						({ isoDate, timeEntries }) => {
+							const classesForSelectedState =
+								"rounded-md border-2 border-dashed p-2 bg-neutral-50 border-red-500 dark:bg-neutral-900";
+							const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
 
-						return (
-							<section
-								key={isoDate}
-								className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
-								aria-label={`Time entries for ${isoDate}`}
-								aria-current={isSelected ? "true" : "false"}
-							>
-								<div className="mb-2 flex items-center">
-									{isBatchDeleteModeEnabled && (
-										<label className="mr-3 flex items-center">
-											<input
-												type="checkbox"
-												checked={isSelected}
-												onChange={() => handleIsoDateCheckboxChange(isoDate)}
-												className="h-5 w-5"
+							return (
+								<section
+									key={isoDate}
+									className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
+									aria-label={`Time entries for ${isoDate}`}
+									aria-current={isSelected ? "true" : "false"}
+								>
+									<div className="mb-2 flex items-center">
+										{isBatchDeleteModeEnabled && (
+											<label className="mr-3 flex items-center">
+												<input
+													type="checkbox"
+													checked={isSelected}
+													onChange={() => handleIsoDateCheckboxChange(isoDate)}
+													className="h-5 w-5"
+												/>
+											</label>
+										)}
+										<h2 className="text-lg">{isoDate}</h2>
+									</div>
+									<ul>
+										{timeEntries.map((timeEntry) => (
+											<TimeEntryRow
+												key={timeEntry.id}
+												timeEntry={timeEntry}
+												timeZone={timeZone}
+												isDeleteEnabled={!isBatchDeleteModeEnabled}
+												onDeleteButtonClick={handleDeleteButtonClick}
+												onCopyButtonClick={(timeEntry) =>
+													copyTimeEntryToClipboard(timeEntry, timeZone)
+												}
 											/>
-										</label>
-									)}
-									<h2 className="text-lg">{isoDate}</h2>
-								</div>
-								<ul>
-									{timeEntries.map((timeEntry) => (
-										<TimeEntryRow
-											key={timeEntry.id}
-											timeEntry={timeEntry}
-											timeZone={timeZone}
-											isDeleteEnabled={!isBatchDeleteModeEnabled}
-											onDeleteButtonClick={handleDeleteButtonClick}
-											onCopyButtonClick={(timeEntry) =>
-												copyTimeEntryToClipboard(timeEntry, timeZone)
-											}
-										/>
-									))}
-								</ul>
-							</section>
-						);
-					},
+										))}
+									</ul>
+								</section>
+							);
+						},
+					)
 				)}
 			</div>
 		</main>
