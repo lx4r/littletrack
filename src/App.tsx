@@ -133,105 +133,103 @@ const App = ({
 	};
 
 	return (
-		<div className="flex h-dvh justify-center overflow-hidden p-4">
-			<main className="flex h-full w-full max-w-(--breakpoint-md) flex-col">
-				<div className="mb-4 flex items-center justify-between">
-					<div className="flex items-center">
+		<main className="mx-auto flex h-dvh w-full max-w-(--breakpoint-md) flex-col overflow-hidden p-4">
+			<div className="mb-4 flex items-center justify-between">
+				<div className="flex items-center">
+					<button
+						type="button"
+						onClick={handleStartStopButtonClick}
+						className="rounded-full bg-neutral-200 p-2 text-neutral-800 shadow-md hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+					>
+						{isTimerRunning ? (
+							<StopIcon className="h-10 w-10" aria-label="Stop" />
+						) : (
+							<PlayIcon className="h-10 w-10" aria-label="Start" />
+						)}
+					</button>
+				</div>
+				<div className="flex items-center gap-3">
+					<span className="text-lg lg:text-base">
+						{startTime && formatAsIsoDateTime(startTime, timeZone)}
+					</span>
+					<HeaderMenu
+						preference={preference}
+						setPreference={setPreference}
+						hasTimeEntries={completeTimeEntries.length > 0}
+						onBatchDeleteClick={() => setIsBatchDeleteModeEnabled(true)}
+					/>
+				</div>
+			</div>
+
+			{completeTimeEntries.length > 0 && isBatchDeleteModeEnabled && (
+				<div className="mb-4">
+					<div className="flex gap-2">
 						<button
 							type="button"
-							onClick={handleStartStopButtonClick}
-							className="rounded-full bg-neutral-200 p-2 text-neutral-800 shadow-md hover:bg-neutral-300 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+							onClick={handleBatchDeleteConfirmClick}
+							disabled={isoDatesSelectedForBatchDeletion.size === 0}
+							className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
 						>
-							{isTimerRunning ? (
-								<StopIcon className="h-10 w-10" aria-label="Stop" />
-							) : (
-								<PlayIcon className="h-10 w-10" aria-label="Start" />
-							)}
+							Delete entries for selected dates
+						</button>
+						<button
+							type="button"
+							onClick={handleBatchDeleteCancelClick}
+							className="rounded-md bg-neutral-200 px-3 py-1 text-neutral-800 text-sm hover:bg-neutral-300 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-700"
+						>
+							Cancel
 						</button>
 					</div>
-					<div className="flex items-center gap-3">
-						<span className="text-lg lg:text-base">
-							{startTime && formatAsIsoDateTime(startTime, timeZone)}
-						</span>
-						<HeaderMenu
-							preference={preference}
-							setPreference={setPreference}
-							hasTimeEntries={completeTimeEntries.length > 0}
-							onBatchDeleteClick={() => setIsBatchDeleteModeEnabled(true)}
-						/>
-					</div>
 				</div>
+			)}
 
-				{completeTimeEntries.length > 0 && isBatchDeleteModeEnabled && (
-					<div className="mb-4">
-						<div className="flex gap-2">
-							<button
-								type="button"
-								onClick={handleBatchDeleteConfirmClick}
-								disabled={isoDatesSelectedForBatchDeletion.size === 0}
-								className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+			<div className="min-h-0 flex-1 overflow-auto">
+				{groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
+					({ isoDate, timeEntries }) => {
+						const classesForSelectedState =
+							"rounded-md border-2 border-dashed p-2 bg-neutral-100 border-red-500 dark:bg-neutral-900";
+						const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
+
+						return (
+							<section
+								key={isoDate}
+								className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
+								aria-label={`Time entries for ${isoDate}`}
+								aria-current={isSelected ? "true" : "false"}
 							>
-								Delete entries for selected dates
-							</button>
-							<button
-								type="button"
-								onClick={handleBatchDeleteCancelClick}
-								className="rounded-md bg-neutral-200 px-3 py-1 text-neutral-800 text-sm hover:bg-neutral-300 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-700"
-							>
-								Cancel
-							</button>
-						</div>
-					</div>
-				)}
-
-				<div className="min-h-0 flex-1 overflow-auto">
-					{groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
-						({ isoDate, timeEntries }) => {
-							const classesForSelectedState =
-								"rounded-md border-2 border-dashed p-2 bg-neutral-100 border-red-500 dark:bg-neutral-900";
-							const isSelected = isoDatesSelectedForBatchDeletion.has(isoDate);
-
-							return (
-								<section
-									key={isoDate}
-									className={`mb-4 ${isSelected ? classesForSelectedState : ""}`}
-									aria-label={`Time entries for ${isoDate}`}
-									aria-current={isSelected ? "true" : "false"}
-								>
-									<div className="mb-2 flex items-center">
-										{isBatchDeleteModeEnabled && (
-											<label className="mr-3 flex items-center">
-												<input
-													type="checkbox"
-													checked={isSelected}
-													onChange={() => handleIsoDateCheckboxChange(isoDate)}
-													className="h-5 w-5"
-												/>
-											</label>
-										)}
-										<h2 className="text-lg">{isoDate}</h2>
-									</div>
-									<ul>
-										{timeEntries.map((timeEntry) => (
-											<TimeEntryRow
-												key={timeEntry.id}
-												timeEntry={timeEntry}
-												timeZone={timeZone}
-												isDeleteEnabled={!isBatchDeleteModeEnabled}
-												onDeleteButtonClick={handleDeleteButtonClick}
-												onCopyButtonClick={(timeEntry) =>
-													copyTimeEntryToClipboard(timeEntry, timeZone)
-												}
+								<div className="mb-2 flex items-center">
+									{isBatchDeleteModeEnabled && (
+										<label className="mr-3 flex items-center">
+											<input
+												type="checkbox"
+												checked={isSelected}
+												onChange={() => handleIsoDateCheckboxChange(isoDate)}
+												className="h-5 w-5"
 											/>
-										))}
-									</ul>
-								</section>
-							);
-						},
-					)}
-				</div>
-			</main>
-		</div>
+										</label>
+									)}
+									<h2 className="text-lg">{isoDate}</h2>
+								</div>
+								<ul>
+									{timeEntries.map((timeEntry) => (
+										<TimeEntryRow
+											key={timeEntry.id}
+											timeEntry={timeEntry}
+											timeZone={timeZone}
+											isDeleteEnabled={!isBatchDeleteModeEnabled}
+											onDeleteButtonClick={handleDeleteButtonClick}
+											onCopyButtonClick={(timeEntry) =>
+												copyTimeEntryToClipboard(timeEntry, timeZone)
+											}
+										/>
+									))}
+								</ul>
+							</section>
+						);
+					},
+				)}
+			</div>
+		</main>
 	);
 };
 
