@@ -1,7 +1,7 @@
 allowBuilds:
-  "@biomejs/biome": true
-  "@parcel/watcher": true
-  esbuild: true
+  "@biomejs/biome": false
+  "@parcel/watcher": false
+  esbuild: false
   netlify-cli: false
-  sharp: true
-  unix-dgram: true
+  sharp: false
+  unix-dgram: false
