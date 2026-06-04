@@ -139,7 +139,7 @@ const App = ({
 					<button
 						type="button"
 						onClick={handleStartStopButtonClick}
-						className="rounded-full bg-neutral-400 p-2 text-neutral-800 shadow-md hover:bg-neutral-500 hover:text-neutral-900 dark:bg-neutral-600 dark:text-neutral-200 dark:hover:bg-neutral-700 dark:hover:text-neutral-100"
+						className="rounded-full bg-neutral-600 p-2 text-white shadow-md hover:bg-neutral-700 dark:bg-neutral-400 dark:text-neutral-800 dark:shadow-none dark:hover:bg-neutral-300"
 					>
 						{isTimerRunning ? (
 							<StopIcon className="h-10 w-10" aria-label="Stop" />
@@ -175,7 +175,7 @@ const App = ({
 						<button
 							type="button"
 							onClick={handleBatchDeleteCancelClick}
-							className="rounded-md bg-neutral-300 px-3 py-1 text-neutral-800 text-sm hover:bg-neutral-400 dark:bg-neutral-600 dark:text-white dark:hover:bg-neutral-700"
+							className="rounded-md bg-neutral-600 px-3 py-1 text-sm text-white hover:bg-neutral-700 dark:bg-neutral-400 dark:text-neutral-800 dark:hover:bg-neutral-300"
 						>
 							Cancel
 						</button>

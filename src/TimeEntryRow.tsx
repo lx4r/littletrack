@@ -30,7 +30,7 @@ const formatTimeEntry = (timeEntry: TimeEntry, timeZone: string) => {
 };
 
 const ICON_BUTTON_CLASSES =
-	"rounded-full bg-neutral-400 p-1 text-neutral-800 shadow-sm hover:bg-neutral-500 hover:text-neutral-900 dark:bg-neutral-500 dark:text-neutral-200 dark:hover:bg-neutral-600 dark:hover:text-neutral-100";
+	"rounded-full bg-neutral-600 p-1 text-white shadow-sm hover:bg-neutral-700 dark:bg-neutral-400 dark:text-neutral-800 dark:hover:bg-neutral-300 dark:shadow-none";
 
 const COPY_BUTTON_PROPS = {
 	idle: {
