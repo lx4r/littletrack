@@ -10,37 +10,28 @@ import { useTheme } from "./useTheme";
 import { useTimeEntries } from "./useTimeEntries";
 import { useTimer } from "./useTimer";
 
-export interface Props {
+export type Props = {
 	getCurrentTime: () => Date;
-	persistStartTime: (startTime: Date) => Promise<void>;
-	retrievePersistedStartTime: () => Promise<Date | null>;
-	removePersistedStartTime: () => Promise<void>;
-	// TODO: rename prop
-	manageTimeEntries: {
+	timeZone: string;
+	timer: {
+		persistStartTime: (startTime: Date) => Promise<void>;
+		retrievePersistedStartTime: () => Promise<Date | null>;
+		removePersistedStartTime: () => Promise<void>;
+	};
+	timeEntries: {
 		persistTimeEntries: (timeEntries: TimeEntry[]) => Promise<void>;
 		retrieveTimeEntries: () => Promise<TimeEntry[] | null>;
 	};
-	timeZone: string;
-}
+};
 
 const App = ({
 	getCurrentTime,
-	persistStartTime,
-	retrievePersistedStartTime,
-	removePersistedStartTime,
-	manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
 	timeZone,
+	timer,
+	timeEntries,
 }: Readonly<Props>) => {
-	const { startTime, start, stop } = useTimer({
-		persistStartTime,
-		retrievePersistedStartTime,
-		removePersistedStartTime,
-	});
-
-	const { entries, add, removeByIds } = useTimeEntries({
-		persistTimeEntries,
-		retrieveTimeEntries,
-	});
+	const { startTime, start, stop } = useTimer(timer);
+	const { entries, add, removeByIds } = useTimeEntries(timeEntries);
 
 	const {
 		isEnabled: isBatchDeleteModeEnabled,

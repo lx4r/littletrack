@@ -47,7 +47,7 @@ it("persists start time when start button is clicked", async () => {
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			persistStartTime={persistStartTime}
+			timer={{ ...DEFAULT_APP_PROPS.timer, persistStartTime }}
 		/>,
 	);
 
@@ -62,7 +62,7 @@ it("uses persisted start time if there is one and shows stop button", async () =
 	render(
 		<App
 			{...DEFAULT_APP_PROPS}
-			retrievePersistedStartTime={retrievePersistedStartTime}
+			timer={{ ...DEFAULT_APP_PROPS.timer, retrievePersistedStartTime }}
 		/>,
 	);
 
@@ -90,9 +90,11 @@ it("doesn't have a running time entry after stopping another and reloading the a
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			persistStartTime={persistStartTime}
-			retrievePersistedStartTime={retrievePersistedStartTime}
-			removePersistedStartTime={removePersistedStartTime}
+			timer={{
+				persistStartTime,
+				retrievePersistedStartTime,
+				removePersistedStartTime,
+			}}
 		/>,
 	);
 
@@ -108,7 +110,7 @@ it("doesn't have a running time entry after stopping another and reloading the a
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			persistStartTime={persistStartTime}
+			timer={{ ...DEFAULT_APP_PROPS.timer, persistStartTime }}
 		/>,
 	);
 
@@ -130,10 +132,7 @@ it("persists time entries across page reload", async () => {
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			manageTimeEntries={{
-				persistTimeEntries,
-				retrieveTimeEntries,
-			}}
+			timeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 		/>,
 	);
 
@@ -145,10 +144,7 @@ it("persists time entries across page reload", async () => {
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			manageTimeEntries={{
-				persistTimeEntries,
-				retrieveTimeEntries,
-			}}
+			timeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 		/>,
 	);
 
@@ -172,10 +168,7 @@ it("persists deletion of time entry across page reload", async () => {
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			manageTimeEntries={{
-				persistTimeEntries,
-				retrieveTimeEntries,
-			}}
+			timeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 		/>,
 	);
 
@@ -197,10 +190,7 @@ it("persists deletion of time entry across page reload", async () => {
 		<App
 			{...DEFAULT_APP_PROPS}
 			getCurrentTime={getCurrentTime}
-			manageTimeEntries={{
-				persistTimeEntries,
-				retrieveTimeEntries,
-			}}
+			timeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 		/>,
 	);
 

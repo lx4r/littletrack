@@ -38,22 +38,24 @@ export const stopTime2IsoDateTime = "2023-01-03 04:04";
 
 export const DEFAULT_APP_PROPS: AppProps = {
 	getCurrentTime: () => new Date(),
-	persistStartTime: () => Promise.resolve(),
-	retrievePersistedStartTime: () => Promise.resolve(null),
-	removePersistedStartTime: () => Promise.resolve(),
-	manageTimeEntries: {
+	timeZone: "UTC",
+	timer: {
+		persistStartTime: () => Promise.resolve(),
+		retrievePersistedStartTime: () => Promise.resolve(null),
+		removePersistedStartTime: () => Promise.resolve(),
+	},
+	timeEntries: {
 		persistTimeEntries: () => Promise.resolve(),
 		retrieveTimeEntries: () => Promise.resolve([]),
 	},
-	timeZone: "UTC",
 };
 
 export const renderWithEntries = (entries: TimeEntry[]) =>
 	render(
 		<App
 			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
+			timeEntries={{
+				...DEFAULT_APP_PROPS.timeEntries,
 				retrieveTimeEntries: () => Promise.resolve(entries),
 			}}
 		/>,

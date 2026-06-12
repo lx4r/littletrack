@@ -21,11 +21,13 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
 		<App
 			getCurrentTime={() => new Date()}
-			persistStartTime={persistStartTime}
-			retrievePersistedStartTime={retrievePersistedStartTime}
-			removePersistedStartTime={removePersistedStartTime}
-			manageTimeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 			timeZone={timeZone}
+			timer={{
+				persistStartTime,
+				retrievePersistedStartTime,
+				removePersistedStartTime,
+			}}
+			timeEntries={{ persistTimeEntries, retrieveTimeEntries }}
 		/>
 	</React.StrictMode>,
 );

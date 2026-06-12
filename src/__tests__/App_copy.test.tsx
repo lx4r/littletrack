@@ -36,8 +36,8 @@ it("clicking copy button writes correctly formatted entry to clipboard", async (
 	render(
 		<App
 			{...DEFAULT_APP_PROPS}
-			manageTimeEntries={{
-				...DEFAULT_APP_PROPS.manageTimeEntries,
+			timeEntries={{
+				...DEFAULT_APP_PROPS.timeEntries,
 				retrieveTimeEntries: vi.fn(() =>
 					Promise.resolve([timeEntry2, timeEntry1]),
 				),
