@@ -1,12 +1,14 @@
 import { PlayIcon, StopIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
 import { HeaderMenu } from "./HeaderMenu";
 import { TimeEntryRow } from "./TimeEntryRow";
 import { copyTimeEntryToClipboard } from "./time_entry_clipboard";
 import { groupTimeEntriesByDate } from "./time_entry_grouping";
 import { formatAsIsoDate, formatAsIsoDateTime } from "./time_formatting";
 import type { TimeEntry } from "./types";
+import { useBatchDeletion } from "./useBatchDeletion";
 import { useTheme } from "./useTheme";
+import { useTimeEntries } from "./useTimeEntries";
+import { useTimer } from "./useTimer";
 
 export interface Props {
 	getCurrentTime: () => Date;
@@ -29,107 +31,56 @@ const App = ({
 	manageTimeEntries: { persistTimeEntries, retrieveTimeEntries },
 	timeZone,
 }: Readonly<Props>) => {
-	const [completeTimeEntries, setCompleteTimeEntries] = useState<TimeEntry[]>(
-		[],
-	);
+	const { startTime, start, stop } = useTimer({
+		persistStartTime,
+		retrievePersistedStartTime,
+		removePersistedStartTime,
+	});
 
-	const [startTime, setStartTime] = useState<Date | null>(null);
+	const { entries, add, removeByIds } = useTimeEntries({
+		persistTimeEntries,
+		retrieveTimeEntries,
+	});
 
-	const [isBatchDeleteModeEnabled, setIsBatchDeleteModeEnabled] =
-		useState(false);
-
-	const [
-		isoDatesSelectedForBatchDeletion,
-		setIsoDatesSelectedForBatchDeletion,
-	] = useState<Set<string>>(new Set());
-
-	const handleIsoDateCheckboxChange = (isoDate: string) => {
-		setIsoDatesSelectedForBatchDeletion((prev) => {
-			const updatedSet = new Set(prev);
-
-			if (updatedSet.has(isoDate)) {
-				updatedSet.delete(isoDate);
-			} else {
-				updatedSet.add(isoDate);
-			}
-
-			return updatedSet;
-		});
-	};
+	const {
+		isEnabled: isBatchDeleteModeEnabled,
+		selectedIsoDates: isoDatesSelectedForBatchDeletion,
+		enable: enableBatchDelete,
+		cancel: cancelBatchDelete,
+		toggleDate,
+	} = useBatchDeletion();
 
 	const { preference, setPreference } = useTheme();
 
 	const isTimerRunning = startTime !== null;
 
-	useEffect(() => {
-		const loadPersistedStartTime = async () => {
-			const persistedStartTime = await retrievePersistedStartTime();
-
-			if (persistedStartTime !== null) {
-				setStartTime(persistedStartTime);
-			}
-		};
-
-		loadPersistedStartTime();
-	}, [retrievePersistedStartTime]);
-
-	useEffect(() => {
-		const loadPersistedTimeEntries = async () => {
-			const persistedTimeEntries = await retrieveTimeEntries();
-
-			setCompleteTimeEntries(persistedTimeEntries ?? []);
-		};
-
-		loadPersistedTimeEntries();
-	}, [retrieveTimeEntries]);
-
 	const handleStartStopButtonClick = async () => {
-		const currentTime = getCurrentTime();
-
 		if (isTimerRunning) {
-			const newTimeEntries = [
-				{ id: self.crypto.randomUUID(), startTime, stopTime: currentTime },
-				...completeTimeEntries,
-			];
-
-			setCompleteTimeEntries(newTimeEntries);
-			await persistTimeEntries(newTimeEntries);
-
-			setStartTime(null);
-			await removePersistedStartTime();
+			await add({
+				id: self.crypto.randomUUID(),
+				startTime,
+				stopTime: getCurrentTime(),
+			});
+			await stop();
 		} else {
-			setStartTime(currentTime);
-			await persistStartTime(currentTime);
+			await start(getCurrentTime());
 		}
 	};
 
 	const handleDeleteButtonClick = async ({ id }: TimeEntry) => {
-		const newTimeEntries = completeTimeEntries.filter(
-			({ id: currentId }) => id !== currentId,
-		);
-
-		setCompleteTimeEntries(newTimeEntries);
-		await persistTimeEntries(newTimeEntries);
-	};
-
-	const handleBatchDeleteCancelClick = () => {
-		setIsBatchDeleteModeEnabled(false);
-		setIsoDatesSelectedForBatchDeletion(new Set());
+		await removeByIds([id]);
 	};
 
 	const handleBatchDeleteConfirmClick = async () => {
-		const newTimeEntries = completeTimeEntries.filter(
-			(entry) =>
-				!isoDatesSelectedForBatchDeletion.has(
-					formatAsIsoDate(entry.startTime, timeZone),
+		const idsToDelete = entries
+			.filter((e) =>
+				isoDatesSelectedForBatchDeletion.has(
+					formatAsIsoDate(e.startTime, timeZone),
 				),
-		);
-
-		setCompleteTimeEntries(newTimeEntries);
-		await persistTimeEntries(newTimeEntries);
-
-		setIsBatchDeleteModeEnabled(false);
-		setIsoDatesSelectedForBatchDeletion(new Set());
+			)
+			.map((e) => e.id);
+		await removeByIds(idsToDelete);
+		cancelBatchDelete();
 	};
 
 	return (
@@ -155,13 +106,13 @@ const App = ({
 					<HeaderMenu
 						preference={preference}
 						setPreference={setPreference}
-						hasTimeEntries={completeTimeEntries.length > 0}
-						onBatchDeleteClick={() => setIsBatchDeleteModeEnabled(true)}
+						hasTimeEntries={entries.length > 0}
+						onBatchDeleteClick={enableBatchDelete}
 					/>
 				</div>
 			</div>
 
-			{completeTimeEntries.length > 0 && isBatchDeleteModeEnabled && (
+			{entries.length > 0 && isBatchDeleteModeEnabled && (
 				<div className="mb-4">
 					<div className="flex gap-2">
 						<button
@@ -174,7 +125,7 @@ const App = ({
 						</button>
 						<button
 							type="button"
-							onClick={handleBatchDeleteCancelClick}
+							onClick={cancelBatchDelete}
 							className="rounded-md bg-neutral-600 px-3 py-1 text-sm text-white hover:bg-neutral-700 dark:bg-neutral-400 dark:text-neutral-800 dark:hover:bg-neutral-300"
 						>
 							Cancel
@@ -184,12 +135,12 @@ const App = ({
 			)}
 
 			<div className="min-h-0 flex-1 overflow-auto">
-				{completeTimeEntries.length === 0 ? (
+				{entries.length === 0 ? (
 					<p className="mt-8 text-center text-neutral-400 dark:text-neutral-500">
 						Tap the play button to start tracking time
 					</p>
 				) : (
-					groupTimeEntriesByDate(completeTimeEntries, timeZone).map(
+					groupTimeEntriesByDate(entries, timeZone).map(
 						({ isoDate, timeEntries }) => {
 							const classesForSelectedState =
 								"rounded-md border-2 border-dashed p-2 bg-neutral-50 border-red-500 dark:bg-neutral-900";
@@ -208,7 +159,7 @@ const App = ({
 												<input
 													type="checkbox"
 													checked={isSelected}
-													onChange={() => handleIsoDateCheckboxChange(isoDate)}
+													onChange={() => toggleDate(isoDate)}
 													className="h-5 w-5"
 												/>
 											</label>
