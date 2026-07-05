@@ -10,17 +10,19 @@ type UseBatchDeletionResult = {
 
 export const useBatchDeletion = (): UseBatchDeletionResult => {
 	const [isEnabled, setIsEnabled] = useState(false);
-	const [selectedIsoDates, setSelectedDates] = useState<Set<string>>(new Set());
+	const [selectedIsoDates, setSelectedIsoDates] = useState<Set<string>>(
+		new Set(),
+	);
 
 	const enable = (): void => setIsEnabled(true);
 
 	const cancel = (): void => {
 		setIsEnabled(false);
-		setSelectedDates(new Set());
+		setSelectedIsoDates(new Set());
 	};
 
 	const toggleDate = (isoDate: string): void => {
-		setSelectedDates((prevSelectedIsoDates) => {
+		setSelectedIsoDates((prevSelectedIsoDates) => {
 			const newSelectedIsoDates = new Set(prevSelectedIsoDates);
 
 			if (newSelectedIsoDates.has(isoDate)) {
