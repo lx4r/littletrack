@@ -18,11 +18,12 @@ const makeEntry = (
 	return { id: String(id), startTime, stopTime };
 };
 
+// Newest first, matching the order the app itself persists entries
 const entries: TimeEntry[] = [
-	makeEntry(1, { daysAgo: 2, startHour: 9, durationMinutes: 90 }),
-	makeEntry(2, { daysAgo: 2, startHour: 13, durationMinutes: 45 }),
-	makeEntry(3, { daysAgo: 1, startHour: 10, durationMinutes: 120 }),
 	makeEntry(4, { daysAgo: 0, startHour: 9, durationMinutes: 60 }),
+	makeEntry(3, { daysAgo: 1, startHour: 10, durationMinutes: 120 }),
+	makeEntry(2, { daysAgo: 2, startHour: 13, durationMinutes: 45 }),
+	makeEntry(1, { daysAgo: 2, startHour: 9, durationMinutes: 90 }),
 ];
 
 console.log(`localStorage.setItem('${STORAGE_KEY_TIME_ENTRIES}', ${JSON.stringify(JSON.stringify(entries))});
