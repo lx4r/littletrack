@@ -4,9 +4,6 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    # Cooldown matches pnpm's minimumReleaseAge, preventing PRs on packages too fresh for pnpm to install.
-    cooldown:
-      default-days: 1
     groups:
       css:
         patterns:
