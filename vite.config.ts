@@ -47,7 +47,6 @@ export default defineConfig({
 		environment: "happy-dom",
 		setupFiles: ["./vitest.setup.ts"],
 		unstubGlobals: true,
-		globals: true,
 		chaiConfig: { truncateThreshold: 0 },
 	},
 	// Use different ports than Vite's default ports to avoid this app's service worker influencing other apps.
