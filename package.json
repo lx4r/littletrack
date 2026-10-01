@@ -36,7 +36,7 @@
 		"@types/react-dom": "^19.2.7",
 		"@vitejs/plugin-react": "^6.1.1",
 		"@vitest/coverage-v8": "^5.0.0",
-		"happy-dom": "^20.14.0",
+		"happy-dom": "^20.14.5",
 		"husky": "^9.1.7",
 		"netlify-cli": "^27.5.0",
 		"postcss": "^8.5.28",
