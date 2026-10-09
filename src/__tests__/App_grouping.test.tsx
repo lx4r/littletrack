@@ -1,11 +1,13 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import App from "../App";
+import type { TimeEntry } from "../types";
 import {
 	DEFAULT_APP_PROPS,
 	getStartButtonOrThrow,
 	getStopButtonOrThrow,
+	renderWithEntries,
 	startTime1,
 	startTime1TimeOfDayMatcher,
 	startTime2,
@@ -14,15 +16,12 @@ import {
 	stopTime2,
 } from "./App_test_helpers";
 
-it("groups time entries by date", async () => {
+it("groups time entries by date, sorts groups from new to old", async () => {
 	const user = userEvent.setup();
 
 	const startTime3 = new Date("2023-01-02T05:05:05.000Z");
 	const startTime3TimeOfDayMatcher = /05:05/;
 	const stopTime3 = new Date("2023-01-02T06:06:06.000Z");
-
-	const isoDateForTimeEntry1 = "2023-01-01";
-	const isoDateForTimeEntries2And3 = "2023-01-02";
 
 	const getCurrentTime = vi.fn(() => startTime1);
 
@@ -42,11 +41,7 @@ it("groups time entries by date", async () => {
 	getCurrentTime.mockReturnValueOnce(stopTime3);
 	await user.click(getStopButtonOrThrow());
 
-	const timeEntryGroup1 = screen
-		.getByText(isoDateForTimeEntry1)
-		.closest("section") as HTMLElement;
-
-	expect(timeEntryGroup1).toBeInTheDocument();
+	const timeEntryGroup1 = screen.getByRole("region", { name: /2023-01-01/ });
 
 	expect(
 		within(timeEntryGroup1).queryByText(startTime1TimeOfDayMatcher),
@@ -58,11 +53,7 @@ it("groups time entries by date", async () => {
 		within(timeEntryGroup1).queryByText(startTime3TimeOfDayMatcher),
 	).not.toBeInTheDocument();
 
-	const timeEntryGroup2 = screen
-		.getByText(isoDateForTimeEntries2And3)
-		.closest("section") as HTMLElement;
-
-	expect(timeEntryGroup2).toBeInTheDocument();
+	const timeEntryGroup2 = screen.getByRole("region", { name: /2023-01-02/ });
 
 	expect(
 		within(timeEntryGroup2).queryByText(startTime1TimeOfDayMatcher),
@@ -73,6 +64,11 @@ it("groups time entries by date", async () => {
 	expect(
 		within(timeEntryGroup2).queryByText(startTime3TimeOfDayMatcher),
 	).toBeInTheDocument();
+
+	expect(screen.getAllByRole("region")).toEqual([
+		timeEntryGroup2,
+		timeEntryGroup1,
+	]);
 });
 
 it("groups time entry spanning multiple days under start date but also shows end date", async () => {
@@ -109,4 +105,40 @@ it("groups time entry spanning multiple days under start date but also shows end
 	expect(
 		within(timeEntryGroup1).queryByText(fullTimeEntry3Matcher),
 	).toBeInTheDocument();
+});
+
+describe("sorting within a group", () => {
+	const earlierTimeEntry: TimeEntry = {
+		id: "earlier-id",
+		startTime: startTime1,
+		stopTime: stopTime1,
+	};
+	const laterTimeEntry: TimeEntry = {
+		id: "later-id",
+		startTime: new Date("2023-01-01T03:03:03.000Z"),
+		stopTime: new Date("2023-01-01T04:04:04.000Z"),
+	};
+	const laterTimeEntryTimeOfDayMatcher = /03:03/;
+
+	it.each([
+		{
+			storedOrder: "earlier first",
+			entries: [earlierTimeEntry, laterTimeEntry],
+		},
+		{ storedOrder: "later first", entries: [laterTimeEntry, earlierTimeEntry] },
+	])(
+		"sorts time entries from earliest to latest start time ($storedOrder)",
+		async ({ entries }) => {
+			renderWithEntries(entries);
+
+			const timeEntryGroup = await screen.findByRole("region", {
+				name: /2023-01-01/,
+			});
+			const rows = within(timeEntryGroup).getAllByRole("listitem");
+
+			expect(rows).toHaveLength(2);
+			expect(rows[0]).toHaveTextContent(startTime1TimeOfDayMatcher);
+			expect(rows[1]).toHaveTextContent(laterTimeEntryTimeOfDayMatcher);
+		},
+	);
 });
